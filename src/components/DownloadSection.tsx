@@ -28,7 +28,7 @@ export default React.memo(function DownloadSection() {
     const [menumetadata, setMenumetadata] = useState([] as any[])
     const [selectedDataset, setSelectedDataset] = useState({} as any);
     const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
-    
+
 
     const isLinked: () => boolean = () => {
         return selectedDataset.level || selectedDataset.linked;
@@ -63,9 +63,12 @@ export default React.memo(function DownloadSection() {
     }
 
     const renderLinkOption = () => {
+        if (!isLinked()) {
+            return null;
+        }
         return <>
             <Typography align="left">Include Geospatial Data</Typography>
-            <Switch 
+            <Switch
                 color="primary"
                 checked={includeGeospatialData}
                 onChange={e => setIncludeGeospatialData(e.target.checked)}
@@ -130,13 +133,17 @@ export default React.memo(function DownloadSection() {
 
         {renderLinkOption()}
 
-        <br/>
+        <br />
 
         <Typography align="left">Tags</Typography>
         <div className={classes.tagsContainer}>
             {getTags()}
         </div>
-        
 
+        <br/>
+
+        <Button variant="contained" color="primary">
+            Download Data
+        </Button>
     </div>
 });
