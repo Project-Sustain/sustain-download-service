@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper, TextField } from '@material-ui/core';
+import { Container, Grid, Paper, TextField, Typography, Tooltip, button } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import counties from '../json/counties.json'
 import { useEffect } from "react";
+import Util from '../library/apertureUtil'
+import ExploreOffIcon from '@material-ui/icons/ExploreOff';
+import ExploreIcon from '@material-ui/icons/Explore';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
 const useStyles = makeStyles({
     root: {
         padding: "25px"
+    },
+    tagsContainer: {
+        margin: "10px"
+    },
+    tag: {
+        float: "left"
     }
 });
 
@@ -22,10 +32,32 @@ export default React.memo(function DownloadSection() {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
             .then(data => { setMenumetadata(data); setSelectedDataset(data[0]) })
             .catch(e => console.error("Booo"))
-    }, [])
+    }, []);
+
+    const getTags = () => {
+        let tags = []
+        if (selectedDataset.temporal) {
+            tags.push(<Tooltip title="This dataset is temporal, and will have multiple records per entry." key={0}>
+                <HourglassEmptyIcon />
+            </Tooltip>
+            )
+        }
+        if (selectedDataset.level || selectedDataset.linked) {
+            tags.push(<Tooltip title="This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option." key={1}>
+                <ExploreOffIcon />
+            </Tooltip>
+            )
+        }
+        else {
+            tags.push(<Tooltip title="This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array." key={2}>
+                <ExploreIcon />
+            </Tooltip>)
+        }
+        return tags;
+    }
 
 
-    if(!menumetadata.length){
+    if (!menumetadata.length) {
         return null;
     }
 
@@ -53,7 +85,7 @@ export default React.memo(function DownloadSection() {
             )}
         />
 
-        <br/>
+        <br />
 
         <Autocomplete
             options={menumetadata}
@@ -64,7 +96,7 @@ export default React.memo(function DownloadSection() {
                 }
             }}
             autoHighlight
-            getOptionLabel={(option) => option.label ?? option.collection}
+            getOptionLabel={(option) => option.label ?? Util.cleanUpString(option.collection)}
             renderInput={(params) => (
                 <TextField
                     {...params}
@@ -77,5 +109,13 @@ export default React.memo(function DownloadSection() {
                 />
             )}
         />
+
+        <br />
+
+        <Typography align="left">Tags</Typography>
+        <div className={classes.tagsContainer}>
+            {getTags()}
+        </div>
+
     </div>
 });
