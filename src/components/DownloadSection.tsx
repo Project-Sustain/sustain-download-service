@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper, TextField, Typography, Tooltip, button } from '@material-ui/core';
+import { Container, Grid, Paper, TextField, Typography, Tooltip, Button, Switch } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import counties from '../json/counties.json'
 import { useEffect } from "react";
@@ -27,6 +27,12 @@ export default React.memo(function DownloadSection() {
     const [selectedCounty, setSelectedCounty] = useState(countiesSorted[0]);
     const [menumetadata, setMenumetadata] = useState([] as any[])
     const [selectedDataset, setSelectedDataset] = useState({} as any);
+    const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
+    
+
+    const isLinked: () => boolean = () => {
+        return selectedDataset.level || selectedDataset.linked;
+    }
 
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
@@ -42,7 +48,7 @@ export default React.memo(function DownloadSection() {
             </Tooltip>
             )
         }
-        if (selectedDataset.level || selectedDataset.linked) {
+        if (isLinked() && !includeGeospatialData) {
             tags.push(<Tooltip title="This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option." key={1}>
                 <ExploreOffIcon />
             </Tooltip>
@@ -56,6 +62,16 @@ export default React.memo(function DownloadSection() {
         return tags;
     }
 
+    const renderLinkOption = () => {
+        return <>
+            <Typography align="left">Include Geospatial Data</Typography>
+            <Switch 
+                color="primary"
+                checked={includeGeospatialData}
+                onChange={e => setIncludeGeospatialData(e.target.checked)}
+            />
+        </>
+    }
 
     if (!menumetadata.length) {
         return null;
@@ -112,10 +128,15 @@ export default React.memo(function DownloadSection() {
 
         <br />
 
+        {renderLinkOption()}
+
+        <br/>
+
         <Typography align="left">Tags</Typography>
         <div className={classes.tagsContainer}>
             {getTags()}
         </div>
+        
 
     </div>
 });
