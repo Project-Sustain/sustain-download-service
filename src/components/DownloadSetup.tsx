@@ -8,11 +8,12 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LinkIcon from '@material-ui/icons/Link';
 import { isLinked } from "../library/DatasetUtil";
 import { makeStyles } from '@material-ui/core/styles';
+import county from "../types/county"
 
 interface downloadSetupProps {
-    countiesSorted: any[],
+    countiesSorted: county[],
     menumetadata: any[],
-    conductDownload: (selectedDataset: any, GISJOIN: string, includeGeospatialData: boolean) => Promise<void>
+    conductDownload: (selectedDataset: any, selectedCounty: county, includeGeospatialData: boolean) => Promise<void>
 }
 
 const useStyles = makeStyles({
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
 export default function DownloadSetup({ countiesSorted, menumetadata, conductDownload }: downloadSetupProps) {
     const classes = useStyles();
     const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
-    const [selectedCounty, setSelectedCounty] = useState(countiesSorted[0]);
+    const [selectedCounty, setSelectedCounty] = useState(countiesSorted[0] as county);
     const [selectedDataset, setSelectedDataset] = useState(menumetadata[0]);
 
     const getTags = () => {
@@ -129,7 +130,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
 
         <br />
 
-        <Button variant="contained" color="primary" onClick={() => conductDownload(selectedDataset, selectedCounty.GISJOIN, includeGeospatialData)}>
+        <Button variant="contained" color="primary" onClick={() => conductDownload(selectedDataset, selectedCounty, includeGeospatialData)}>
             Download Data
         </Button>
     </>

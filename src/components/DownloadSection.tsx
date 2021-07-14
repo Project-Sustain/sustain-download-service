@@ -74,6 +74,7 @@ import DownloadSetup from "./DownloadSetup"
 import DownloadLoading from "./DownloadLoading"
 import DownloadSuccess from "./DownloadSuccess";
 import DownloadResult from "../types/DownloadResult"
+import county from "../types/county"
 
 type downloadStateType = "setup" | "downloading" | "doneSuccess" | "doneFail" | "doneEmpty"
 
@@ -85,7 +86,7 @@ const useStyles = makeStyles({
 
 export default React.memo(function DownloadSection() {
     const classes = useStyles();
-    const countiesSorted = counties.sort((countyA, countyB) => Number(countyA.GISJOIN.substring(1, countyA.GISJOIN.length)) - Number(countyB.GISJOIN.substring(1, countyB.GISJOIN.length)));
+    const countiesSorted: county[] = counties.sort((countyA, countyB) => Number(countyA.GISJOIN.substring(1, countyA.GISJOIN.length)) - Number(countyB.GISJOIN.substring(1, countyB.GISJOIN.length)));
     const [menumetadata, setMenumetadata] = useState([] as any[])
     const [downloadState, setDownloadState] = useState("setup" as downloadStateType)
     const [downloadResult, setDownloadResult] = useState({} as DownloadResult)
@@ -96,10 +97,10 @@ export default React.memo(function DownloadSection() {
             .catch(e => console.error("Booo"))
     }, []);
 
-    const conductDownload = async (selectedDataset: any, GISJOIN: string, includeGeospatialData: boolean): Promise<void> => {
+    const conductDownload = async (selectedDataset: any, selectedCounty: county, includeGeospatialData: boolean): Promise<void> => {
         setDownloadState("downloading")
         try {
-            const d = await Download(selectedDataset, GISJOIN, includeGeospatialData);
+            const d = await Download(selectedDataset, selectedCounty, includeGeospatialData);
             if (d.data.length) {
                 setDownloadState("doneSuccess")
                 setDownloadResult(d);

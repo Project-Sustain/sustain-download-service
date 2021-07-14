@@ -8,7 +8,8 @@ export interface downloadMeta {
     collectionName: string,
     label?: string,
     joinField?: string,
-    fieldLabels?: labelMap[]
+    fieldLabels?: labelMap[],
+    countyName: string
 }
 
 interface labelMap {   

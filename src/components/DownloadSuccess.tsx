@@ -25,7 +25,7 @@ export default function DownloadSuccess({ downloadResult }: downloadSuccessProps
         downloadResult.geometry && zip.file('linkedGeometry.json', JSON.stringify(downloadResult.geometry, null, 4))
         downloadResult.meta.fieldLabels && zip.file('fieldLabels.json', JSON.stringify(downloadResult.meta.fieldLabels, null, 4))
         zip.file('README.txt', `
-        This package includes the following:
+        This package, which includes data for the collection "${downloadResult.meta.collectionName}" for the county "${downloadResult.meta.countyName}" contains the following files:
 
 
         README -- This file
@@ -44,7 +44,7 @@ export default function DownloadSuccess({ downloadResult }: downloadSuccessProps
             const uriContent = URL.createObjectURL(contentBlob);
             const a = document.createElement('a');
             a.setAttribute('href', uriContent)
-            a.setAttribute('download', `${downloadResult.meta.collectionName}.zip`);
+            a.setAttribute('download', `${downloadResult.meta.collectionName}.${downloadResult.meta.countyName}.zip`.replaceAll(' ', '_').replaceAll(',', ''));
             a.style.display = 'none'
             document.body.appendChild(a);
             a.click();

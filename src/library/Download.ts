@@ -61,23 +61,27 @@ END OF TERMS AND CONDITIONS
 import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
 import { sustain_querier } from "../library/grpc_querier.js";
 import DownloadResult, { downloadMeta } from "../types/DownloadResult";
+import county from "../types/county";
 
 const querier = sustain_querier();
 
-export default async function Download(currentDataset: any, GISJOIN: string, includeGeospatialData: boolean): Promise<DownloadResult> {
+export default async function Download(currentDataset: any, countySelected: county, includeGeospatialData: boolean): Promise<DownloadResult> {
+    const { GISJOIN, name } = countySelected;
+    console.log(countySelected)
     let pipeline: any[] = [];
     let meta: downloadMeta = {
         collectionName: currentDataset.collection,
-        label: currentDataset.label
+        label: currentDataset.label,
+        countyName: name
     }
     if (currentDataset.fieldMetadata) {
         meta.fieldLabels = currentDataset.fieldMetadata.filter((e: any) => e.label).map(({ name, label }: any) => { return { name, label } })
     }
-    if(isLinked(currentDataset)){
-        if(currentDataset.linked){
+    if (isLinked(currentDataset)) {
+        if (currentDataset.linked) {
             meta.joinField = currentDataset.linked.field;
         }
-        else{
+        else {
             meta.joinField = 'GISJOIN'
         }
     }
