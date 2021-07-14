@@ -8,6 +8,8 @@ import Util from '../library/apertureUtil'
 import ExploreOffIcon from '@material-ui/icons/ExploreOff';
 import ExploreIcon from '@material-ui/icons/Explore';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import { isLinked } from "../library/DatasetUtil";
+import Download from "../library/Download";
 
 const useStyles = makeStyles({
     root: {
@@ -29,11 +31,6 @@ export default React.memo(function DownloadSection() {
     const [selectedDataset, setSelectedDataset] = useState({} as any);
     const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
 
-
-    const isLinked: () => boolean = () => {
-        return selectedDataset.level || selectedDataset.linked;
-    }
-
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
             .then(data => { setMenumetadata(data); setSelectedDataset(data[0]) })
@@ -48,7 +45,7 @@ export default React.memo(function DownloadSection() {
             </Tooltip>
             )
         }
-        if (isLinked() && !includeGeospatialData) {
+        if (isLinked(selectedDataset) && !includeGeospatialData) {
             tags.push(<Tooltip title="This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option." key={1}>
                 <ExploreOffIcon />
             </Tooltip>
@@ -63,7 +60,7 @@ export default React.memo(function DownloadSection() {
     }
 
     const renderLinkOption = () => {
-        if (!isLinked()) {
+        if (!isLinked(selectedDataset)) {
             return null;
         }
         return <>
@@ -140,9 +137,11 @@ export default React.memo(function DownloadSection() {
             {getTags()}
         </div>
 
-        <br/>
+        <br />
 
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={() => {
+            Download(selectedDataset, selectedCounty.GISJOIN, includeGeospatialData)
+        }}>
             Download Data
         </Button>
     </div>

@@ -129,43 +129,6 @@ const SustainQuerier = {
     },
 
     /**
-     * Creates a compound query out of two queries - only one "first" and one "second" query can be defined
-     * If both are defined, will default to using only the basic queries
-     *
-     * @memberof SustainQuerier
-     * @method makeCompoundQuery
-     * @param {Object} firstQuery
-     *        The first query object, if present
-     * @param {Object} firstCompoundRequest
-     *        The first compound request object, if present
-     * @param {Object} secondQuery
-     *        The second query object, if present
-     * @param {Object} secondCompoundRequest
-     *        The second compound request object, if present
-     * @param {Number} join
-     *        The type of join being used (number corresponding the proto definition)
-     * @return {Object}
-     *         The compound request object
-     */
-    makeCompoundQuery: function (firstQuery, firstCompoundRequest, secondQuery, secondCompoundRequest, join=0){
-        const request = new CompoundRequest();
-
-        if(firstQuery != null)
-            request.setFirstQuery(firstQuery);
-        else
-            request.setFirstCompoundRequest(firstCompoundRequest);
-
-        request.setJoin(join);
-
-        if(secondQuery != null)
-            request.setSecondQuery(secondQuery);
-        else
-            request.setSecondCompoundRequest(firstSecondRequest);
-
-        return request;
-	},
-
-    /**
      * Executes a compound request - returns the stream of results
      *
      * @memberof SustainQuerier
