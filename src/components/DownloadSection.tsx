@@ -71,6 +71,9 @@ import LinkIcon from '@material-ui/icons/Link';
 import { isLinked } from "../library/DatasetUtil";
 import Download from "../library/Download";
 import DownloadSetup from "./DownloadSetup"
+import DownloadLoading from "./DownloadLoading"
+import DownloadSuccess from "./DownloadSuccess";
+import DownloadResult from "../types/DownloadResult"
 
 type downloadStateType = "setup" | "downloading" | "doneSuccess" | "doneFail" | "doneEmpty"
 
@@ -85,6 +88,7 @@ export default React.memo(function DownloadSection() {
     const countiesSorted = counties.sort((countyA, countyB) => Number(countyA.GISJOIN.substring(1, countyA.GISJOIN.length)) - Number(countyB.GISJOIN.substring(1, countyB.GISJOIN.length)));
     const [menumetadata, setMenumetadata] = useState([] as any[])
     const [downloadState, setDownloadState] = useState("setup" as downloadStateType)
+    const [downloadResult, setDownloadResult] = useState({} as DownloadResult)
 
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
@@ -95,49 +99,61 @@ export default React.memo(function DownloadSection() {
     const conductDownload = async (selectedDataset: any, GISJOIN: string, includeGeospatialData: boolean): Promise<void> => {
         setDownloadState("downloading")
         try {
-            const {data, geometry} = await Download(selectedDataset, GISJOIN, includeGeospatialData);
-            if(data.length){
+            const { data, geometry } = await Download(selectedDataset, GISJOIN, includeGeospatialData);
+            if (data.length) {
                 setDownloadState("doneSuccess")
+                setDownloadResult({ data, geometry });
             }
-            else{
+            else {
                 setDownloadState("doneEmpty")
             }
         }
         catch (e) {
             console.error(e)
             setDownloadState("doneFail")
-        }   
+        }
     }
 
     if (!menumetadata.length) {
         return null;
     }
-    
-    const renderBasedOnDownloadState = () => {
-        if(downloadState === "setup"){
-            return <DownloadSetup conductDownload={conductDownload} menumetadata={menumetadata} countiesSorted={countiesSorted}/>
-        }
-        else if(downloadState === "downloading"){
 
+    const renderBasedOnDownloadState = () => {
+        if (downloadState === "setup") {
+            return <DownloadSetup conductDownload={conductDownload} menumetadata={menumetadata} countiesSorted={countiesSorted} />
+        }
+        else if (downloadState === "downloading") {
+            return <DownloadLoading />
         }
         else {
-            renderDone();
+            return renderDone();
         }
     }
 
     const renderDone = () => {
-        if(downloadState === "doneSuccess"){
-
+        if (downloadState === "doneSuccess") {
+            return <DownloadSuccess downloadResult={downloadResult}></DownloadSuccess>
         }
-        else if(downloadState === "doneEmpty"){
-
+        else if (downloadState === "doneEmpty") {
+            return <Typography gutterBottom variant="h5">No data was found matching your query.</Typography>
         }
-        else if(downloadState === "doneFail"){
-
+        else if (downloadState === "doneFail") {
+            return <Typography gutterBottom variant="h5">Query failed.</Typography>
         }
+        return null;
     }
 
     return <div className={classes.root}>
         {renderBasedOnDownloadState()}
+        {(() => {
+            if (["doneSuccess", "doneEmpty", "doneFail"].includes(downloadState)) {
+                return <>
+                    <br />
+                    <Tooltip title={<Typography>Return to the query builder menu.</Typography>}><Button variant="contained" color="primary" onClick={() => setDownloadState("setup")}>
+                        New Query
+                    </Button></Tooltip>
+                </>
+            }
+        })()}
     </div>
 });
