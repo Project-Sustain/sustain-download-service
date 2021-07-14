@@ -112,6 +112,7 @@ export default async function Download(currentDataset: any, countySelected: coun
     }
 
     let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
+    d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
     let returnable: DownloadResult = { data: realD, meta }
     if (includeGeospatialData) {
         returnable.geometry = d;
