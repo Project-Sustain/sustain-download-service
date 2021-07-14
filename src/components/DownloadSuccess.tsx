@@ -22,6 +22,7 @@ export default function DownloadSuccess({ downloadResult }: downloadSuccessProps
     const exportAndDownloadData = () => {
         var zip = new JSZip();
         zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))
+        downloadResult.geometry && zip.file('linkedGeometry.json', JSON.stringify(downloadResult.geometry, null, 4))
 
         zip.generateAsync({
             type: "blob"

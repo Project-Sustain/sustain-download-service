@@ -99,10 +99,10 @@ export default React.memo(function DownloadSection() {
     const conductDownload = async (selectedDataset: any, GISJOIN: string, includeGeospatialData: boolean): Promise<void> => {
         setDownloadState("downloading")
         try {
-            const { data, geometry } = await Download(selectedDataset, GISJOIN, includeGeospatialData);
-            if (data.length) {
+            const d = await Download(selectedDataset, GISJOIN, includeGeospatialData);
+            if (d.data.length) {
                 setDownloadState("doneSuccess")
-                setDownloadResult({ data, geometry });
+                setDownloadResult(d);
             }
             else {
                 setDownloadState("doneEmpty")

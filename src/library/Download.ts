@@ -60,12 +60,27 @@ END OF TERMS AND CONDITIONS
 
 import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
 import { sustain_querier } from "../library/grpc_querier.js";
-import DownloadResult from "../types/DownloadResult";
+import DownloadResult, { downloadMeta } from "../types/DownloadResult";
 
 const querier = sustain_querier();
 
 export default async function Download(currentDataset: any, GISJOIN: string, includeGeospatialData: boolean): Promise<DownloadResult> {
     let pipeline: any[] = [];
+    let meta: downloadMeta = {
+        collectionName: currentDataset.collection,
+        label: currentDataset.label
+    }
+    if (currentDataset.fieldMetadata) {
+        meta.fieldLabels = currentDataset.fieldMetadata.filter((e: any) => e.label).map(({ name, label }: any) => { return { name, label } })
+    }
+    if(isLinked(currentDataset)){
+        if(currentDataset.linked){
+            meta.joinField = currentDataset.linked.field;
+        }
+        else{
+            meta.joinField = 'GISJOIN'
+        }
+    }
     //first, check if the dataset is a county or tract dataset, this will be the easiest to download
     if (["county", "tract"].includes(currentDataset?.level)) {
         //get dataset data
@@ -76,25 +91,25 @@ export default async function Download(currentDataset: any, GISJOIN: string, inc
             pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
         }
         let d = await mongoQuery(currentDataset.collection, pipeline)
-        if(!includeGeospatialData){
-            return { data: d };
+        if (!includeGeospatialData) {
+            return { data: d, meta };
         }
         let geospatialData = await mongoQuery(getCountyOrTractCollectionName(currentDataset?.level), pipeline)
-        return {data: d, geometry: geospatialData}
+        return { data: d, geometry: geospatialData, meta }
     }
     const countyGeometry = await getCountyGeometry(GISJOIN)
     let collection: string = currentDataset.collection;
-    if(isLinked(currentDataset)){
+    if (isLinked(currentDataset)) {
         collection = currentDataset.linked.collection;
     }
     let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": countyGeometry[0].geometry } } } }])
-    if(!isLinked(currentDataset)){
-        return { data: d };
+    if (!isLinked(currentDataset)) {
+        return { data: d, meta };
     }
 
     let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
-    let returnable: DownloadResult = { data: realD }
-    if(includeGeospatialData){
+    let returnable: DownloadResult = { data: realD, meta }
+    if (includeGeospatialData) {
         returnable.geometry = d;
     }
     return returnable;
