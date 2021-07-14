@@ -68,6 +68,7 @@ import Util from '../library/apertureUtil'
 import ExploreOffIcon from '@material-ui/icons/ExploreOff';
 import ExploreIcon from '@material-ui/icons/Explore';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import LinkIcon from '@material-ui/icons/Link';
 import { isLinked } from "../library/DatasetUtil";
 import Download from "../library/Download";
 
@@ -100,23 +101,24 @@ export default React.memo(function DownloadSection() {
     const getTags = () => {
         let tags = []
         if (selectedDataset.temporal) {
-            tags.push(<Tooltip title="This dataset is temporal, and will have multiple records per entry." key={0}>
-                <HourglassEmptyIcon />
-            </Tooltip>
-            )
+            tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon/>))
         }
-        if (isLinked(selectedDataset) && !includeGeospatialData) {
-            tags.push(<Tooltip title="This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option." key={1}>
-                <ExploreOffIcon />
-            </Tooltip>
-            )
+        if (isLinked(selectedDataset)) {
+            tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
         }
         else {
-            tags.push(<Tooltip title="This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array." key={2}>
-                <ExploreIcon />
-            </Tooltip>)
+            tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
+        }
+        if(isLinked(selectedDataset) && includeGeospatialData){
+            tags.push(makeTag("A seperate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
         }
         return tags;
+    }
+
+    const makeTag = (tooltipContent: string, icon: JSX.Element) => {
+        return <Tooltip title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
+            {icon}
+        </Tooltip>
     }
 
     const renderLinkOption = () => {
@@ -199,8 +201,8 @@ export default React.memo(function DownloadSection() {
 
         <br />
 
-        <Button variant="contained" color="primary" onClick={() => {
-            Download(selectedDataset, selectedCounty.GISJOIN, includeGeospatialData)
+        <Button variant="contained" color="primary" onClick={async () => {
+            const d = await Download(selectedDataset, selectedCounty.GISJOIN, includeGeospatialData);
         }}>
             Download Data
         </Button>

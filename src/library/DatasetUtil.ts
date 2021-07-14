@@ -61,3 +61,12 @@ END OF TERMS AND CONDITIONS
 export const isLinked = (selectedDataset: any) => {
     return selectedDataset.level || selectedDataset.linked;
 }
+
+type countyOrTract = "county"|"tract"
+type countyOrTractCollection = "county_geo_60mb_no_2d_index"|"tract_geo_140mb_no_2d_index"
+export const getCountyOrTractCollectionName = (name: countyOrTract): countyOrTractCollection => {
+    if(name === "county"){
+        return "county_geo_60mb_no_2d_index"
+    }
+    return "tract_geo_140mb_no_2d_index"
+}

@@ -58,24 +58,53 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import { isLinked } from "./DatasetUtil";
+import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
 import { sustain_querier } from "../library/grpc_querier.js";
+import DownloadResult from "../types/DownloadResult";
 
 const querier = sustain_querier();
 
-export default async function Download(currentDataset: any, GISJOIN: string, includeLinked: boolean) {
+export default async function Download(currentDataset: any, GISJOIN: string, includeGeospatialData: boolean): Promise<DownloadResult> {
     let pipeline: any[] = [];
     //first, check if the dataset is a county or tract dataset, this will be the easiest to download
-    if (currentDataset?.level === 'county') {
-        pipeline.push({ $match: { GISJOIN } });
+    if (["county", "tract"].includes(currentDataset?.level)) {
+        //get dataset data
+        if (currentDataset?.level === 'county') {
+            pipeline.push({ $match: { GISJOIN } });
+        }
+        else if (currentDataset?.level === 'tract') {
+            pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
+        }
+        let d = await mongoQuery(currentDataset.collection, pipeline)
+        if(!includeGeospatialData){
+            return { data: d };
+        }
+        let geospatialData = await mongoQuery(getCountyOrTractCollectionName(currentDataset?.level), pipeline)
+        return {data: d, geometry: geospatialData}
     }
-    else if (currentDataset?.level === 'tract') {
-        pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
-    }
-
-    const d = await mongoQuery(currentDataset.collection, pipeline)
-    console.log(d)
+    const countyGeometry = await getCountyGeometry(GISJOIN)
+    let d = await mongoQuery(currentDataset.collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": countyGeometry[0].geometry } } } }])
+    return { data: d };
 }
+
+const linkGeospatialData = async (d: any[], currentDataset: any) => {
+    if (!isLinked(currentDataset)) {
+        return d;
+    }
+    if (currentDataset.level === 'county') {
+        console.log(d)
+        return d
+    }
+    else if (currentDataset.level === 'tract') {
+        return d
+    }
+    return d
+}
+
+const getCountyGeometry = async (GISJOIN: string) => {
+    return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
+}
+
 
 const mongoQuery = async (collection: string, pipeline: any[]) => {
     return new Promise<any[]>((resolve) => {
