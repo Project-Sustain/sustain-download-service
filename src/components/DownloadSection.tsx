@@ -203,6 +203,7 @@ export default React.memo(function DownloadSection() {
 
         <Button variant="contained" color="primary" onClick={async () => {
             const d = await Download(selectedDataset, selectedCounty.GISJOIN, includeGeospatialData);
+            console.log({d})
         }}>
             Download Data
         </Button>

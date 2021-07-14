@@ -83,22 +83,21 @@ export default async function Download(currentDataset: any, GISJOIN: string, inc
         return {data: d, geometry: geospatialData}
     }
     const countyGeometry = await getCountyGeometry(GISJOIN)
-    let d = await mongoQuery(currentDataset.collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": countyGeometry[0].geometry } } } }])
-    return { data: d };
-}
+    let collection: string = currentDataset.collection;
+    if(isLinked(currentDataset)){
+        collection = currentDataset.linked.collection;
+    }
+    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": countyGeometry[0].geometry } } } }])
+    if(!isLinked(currentDataset)){
+        return { data: d };
+    }
 
-const linkGeospatialData = async (d: any[], currentDataset: any) => {
-    if (!isLinked(currentDataset)) {
-        return d;
+    let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
+    let returnable: DownloadResult = { data: realD }
+    if(includeGeospatialData){
+        returnable.geometry = d;
     }
-    if (currentDataset.level === 'county') {
-        console.log(d)
-        return d
-    }
-    else if (currentDataset.level === 'tract') {
-        return d
-    }
-    return d
+    return returnable;
 }
 
 const getCountyGeometry = async (GISJOIN: string) => {
