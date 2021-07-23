@@ -80,9 +80,9 @@ const useStyles = makeStyles({
     tagsContainer: {
         margin: "10px"
     },
-    tag: {
-        float: "left"
-    }
+    tags: {
+        marginRight: "50px"
+    },
 });
 
 export default function DownloadSetup({ countiesSorted, menumetadata, conductDownload }: downloadSetupProps) {
@@ -119,13 +119,42 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             return null;
         }
         return <>
-            <Typography align="left">Include Geospatial Data</Typography>
-            <Switch
-                color="primary"
-                checked={includeGeospatialData}
-                onChange={e => setIncludeGeospatialData(e.target.checked)}
-            />
+            <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+            >
+                <Grid item>
+                    <Typography align="left">Include Geospatial Data</Typography>
+                </Grid>
+                <Grid item>
+                    <Switch
+                        color="primary"
+                        checked={includeGeospatialData}
+                        onChange={e => setIncludeGeospatialData(e.target.checked)}
+                    />
+                </Grid>
+            </Grid>
         </>
+    }
+
+    const renderTags = () => {
+        return <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+        >
+            <Grid item>
+                <Typography align="left">Tags</Typography>
+            </Grid>
+            <Grid item>
+                <div className={classes.tagsContainer}>
+                    {getTags()}
+                </div>
+            </Grid>
+        </Grid>
     }
 
     return <>
@@ -179,14 +208,21 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
 
         <br />
 
-        {renderLinkOption()}
 
-        <br />
-
-        <Typography align="left">Tags</Typography>
-        <div className={classes.tagsContainer}>
-            {getTags()}
-        </div>
+        <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+        >
+            <Grid item className={classes.tags}>
+                {renderLinkOption()}
+            </Grid>
+            {/*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/}
+            <Grid item>
+                {renderTags()}
+            </Grid>
+        </Grid>
 
         <br />
 
