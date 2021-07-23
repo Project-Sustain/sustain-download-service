@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, { useState } from "react";
-import { Container, Grid, Paper, TextField, Typography, Tooltip, Button, Switch } from '@material-ui/core';
+import {Container, Grid, Paper, TextField, Typography, Tooltip, Button, Switch, Divider} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Util from '../library/apertureUtil'
 import ExploreOffIcon from '@material-ui/icons/ExploreOff';
@@ -80,8 +80,8 @@ const useStyles = makeStyles({
     tagsContainer: {
         margin: "10px"
     },
-    tags: {
-        marginRight: "50px"
+    halfWidth: {
+        width: "50%"
     },
 });
 
@@ -159,6 +159,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
 
     return <>
         <Autocomplete
+            // className={classes.halfWidth}
             options={countiesSorted}
             value={selectedCounty}
             onChange={(event, newValue) => {
@@ -184,6 +185,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
         <br />
 
         <Autocomplete
+            // className={classes.halfWidth}
             options={menumetadata}
             value={selectedDataset}
             onChange={(event, newValue) => {
@@ -212,22 +214,22 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
         <Grid
             container
             direction="row"
-            justifyContent="flex-start"
+            justifyContent="space-between"
             alignItems="center"
         >
-            <Grid item className={classes.tags}>
+            <Grid item>
                 {renderLinkOption()}
             </Grid>
-            {/*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/}
+            <Divider orientation="vertical" flexItem/>
             <Grid item>
                 {renderTags()}
             </Grid>
+            <Divider orientation="vertical" flexItem/>
+            <Grid item>
+                <Button variant="outlined" onClick={() => conductDownload(selectedDataset, selectedCounty, includeGeospatialData)}>
+                    Download Data
+                </Button>
+            </Grid>
         </Grid>
-
-        <br />
-
-        <Button variant="contained" color="primary" onClick={() => conductDownload(selectedDataset, selectedCounty, includeGeospatialData)}>
-            Download Data
-        </Button>
     </>
 }
