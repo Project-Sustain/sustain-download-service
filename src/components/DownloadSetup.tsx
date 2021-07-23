@@ -59,7 +59,18 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, { useState } from "react";
-import {Container, Grid, Paper, TextField, Typography, Tooltip, Button, Switch, Divider} from '@material-ui/core';
+import {
+    Container,
+    Grid,
+    Paper,
+    TextField,
+    Typography,
+    Tooltip,
+    Button,
+    Switch,
+    Divider,
+    Checkbox
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Util from '../library/apertureUtil'
 import ExploreOffIcon from '@material-ui/icons/ExploreOff';
@@ -79,6 +90,9 @@ interface downloadSetupProps {
 const useStyles = makeStyles({
     tagsContainer: {
         margin: "10px"
+    },
+    iconSpacing: {
+        margin: "0px 5px"
     },
 });
 
@@ -106,7 +120,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
     }
 
     const makeTag = (tooltipContent: string, icon: JSX.Element) => {
-        return <Tooltip title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
+        return <Tooltip className={classes.iconSpacing} title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
             {icon}
         </Tooltip>
     }
@@ -127,7 +141,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
                         <Typography align="left">Include Geospatial Data</Typography>
                     </Grid>
                     <Grid item>
-                        <Switch
+                        <Checkbox
                             color="primary"
                             checked={includeGeospatialData}
                             onChange={e => setIncludeGeospatialData(e.target.checked)}
@@ -148,9 +162,9 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
                     justifyContent="flex-start"
                     alignItems="center"
                 >
-                    <Grid item>
-                        <Typography align="left">Tags</Typography>
-                    </Grid>
+                    {/*<Grid item>*/}
+                    {/*    <Typography align="left">Tags</Typography>*/}
+                    {/*</Grid>*/}
                     <Grid item>
                         <div className={classes.tagsContainer}>
                             {getTags()}
@@ -213,11 +227,10 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
 
         <br />
 
-
         <Grid
             container
             direction="row"
-            justifyContent="space-between"
+            justifyContent="space-evenly"
             alignItems="center"
         >
             {renderLinkOption()}
