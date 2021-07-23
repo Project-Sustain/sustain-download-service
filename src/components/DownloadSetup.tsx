@@ -80,9 +80,6 @@ const useStyles = makeStyles({
     tagsContainer: {
         margin: "10px"
     },
-    halfWidth: {
-        width: "50%"
-    },
 });
 
 export default function DownloadSetup({ countiesSorted, menumetadata, conductDownload }: downloadSetupProps) {
@@ -119,47 +116,54 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             return null;
         }
         return <>
-            <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-            >
-                <Grid item>
-                    <Typography align="left">Include Geospatial Data</Typography>
-                </Grid>
-                <Grid item>
-                    <Switch
-                        color="primary"
-                        checked={includeGeospatialData}
-                        onChange={e => setIncludeGeospatialData(e.target.checked)}
-                    />
+            <Grid item>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                >
+                    <Grid item>
+                        <Typography align="left">Include Geospatial Data</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Switch
+                            color="primary"
+                            checked={includeGeospatialData}
+                            onChange={e => setIncludeGeospatialData(e.target.checked)}
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
+            <Divider orientation="vertical" flexItem/>
         </>
     }
 
     const renderTags = () => {
-        return <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-        >
+        return <>
             <Grid item>
-                <Typography align="left">Tags</Typography>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                >
+                    <Grid item>
+                        <Typography align="left">Tags</Typography>
+                    </Grid>
+                    <Grid item>
+                        <div className={classes.tagsContainer}>
+                            {getTags()}
+                        </div>
+                    </Grid>
+                </Grid>
             </Grid>
-            <Grid item>
-                <div className={classes.tagsContainer}>
-                    {getTags()}
-                </div>
-            </Grid>
-        </Grid>
+            <Divider orientation="vertical" flexItem/>
+        </>
     }
 
     return <>
         <Autocomplete
-            // className={classes.halfWidth}
             options={countiesSorted}
             value={selectedCounty}
             onChange={(event, newValue) => {
@@ -185,7 +189,6 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
         <br />
 
         <Autocomplete
-            // className={classes.halfWidth}
             options={menumetadata}
             value={selectedDataset}
             onChange={(event, newValue) => {
@@ -217,14 +220,8 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             justifyContent="space-between"
             alignItems="center"
         >
-            <Grid item>
-                {renderLinkOption()}
-            </Grid>
-            <Divider orientation="vertical" flexItem/>
-            <Grid item>
-                {renderTags()}
-            </Grid>
-            <Divider orientation="vertical" flexItem/>
+            {renderLinkOption()}
+            {renderTags()}
             <Grid item>
                 <Button variant="outlined" onClick={() => conductDownload(selectedDataset, selectedCounty, includeGeospatialData)}>
                     Download Data
