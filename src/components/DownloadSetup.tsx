@@ -80,6 +80,8 @@ import LinkIcon from '@material-ui/icons/Link';
 import { isLinked } from "../library/DatasetUtil";
 import { makeStyles } from '@material-ui/core/styles';
 import county from "../types/county"
+import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
+
 
 interface downloadSetupProps {
     countiesSorted: county[],
@@ -101,6 +103,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
     const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
     const [selectedCounty, setSelectedCounty] = useState(countiesSorted[0] as county);
     const [selectedDataset, setSelectedDataset] = useState(menumetadata[0]);
+    const apiKey = getApiKey();
 
     const getTags = () => {
         let tags = []
@@ -149,7 +152,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
                     </Grid>
                 </Grid>
             </Grid>
-            <Divider orientation="vertical" flexItem/>
+            <Divider orientation="vertical" flexItem />
         </>
     }
 
@@ -172,7 +175,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
                     </Grid>
                 </Grid>
             </Grid>
-            <Divider orientation="vertical" flexItem/>
+            <Divider orientation="vertical" flexItem />
         </>
     }
 
@@ -236,7 +239,10 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             {renderLinkOption()}
             {renderTags()}
             <Grid item>
-                <Button variant="outlined" onClick={() => conductDownload(selectedDataset, selectedCounty, includeGeospatialData)}>
+                <Button variant="outlined" onClick={() => {
+                    checkIfCanDownload(apiKey ?? "abcdefg");
+                    conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
+                }}>
                     Download Data
                 </Button>
             </Grid>

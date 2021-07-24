@@ -75,7 +75,6 @@ import DownloadLoading from "./DownloadLoading"
 import DownloadSuccess from "./DownloadSuccess";
 import DownloadResult from "../types/DownloadResult"
 import county from "../types/county"
-
 type downloadStateType = "setup" | "downloading" | "doneSuccess" | "doneFail" | "doneEmpty"
 
 const useStyles = makeStyles({
@@ -90,7 +89,7 @@ export default React.memo(function DownloadSection() {
     const [menumetadata, setMenumetadata] = useState([] as any[])
     const [downloadState, setDownloadState] = useState("setup" as downloadStateType)
     const [downloadResult, setDownloadResult] = useState({} as DownloadResult)
-
+    
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
             .then(data => { setMenumetadata(data); })
