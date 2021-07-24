@@ -59,7 +59,18 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, { useState } from "react";
-import { Container, Grid, Paper, TextField, Typography, Tooltip, Button, Switch } from '@material-ui/core';
+import {
+    Container,
+    Grid,
+    Paper,
+    TextField,
+    Typography,
+    Tooltip,
+    Button,
+    Switch,
+    Divider,
+    Checkbox
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Util from '../library/apertureUtil'
 import ExploreOffIcon from '@material-ui/icons/ExploreOff';
@@ -80,9 +91,9 @@ const useStyles = makeStyles({
     tagsContainer: {
         margin: "10px"
     },
-    tag: {
-        float: "left"
-    }
+    iconSpacing: {
+        margin: "0px 5px"
+    },
 });
 
 export default function DownloadSetup({ countiesSorted, menumetadata, conductDownload }: downloadSetupProps) {
@@ -109,7 +120,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
     }
 
     const makeTag = (tooltipContent: string, icon: JSX.Element) => {
-        return <Tooltip title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
+        return <Tooltip className={classes.iconSpacing} title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
             {icon}
         </Tooltip>
     }
@@ -119,12 +130,49 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             return null;
         }
         return <>
-            <Typography align="left">Include Geospatial Data</Typography>
-            <Switch
-                color="primary"
-                checked={includeGeospatialData}
-                onChange={e => setIncludeGeospatialData(e.target.checked)}
-            />
+            <Grid item>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                >
+                    <Grid item>
+                        <Typography align="left">Include Geospatial Data</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Checkbox
+                            color="primary"
+                            checked={includeGeospatialData}
+                            onChange={e => setIncludeGeospatialData(e.target.checked)}
+                        />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Divider orientation="vertical" flexItem/>
+        </>
+    }
+
+    const renderTags = () => {
+        return <>
+            <Grid item>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                >
+                    {/*<Grid item>*/}
+                    {/*    <Typography align="left">Tags</Typography>*/}
+                    {/*</Grid>*/}
+                    <Grid item>
+                        <div className={classes.tagsContainer}>
+                            {getTags()}
+                        </div>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Divider orientation="vertical" flexItem/>
         </>
     }
 
@@ -179,19 +227,19 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
 
         <br />
 
-        {renderLinkOption()}
-
-        <br />
-
-        <Typography align="left">Tags</Typography>
-        <div className={classes.tagsContainer}>
-            {getTags()}
-        </div>
-
-        <br />
-
-        <Button variant="contained" color="primary" onClick={() => conductDownload(selectedDataset, selectedCounty, includeGeospatialData)}>
-            Download Data
-        </Button>
+        <Grid
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+        >
+            {renderLinkOption()}
+            {renderTags()}
+            <Grid item>
+                <Button variant="outlined" onClick={() => conductDownload(selectedDataset, selectedCounty, includeGeospatialData)}>
+                    Download Data
+                </Button>
+            </Grid>
+        </Grid>
     </>
 }

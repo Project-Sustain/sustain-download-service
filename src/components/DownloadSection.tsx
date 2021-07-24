@@ -150,7 +150,7 @@ export default React.memo(function DownloadSection() {
             if (["doneSuccess", "doneEmpty", "doneFail"].includes(downloadState)) {
                 return <>
                     <br />
-                    <Tooltip title={<Typography>Return to the query builder menu.</Typography>}><Button variant="contained" color="primary" onClick={() => setDownloadState("setup")}>
+                    <Tooltip title={<Typography>Return to the query builder menu.</Typography>}><Button variant="outlined" onClick={() => setDownloadState("setup")}>
                         New Query
                     </Button></Tooltip>
                 </>

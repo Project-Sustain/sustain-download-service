@@ -69,9 +69,9 @@ function App() {
     return (
         <div className="App">
             <Grid container>
-                <Grid item xs={12}>
-                    <Header/>
-                </Grid>
+                {/*<Grid item xs={12}>*/}
+                {/*    <Header/>*/}
+                {/*</Grid>*/}
                 <Grid item xs={12}>
                     <Main/>
                 </Grid>
