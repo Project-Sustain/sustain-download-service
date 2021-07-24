@@ -5,7 +5,7 @@ export const getApiKey = () => {
 
 export const checkIfCanDownload = async (apiKey: string) => {
     return new Promise<boolean>(() => {
-        fetch(`http://urban-sustain.org/api/download?apiKey=${apiKey}`, { mode: 'no-cors' }).then(function(response) {
+        fetch(`http://urban-sustain.org/api/download?apiKey=${apiKey}`).then(function(response) {
             console.log(`status: ${response.status}`)
         });
     })
