@@ -7,6 +7,7 @@ export const checkIfCanDownload = async (apiKey: string) => {
     return new Promise<boolean>(() => {
         fetch(`https://urban-sustain.org/api/download?apiKey=${apiKey}`).then(function(response) {
             console.log(`status: ${response}`)
+            console.log(response)
         });
     })
 }
