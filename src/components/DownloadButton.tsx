@@ -81,166 +81,30 @@ import { isLinked } from "../library/DatasetUtil";
 import { makeStyles } from '@material-ui/core/styles';
 import county from "../types/county"
 import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
-import DownloadButton from "./DownloadButton"
 
 
-interface downloadSetupProps {
-    countiesSorted: county[],
-    menumetadata: any[],
-    conductDownload: (selectedDataset: any, selectedCounty: county, includeGeospatialData: boolean) => Promise<void>
+interface downloadButtonProps {
+    conductDownload: (selectedDataset: any, selectedCounty: county, includeGeospatialData: boolean) => Promise<void>,
+    selectedDataset: string,
+    selectedCounty: county,
+    includeGeospatialData: boolean
 }
 
-const useStyles = makeStyles({
-    tagsContainer: {
-        margin: "10px"
-    },
-    iconSpacing: {
-        margin: "0px 5px"
-    },
-});
 
-export default function DownloadSetup({ countiesSorted, menumetadata, conductDownload }: downloadSetupProps) {
-    const classes = useStyles();
-    const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
-    const [selectedCounty, setSelectedCounty] = useState(countiesSorted[0] as county);
-    const [selectedDataset, setSelectedDataset] = useState(menumetadata[0]);
+export default function DownloadButton({ conductDownload, selectedDataset, selectedCounty, includeGeospatialData }: downloadButtonProps) {
+    const apiKey = getApiKey();
 
-    const getTags = () => {
-        let tags = []
-        if (selectedDataset.temporal) {
-            tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon />))
+    return <Button variant="outlined" onClick={async () => {
+        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg");
+        console.log({ downloadAbilityStatus })
+        if (downloadAbilityStatus.canDownload) {
+            conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
         }
-        if (isLinked(selectedDataset)) {
-            tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
+        else if (downloadAbilityStatus.previousDownloadTime) {
+            console.log(new Date().valueOf() - downloadAbilityStatus.previousDownloadTime)
         }
-        else {
-            tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
-        }
-        if (isLinked(selectedDataset) && includeGeospatialData) {
-            tags.push(makeTag("A seperate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
-        }
-        return tags;
     }
-
-    const makeTag = (tooltipContent: string, icon: JSX.Element) => {
-        return <Tooltip className={classes.iconSpacing} title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
-            {icon}
-        </Tooltip>
-    }
-
-    const renderLinkOption = () => {
-        if (!isLinked(selectedDataset)) {
-            return null;
-        }
-        return <>
-            <Grid item>
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                >
-                    <Grid item>
-                        <Typography align="left">Include Geospatial Data</Typography>
-                    </Grid>
-                    <Grid item>
-                        <Checkbox
-                            color="primary"
-                            checked={includeGeospatialData}
-                            onChange={e => setIncludeGeospatialData(e.target.checked)}
-                        />
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Divider orientation="vertical" flexItem />
-        </>
-    }
-
-    const renderTags = () => {
-        return <>
-            <Grid item>
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                >
-                    {/*<Grid item>*/}
-                    {/*    <Typography align="left">Tags</Typography>*/}
-                    {/*</Grid>*/}
-                    <Grid item>
-                        <div className={classes.tagsContainer}>
-                            {getTags()}
-                        </div>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Divider orientation="vertical" flexItem />
-        </>
-    }
-
-    return <>
-        <Autocomplete
-            options={countiesSorted}
-            value={selectedCounty}
-            onChange={(event, newValue) => {
-                if (newValue) {
-                    setSelectedCounty(newValue)
-                }
-            }}
-            autoHighlight
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label="Choose a county"
-                    variant="outlined"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
-                    }}
-                />
-            )}
-        />
-
-        <br />
-
-        <Autocomplete
-            options={menumetadata}
-            value={selectedDataset}
-            onChange={(event, newValue) => {
-                if (newValue) {
-                    setSelectedDataset(newValue)
-                }
-            }}
-            autoHighlight
-            getOptionLabel={(option) => option.label ?? Util.cleanUpString(option.collection)}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label="Choose a dataset"
-                    variant="outlined"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
-                    }}
-                />
-            )}
-        />
-
-        <br />
-
-        <Grid
-            container
-            direction="row"
-            justifyContent="space-evenly"
-            alignItems="center"
-        >
-            {renderLinkOption()}
-            {renderTags()}
-            <Grid item>
-                <DownloadButton conductDownload={conductDownload} selectedCounty={selectedCounty} selectedDataset={selectedDataset} includeGeospatialData={includeGeospatialData}/>
-            </Grid>
-        </Grid>
-    </>
+    }>
+        Download Data
+    </Button>;
 }
