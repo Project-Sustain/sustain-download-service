@@ -17,9 +17,7 @@ export const checkIfCanDownload = async (apiKey: string) => {
             if (response.status === 200) {
                 resolve({ canDownload: true })
             }
-            else {
-                resolve({ canDownload: false, previousDownloadTime: new Date(body).valueOf() })
-            }
+            resolve({ canDownload: false, previousDownloadTime: new Date(body).valueOf() })
         });
     })
 }

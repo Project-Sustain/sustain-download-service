@@ -239,9 +239,12 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             {renderLinkOption()}
             {renderTags()}
             <Grid item>
-                <Button variant="outlined" onClick={() => {
-                    checkIfCanDownload(apiKey ?? "abcdefg");
-                    conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
+                <Button variant="outlined" onClick={async () => {
+                    const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg");
+                    console.log({ downloadAbilityStatus })
+                    if (downloadAbilityStatus.canDownload) {
+                        conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
+                    }
                 }}>
                     Download Data
                 </Button>
