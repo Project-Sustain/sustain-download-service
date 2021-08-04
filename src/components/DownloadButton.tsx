@@ -100,8 +100,8 @@ export default function DownloadButton({ conductDownload, selectedDataset, selec
         if (downloadAbilityStatus.canDownload) {
             conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
         }
-        else if (downloadAbilityStatus.previousDownloadTime) {
-            console.log(new Date().valueOf() - downloadAbilityStatus.previousDownloadTime)
+        else if (downloadAbilityStatus.timeLeft) {
+            console.log({timeLeft: downloadAbilityStatus.timeLeft})
         }
     }
     }>

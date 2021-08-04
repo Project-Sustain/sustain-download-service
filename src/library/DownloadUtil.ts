@@ -5,7 +5,7 @@ export const getApiKey = () => {
 
 interface downloadCheckType {
     canDownload: boolean,
-    previousDownloadTime?: number
+    timeLeft?: number
 }
 
 export const checkIfCanDownload = async (apiKey: string) => {
@@ -17,7 +17,8 @@ export const checkIfCanDownload = async (apiKey: string) => {
             if (response.status === 200) {
                 resolve({ canDownload: true })
             }
-            resolve({ canDownload: false, previousDownloadTime: new Date(body).valueOf() })
+            const cooldown = JSON.parse(body)?.cooldown;
+            resolve({ canDownload: false, timeLeft: cooldown ?? 999999 })
         });
     })
 }
