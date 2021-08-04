@@ -19,6 +19,8 @@ export const checkIfCanDownload = async (apiKey: string) => {
             }
             const cooldown = JSON.parse(body.length ? body : `{"cooldown": 999999999}`)?.cooldown;
             resolve({ canDownload: false, timeLeft: cooldown })
-        });
+        }).catch(err => {
+            resolve({ canDownload: false, timeLeft: 999999999 })
+        })
     })
 }

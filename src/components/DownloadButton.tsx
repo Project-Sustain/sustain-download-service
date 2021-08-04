@@ -103,6 +103,7 @@ export default function DownloadButton({ conductDownload, selectedDataset, selec
             conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
         }
         else if (downloadAbilityStatus.timeLeft) {
+            console.log(`Setting time left @${downloadAbilityStatus.timeLeft}`)
             setTimeLeft(downloadAbilityStatus.timeLeft)
         }
     }

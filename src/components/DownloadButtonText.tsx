@@ -90,12 +90,15 @@ interface downloadButtonTextProps {
 
 export default React.memo(function DownloadButton({ timeLeft }: downloadButtonTextProps) {
     const [countDown, setCountDown] = useState(timeLeft);
-
     useEffect(() => {
-        setTimeout(() => {
-            setCountDown(countDown - 1);
+        setCountDown(timeLeft)
+        let secondsPassed = 0;
+        const countDownTimer = setInterval(() => {
+            setCountDown(timeLeft - (++secondsPassed))
         }, 1000)
-    }, [timeLeft, countDown]);
+
+        return () => { clearInterval(countDownTimer) }
+    }, [timeLeft]);
 
     const getDownloadButtonText = () => {
         if(countDown < 0) {
@@ -106,6 +109,7 @@ export default React.memo(function DownloadButton({ timeLeft }: downloadButtonTe
         }
         return `Cooldown... ${countDown}`;
     }
+    console.log({countDown})
 
     return <Typography>{getDownloadButtonText()}</Typography>
 });
