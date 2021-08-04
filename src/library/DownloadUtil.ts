@@ -8,9 +8,9 @@ interface downloadCheckType {
     timeLeft?: number
 }
 
-export const checkIfCanDownload = async (apiKey: string, countyID: string, dataset: string) => {
+export const checkIfCanDownload = async (apiKey: string, countyID: string, dataset: any) => {
     return new Promise<downloadCheckType>((resolve) => {
-        fetch(`https://urban-sustain.org/api/download?apiKey=${apiKey}&county=${countyID}&dataset=${dataset}`).then(async function (response) {
+        fetch(`https://urban-sustain.org/api/download?apiKey=${apiKey}&county=${countyID}&dataset=${dataset.collection}`).then(async function (response) {
             console.log(response)
             const body = await response.text();
             console.log({ body })
