@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Container,
     Grid,
@@ -81,32 +81,31 @@ import { isLinked } from "../library/DatasetUtil";
 import { makeStyles } from '@material-ui/core/styles';
 import county from "../types/county"
 import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
-import DownloadButtonText from "./DownloadButtonText"
 
 
-interface downloadButtonProps {
-    conductDownload: (selectedDataset: any, selectedCounty: county, includeGeospatialData: boolean) => Promise<void>,
-    selectedDataset: string,
-    selectedCounty: county,
-    includeGeospatialData: boolean
+interface downloadButtonTextProps {
+    timeLeft: number
 }
 
 
-export default function DownloadButton({ conductDownload, selectedDataset, selectedCounty, includeGeospatialData }: downloadButtonProps) {
-    const apiKey = getApiKey();
-    const [timeLeft, setTimeLeft] = useState(-1);
+export default React.memo(function DownloadButton({ timeLeft }: downloadButtonTextProps) {
+    const [countDown, setCountDown] = useState(timeLeft);
 
-    return <Button variant="outlined" onClick={async () => {
-        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg");
-        console.log({ downloadAbilityStatus })
-        if (downloadAbilityStatus.canDownload) {
-            conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
+    useEffect(() => {
+        setTimeout(() => {
+            setCountDown(countDown - 1);
+        }, 1000)
+    }, [timeLeft, countDown]);
+
+    const getDownloadButtonText = () => {
+        if(countDown < 0) {
+            return "Download Data"
         }
-        else if (downloadAbilityStatus.timeLeft) {
-            setTimeLeft(downloadAbilityStatus.timeLeft)
+        else if(countDown > 60){
+            return "Please Sign In"
         }
+        return `Cooldown... ${countDown}`;
     }
-    }>
-        <DownloadButtonText timeLeft={timeLeft}/>
-    </Button>;
-}
+
+    return <Typography>{getDownloadButtonText()}</Typography>
+});
