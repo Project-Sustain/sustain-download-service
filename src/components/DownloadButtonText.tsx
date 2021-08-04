@@ -109,7 +109,6 @@ export default React.memo(function DownloadButton({ timeLeft }: downloadButtonTe
         }
         return `Cooldown... ${countDown}`;
     }
-    console.log({countDown})
 
     return <Typography>{getDownloadButtonText()}</Typography>
 });
