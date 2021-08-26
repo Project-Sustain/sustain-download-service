@@ -9,6 +9,9 @@ interface downloadCheckType {
 }
 
 export const checkIfCanDownload = async (apiKey: string, countyID: string, dataset: any) => {
+    if(localStorage.getItem("dev")) {
+        return {canDownload: true, timeLeft: 0} as downloadCheckType;
+    }
     return new Promise<downloadCheckType>((resolve) => {
         fetch(`https://urban-sustain.org/api/download?apiKey=${apiKey}&county=${countyID}&dataset=${dataset.collection}`).then(async function (response) {
             console.log(response)

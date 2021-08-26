@@ -62,9 +62,12 @@ export const isLinked = (selectedDataset: any) => {
     return selectedDataset.level || selectedDataset.linked;
 }
 
-type countyOrTract = "county"|"tract"
-type countyOrTractCollection = "county_geo_60mb_no_2d_index"|"tract_geo_140mb_no_2d_index"
-export const getCountyOrTractCollectionName = (name: countyOrTract): countyOrTractCollection => {
+type stateOrCountyOrTract = "state"|"county"|"tract"
+type stateOrCountyOrTractCollection = "state_geo_40mb"|"county_geo_60mb_no_2d_index"|"tract_geo_140mb_no_2d_index"
+export const getCountyOrTractCollectionName = (name: stateOrCountyOrTract): stateOrCountyOrTractCollection => {
+    if(name === "state") {
+        return "state_geo_40mb"
+    }
     if(name === "county"){
         return "county_geo_60mb_no_2d_index"
     }

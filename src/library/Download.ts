@@ -88,12 +88,8 @@ export default async function Download(currentDataset: any, countySelected: coun
     //first, check if the dataset is a county or tract dataset, this will be the easiest to download
     if (["county", "tract"].includes(currentDataset?.level)) {
         //get dataset data
-        if (currentDataset?.level === 'county') {
-            pipeline.push({ $match: { GISJOIN } });
-        }
-        else if (currentDataset?.level === 'tract') {
-            pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
-        }
+        pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
+        
         let d = await mongoQuery(currentDataset.collection, pipeline)
         if (!includeGeospatialData) {
             return { data: d, meta };
