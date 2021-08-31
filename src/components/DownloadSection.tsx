@@ -62,6 +62,7 @@ import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Paper, TextField, Typography, Tooltip, Button, Switch } from '@material-ui/core';
 import counties from '../json/counties.json'
+import states from '../json/states.json'
 import { useEffect } from "react";
 import Util from '../library/apertureUtil'
 import ExploreOffIcon from '@material-ui/icons/ExploreOff';
@@ -76,6 +77,7 @@ import DownloadSuccess from "./DownloadSuccess";
 import DownloadResult from "../types/DownloadResult"
 import region from "../types/region"
 type downloadStateType = "setup" | "downloading" | "doneSuccess" | "doneFail" | "doneEmpty"
+type regionGranularityType = "county" | "state";
 
 const useStyles = makeStyles({
     root: {
@@ -85,10 +87,16 @@ const useStyles = makeStyles({
 
 export default React.memo(function DownloadSection() {
     const classes = useStyles();
-    const countiesSorted: region[] = counties.sort((countyA, countyB) => Number(countyA.GISJOIN.substring(1, countyA.GISJOIN.length)) - Number(countyB.GISJOIN.substring(1, countyB.GISJOIN.length)));
+    const [regionGranularity, setRegionGranularity] = useState("county" as regionGranularityType);
+    const [regionsSorted, setRegionsSorted] = useState([] as region[]);
     const [menumetadata, setMenumetadata] = useState([] as any[])
     const [downloadState, setDownloadState] = useState("setup" as downloadStateType)
     const [downloadResult, setDownloadResult] = useState({} as DownloadResult)
+
+    useEffect(() => {
+        const baseArr = regionGranularity === 'state' ? states : counties
+        setRegionsSorted(baseArr.sort((countyA, countyB) => Number(countyA.GISJOIN.substring(1, countyA.GISJOIN.length)) - Number(countyB.GISJOIN.substring(1, countyB.GISJOIN.length))) as region[])
+    }, [regionGranularity]);
     
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
@@ -96,10 +104,10 @@ export default React.memo(function DownloadSection() {
             .catch(e => console.error("Booo"))
     }, []);
 
-    const conductDownload = async (selectedDataset: any, selectedCounty: region, includeGeospatialData: boolean): Promise<void> => {
+    const conductDownload = async (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean): Promise<void> => {
         setDownloadState("downloading")
         try {
-            const d = await Download(selectedDataset, selectedCounty, includeGeospatialData);
+            const d = await Download(selectedDataset, selectedRegion, includeGeospatialData);
             if (d.data.length) {
                 setDownloadState("doneSuccess")
                 setDownloadResult(d);
@@ -120,7 +128,7 @@ export default React.memo(function DownloadSection() {
 
     const renderBasedOnDownloadState = () => {
         if (downloadState === "setup") {
-            return <DownloadSetup conductDownload={conductDownload} menumetadata={menumetadata} countiesSorted={countiesSorted} />
+            return <DownloadSetup conductDownload={conductDownload} menumetadata={menumetadata} regionsSorted={regionsSorted} />
         }
         else if (downloadState === "downloading") {
             return <DownloadLoading />

@@ -65,14 +65,14 @@ import region from "../types/region";
 
 const querier = sustain_querier();
 
-export default async function Download(currentDataset: any, countySelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
-    const { GISJOIN, name } = countySelected;
-    console.log(countySelected)
+export default async function Download(currentDataset: any, regionSelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
+    const { GISJOIN, name } = regionSelected;
+    console.log(regionSelected)
     let pipeline: any[] = [];
     let meta: downloadMeta = {
         collectionName: currentDataset.collection,
         label: currentDataset.label,
-        countyName: name
+        regionName: name
     }
     if (currentDataset.fieldMetadata) {
         meta.fieldLabels = currentDataset.fieldMetadata.filter((e: any) => e.label).map(({ name, label }: any) => { return { name, label } })
@@ -97,12 +97,12 @@ export default async function Download(currentDataset: any, countySelected: regi
         let geospatialData = await mongoQuery(getCountyOrTractCollectionName(currentDataset?.level), pipeline)
         return { data: d, geometry: geospatialData, meta }
     }
-    const countyGeometry = await getCountyGeometry(GISJOIN)
+    const regionGeometry = await getRegionGeometry(GISJOIN)
     let collection: string = currentDataset.collection;
     if (isLinked(currentDataset)) {
         collection = currentDataset.linked.collection;
     }
-    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": countyGeometry[0].geometry } } } }])
+    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }])
     if (!isLinked(currentDataset)) {
         return { data: d, meta };
     }
@@ -116,8 +116,11 @@ export default async function Download(currentDataset: any, countySelected: regi
     return returnable;
 }
 
-const getCountyGeometry = async (GISJOIN: string) => {
-    return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
+const getRegionGeometry = async (GISJOIN: string) => {
+    if(GISJOIN.length === 8) {
+        return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
+    }
+    return await mongoQuery("state_geo_40mb", [{ $match: { GISJOIN } }])
 }
 
 

@@ -85,9 +85,9 @@ import DownloadButton from "./DownloadButton"
 
 
 interface downloadSetupProps {
-    countiesSorted: region[],
+    regionsSorted: region[],
     menumetadata: any[],
-    conductDownload: (selectedDataset: any, selectedCounty: region, includeGeospatialData: boolean) => Promise<void>
+    conductDownload: (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean) => Promise<void>
 }
 
 const useStyles = makeStyles({
@@ -99,10 +99,10 @@ const useStyles = makeStyles({
     },
 });
 
-export default function DownloadSetup({ countiesSorted, menumetadata, conductDownload }: downloadSetupProps) {
+export default function DownloadSetup({ regionsSorted, menumetadata, conductDownload }: downloadSetupProps) {
     const classes = useStyles();
     const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
-    const [selectedCounty, setSelectedCounty] = useState(countiesSorted[0] as county);
+    const [selectedRegion, setSelectedRegion] = useState(regionsSorted[0] as region);
     const [selectedDataset, setSelectedDataset] = useState(menumetadata[0]);
 
     const getTags = () => {
@@ -181,11 +181,11 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
 
     return <>
         <Autocomplete
-            options={countiesSorted}
-            value={selectedCounty}
+            options={regionsSorted}
+            value={selectedRegion}
             onChange={(event, newValue) => {
                 if (newValue) {
-                    setSelectedCounty(newValue)
+                    setSelectedRegion(newValue)
                 }
             }}
             autoHighlight
@@ -193,7 +193,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Choose an area"
+                    label="Choose a region"
                     variant="outlined"
                     inputProps={{
                         ...params.inputProps,
@@ -239,7 +239,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             {renderLinkOption()}
             {renderTags()}
             <Grid item>
-                <DownloadButton conductDownload={conductDownload} selectedCounty={selectedCounty} selectedDataset={selectedDataset} includeGeospatialData={includeGeospatialData}/>
+                <DownloadButton conductDownload={conductDownload} selectedRegion={selectedRegion} selectedDataset={selectedDataset} includeGeospatialData={includeGeospatialData}/>
             </Grid>
         </Grid>
     </>

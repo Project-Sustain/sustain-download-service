@@ -85,22 +85,22 @@ import DownloadButtonText from "./DownloadButtonText"
 
 
 interface downloadButtonProps {
-    conductDownload: (selectedDataset: any, selectedCounty: region, includeGeospatialData: boolean) => Promise<void>,
+    conductDownload: (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean) => Promise<void>,
     selectedDataset: string,
-    selectedCounty: region,
+    selectedRegion: region,
     includeGeospatialData: boolean
 }
 
 
-export default function DownloadButton({ conductDownload, selectedDataset, selectedCounty, includeGeospatialData }: downloadButtonProps) {
+export default function DownloadButton({ conductDownload, selectedDataset, selectedRegion, includeGeospatialData }: downloadButtonProps) {
     const apiKey = getApiKey();
     const [timeLeft, setTimeLeft] = useState(-1);
 
     return <Button variant="outlined" onClick={async () => {
-        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", selectedCounty.GISJOIN, selectedDataset);
+        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", selectedRegion.GISJOIN, selectedDataset);
         console.log({ downloadAbilityStatus })
         if (downloadAbilityStatus.canDownload) {
-            conductDownload(selectedDataset, selectedCounty, includeGeospatialData);
+            conductDownload(selectedDataset, selectedRegion, includeGeospatialData);
         }
         else if (downloadAbilityStatus.timeLeft) {
             console.log(`Setting time left @${downloadAbilityStatus.timeLeft}`)

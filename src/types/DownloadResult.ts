@@ -9,7 +9,7 @@ export interface downloadMeta {
     label?: string,
     joinField?: string,
     fieldLabels?: labelMap[],
-    countyName: string
+    regionName: string
 }
 
 interface labelMap {   
