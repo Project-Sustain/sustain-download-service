@@ -83,6 +83,7 @@ import region from "../types/region"
 import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
 import DownloadButton from "./DownloadButton"
 import { regionGranularityType } from "../types/Granularity"
+import { useEffect } from "react";
 
 
 interface downloadSetupProps {
@@ -107,6 +108,10 @@ export default function DownloadSetup({ regionsSorted, menumetadata, conductDown
     const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
     const [selectedRegion, setSelectedRegion] = useState(regionsSorted[0] as region);
     const [selectedDataset, setSelectedDataset] = useState(menumetadata[0]);
+
+    useEffect(() => {
+        setSelectedRegion(regionsSorted[0])
+    }, [regionsSorted]);
 
     const getTags = () => {
         let tags = []
