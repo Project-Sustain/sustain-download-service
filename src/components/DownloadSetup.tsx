@@ -79,15 +79,15 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LinkIcon from '@material-ui/icons/Link';
 import { isLinked } from "../library/DatasetUtil";
 import { makeStyles } from '@material-ui/core/styles';
-import county from "../types/county"
+import region from "../types/region"
 import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
 import DownloadButton from "./DownloadButton"
 
 
 interface downloadSetupProps {
-    countiesSorted: county[],
+    countiesSorted: region[],
     menumetadata: any[],
-    conductDownload: (selectedDataset: any, selectedCounty: county, includeGeospatialData: boolean) => Promise<void>
+    conductDownload: (selectedDataset: any, selectedCounty: region, includeGeospatialData: boolean) => Promise<void>
 }
 
 const useStyles = makeStyles({
@@ -193,7 +193,7 @@ export default function DownloadSetup({ countiesSorted, menumetadata, conductDow
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Choose a county"
+                    label="Choose an area"
                     variant="outlined"
                     inputProps={{
                         ...params.inputProps,

@@ -61,11 +61,11 @@ END OF TERMS AND CONDITIONS
 import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
 import { sustain_querier } from "../library/grpc_querier.js";
 import DownloadResult, { downloadMeta } from "../types/DownloadResult";
-import county from "../types/county";
+import region from "../types/region";
 
 const querier = sustain_querier();
 
-export default async function Download(currentDataset: any, countySelected: county, includeGeospatialData: boolean): Promise<DownloadResult> {
+export default async function Download(currentDataset: any, countySelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
     const { GISJOIN, name } = countySelected;
     console.log(countySelected)
     let pipeline: any[] = [];

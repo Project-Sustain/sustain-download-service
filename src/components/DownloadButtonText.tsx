@@ -79,7 +79,7 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LinkIcon from '@material-ui/icons/Link';
 import { isLinked } from "../library/DatasetUtil";
 import { makeStyles } from '@material-ui/core/styles';
-import county from "../types/county"
+import region from "../types/region"
 import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
 
 
