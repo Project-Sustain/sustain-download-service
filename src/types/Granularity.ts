@@ -1,0 +1,1 @@
+export type regionGranularityType = "County" | "State";

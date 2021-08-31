@@ -82,12 +82,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import region from "../types/region"
 import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
 import DownloadButton from "./DownloadButton"
+import { regionGranularityType } from "../types/Granularity"
 
 
 interface downloadSetupProps {
     regionsSorted: region[],
     menumetadata: any[],
-    conductDownload: (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean) => Promise<void>
+    conductDownload: (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean) => Promise<void>,
+    regionGranularity: string,
+    setRegionGranularity: React.Dispatch<React.SetStateAction<regionGranularityType>>
 }
 
 const useStyles = makeStyles({
@@ -99,7 +102,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function DownloadSetup({ regionsSorted, menumetadata, conductDownload }: downloadSetupProps) {
+export default function DownloadSetup({ regionsSorted, menumetadata, conductDownload, regionGranularity, setRegionGranularity }: downloadSetupProps) {
     const classes = useStyles();
     const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
     const [selectedRegion, setSelectedRegion] = useState(regionsSorted[0] as region);
@@ -180,6 +183,32 @@ export default function DownloadSetup({ regionsSorted, menumetadata, conductDown
     }
 
     return <>
+        <Autocomplete
+            options={["County","State"] as regionGranularityType[]}
+            value={regionGranularity}
+            onChange={(event, newValue) => {
+                if (newValue) {
+                    console.log(newValue)
+                    setRegionGranularity(newValue as regionGranularityType)
+                }
+            }}
+            autoHighlight
+            getOptionLabel={(option) => option}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Choose a granularity"
+                    variant="outlined"
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                />
+            )}
+        />
+        
+        <br/>
+
         <Autocomplete
             options={regionsSorted}
             value={selectedRegion}

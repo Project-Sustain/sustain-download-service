@@ -76,8 +76,8 @@ import DownloadLoading from "./DownloadLoading"
 import DownloadSuccess from "./DownloadSuccess";
 import DownloadResult from "../types/DownloadResult"
 import region from "../types/region"
+import { regionGranularityType } from "../types/Granularity"
 type downloadStateType = "setup" | "downloading" | "doneSuccess" | "doneFail" | "doneEmpty"
-type regionGranularityType = "county" | "state";
 
 const useStyles = makeStyles({
     root: {
@@ -87,17 +87,17 @@ const useStyles = makeStyles({
 
 export default React.memo(function DownloadSection() {
     const classes = useStyles();
-    const [regionGranularity, setRegionGranularity] = useState("county" as regionGranularityType);
+    const [regionGranularity, setRegionGranularity] = useState("County" as regionGranularityType);
     const [regionsSorted, setRegionsSorted] = useState([] as region[]);
     const [menumetadata, setMenumetadata] = useState([] as any[])
     const [downloadState, setDownloadState] = useState("setup" as downloadStateType)
     const [downloadResult, setDownloadResult] = useState({} as DownloadResult)
 
     useEffect(() => {
-        const baseArr = regionGranularity === 'state' ? states : counties
+        const baseArr = regionGranularity === 'State' ? states : counties
         setRegionsSorted(baseArr.sort((countyA, countyB) => Number(countyA.GISJOIN.substring(1, countyA.GISJOIN.length)) - Number(countyB.GISJOIN.substring(1, countyB.GISJOIN.length))) as region[])
     }, [regionGranularity]);
-    
+
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
             .then(data => { setMenumetadata(data); })
@@ -128,7 +128,13 @@ export default React.memo(function DownloadSection() {
 
     const renderBasedOnDownloadState = () => {
         if (downloadState === "setup") {
-            return <DownloadSetup conductDownload={conductDownload} menumetadata={menumetadata} regionsSorted={regionsSorted} />
+            return <DownloadSetup
+                conductDownload={conductDownload}
+                menumetadata={menumetadata}
+                regionsSorted={regionsSorted}
+                regionGranularity={regionGranularity}
+                setRegionGranularity={setRegionGranularity}
+            />
         }
         else if (downloadState === "downloading") {
             return <DownloadLoading />
