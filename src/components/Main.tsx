@@ -60,13 +60,10 @@ END OF TERMS AND CONDITIONS
 
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper } from '@material-ui/core';
+import { Container, Paper } from '@material-ui/core';
 import DownloadSection from "./DownloadSection";
 
 const useStyles = makeStyles({
-    main: {
-        
-    },
     downloadSection: {
         margin: "40px"
     }
@@ -74,7 +71,7 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
-    return <Container maxWidth="md" className={classes.main}>
+    return <Container maxWidth="md">
         <Paper className={classes.downloadSection}>
             <DownloadSection/>
         </Paper>
