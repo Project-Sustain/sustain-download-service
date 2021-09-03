@@ -59,18 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, { useState } from "react";
-import {
-    Container,
-    Grid,
-    Paper,
-    TextField,
-    Typography,
-    Tooltip,
-    Button,
-    Switch,
-    Divider,
-    Checkbox
-} from '@material-ui/core';
+import {Grid, TextField, Typography, Tooltip, Divider, Checkbox, withStyles} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Util from '../library/apertureUtil'
 import ExploreOffIcon from '@material-ui/icons/ExploreOff';
@@ -79,11 +68,11 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LinkIcon from '@material-ui/icons/Link';
 import { isLinked } from "../library/DatasetUtil";
 import { makeStyles } from '@material-ui/core/styles';
-import region from "../types/region"
-import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
-import DownloadButton from "./DownloadButton"
-import { regionGranularityType } from "../types/Granularity"
+import region from "../types/region";
+import DownloadButton from "./DownloadButton";
+import { regionGranularityType } from "../types/Granularity";
 import { useEffect } from "react";
+import nsfLogo from "../images/nsfLogo.png";
 
 
 interface downloadSetupProps {
@@ -101,7 +90,16 @@ const useStyles = makeStyles({
     iconSpacing: {
         margin: "0px 5px"
     },
+    nsfPic: {
+        width: "3.5em",
+    },
 });
+
+export const CustomTooltip = withStyles(() => ({
+    tooltip: {
+        fontSize: 14,
+    },
+}))(Tooltip);
 
 export default function DownloadSetup({ regionsSorted, menumetadata, conductDownload, regionGranularity, setRegionGranularity }: downloadSetupProps) {
     const classes = useStyles();
@@ -184,6 +182,27 @@ export default function DownloadSetup({ regionsSorted, menumetadata, conductDown
                 </Grid>
             </Grid>
             <Divider orientation="vertical" flexItem />
+        </>
+    }
+
+    const renderDownloadButton = () => {
+        return <>
+            <Grid item>
+                <DownloadButton conductDownload={conductDownload} selectedRegion={selectedRegion} selectedDataset={selectedDataset} includeGeospatialData={includeGeospatialData}/>
+            </Grid>
+            <Divider orientation="vertical" flexItem />
+        </>
+    }
+
+    const renderNSF = () => {
+        const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
+            "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
+            "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
+            "Baltimore County.";
+        return <>
+            <CustomTooltip title={nsfText}>
+                <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
+            </CustomTooltip>
         </>
     }
 
@@ -272,9 +291,8 @@ export default function DownloadSetup({ regionsSorted, menumetadata, conductDown
         >
             {renderLinkOption()}
             {renderTags()}
-            <Grid item>
-                <DownloadButton conductDownload={conductDownload} selectedRegion={selectedRegion} selectedDataset={selectedDataset} includeGeospatialData={includeGeospatialData}/>
-            </Grid>
+            {renderDownloadButton()}
+            {renderNSF()}
         </Grid>
     </>
 }
