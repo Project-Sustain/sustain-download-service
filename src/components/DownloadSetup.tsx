@@ -105,7 +105,7 @@ const useStyles = makeStyles({
 
 export default function DownloadSetup({ regionsSorted, menumetadata, conductDownload, regionGranularity, setRegionGranularity }: downloadSetupProps) {
     const classes = useStyles();
-    const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
+    const [includeGeospatialData, setIncludeGeospatialData] = useState(true)
     const [selectedRegion, setSelectedRegion] = useState(regionsSorted[0] as region);
     const [selectedDataset, setSelectedDataset] = useState(menumetadata[0]);
 
