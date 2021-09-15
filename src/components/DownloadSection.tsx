@@ -77,7 +77,6 @@ import DownloadSuccess from "./DownloadSuccess";
 import DownloadResult from "../types/DownloadResult"
 import region from "../types/region"
 import { regionGranularityType } from "../types/Granularity"
-import extramenumetadata from "../json/extramenumetadata.json"
 type downloadStateType = "setup" | "downloading" | "doneSuccess" | "doneFail" | "doneEmpty"
 
 const useStyles = makeStyles({
@@ -101,8 +100,12 @@ export default React.memo(function DownloadSection() {
 
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
-            .then(data => { 
-                setMenumetadata([...data, ...extramenumetadata]);
+            .then(data => {
+                fetch('https://raw.githubusercontent.com/Project-Sustain/sustain-download-service/main/src/json/extramenumetadata.json').then(z => z.json())
+                    .then(supData => {
+                        setMenumetadata([...data, ...supData]);
+                    })
+                    .catch(e => console.error("Booo"))
             })
             .catch(e => console.error("Booo"))
     }, []);
