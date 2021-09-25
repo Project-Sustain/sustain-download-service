@@ -66,11 +66,8 @@ import theme from "../../global/GlobalTheme";
 
 const useStyles = makeStyles({
     root: {
-        margin: theme.spacing(1),
-        overflow: "hidden",
-    },
-    gridItem: {
-        margin: theme.spacing(2),
+        // margin: theme.spacing(1),
+        // overflow: "hidden",
     },
     paper: {
         padding: theme.spacing(1),
@@ -81,7 +78,7 @@ const useStyles = makeStyles({
         width: "70%",
     },
     datasetSection: {
-        width: "20%",
+        width: "30%",
     },
 });
 
