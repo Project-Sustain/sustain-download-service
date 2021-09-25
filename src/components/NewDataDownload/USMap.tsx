@@ -63,23 +63,39 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Typography} from '@material-ui/core';
 import theme from "../../global/GlobalTheme";
 import * as d3 from 'd3';
-import uStates from "../../library/uStates";
+import { Draw } from "../../library/uStates";
 
 const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
+    state: {
+        fill: "none",
+        stroke: "#a9a9a9",
+        strokeWidth: "1",
     },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
+    // "&:hover": {
+    //     fillOpacity: "0.5",
+    // },
 });
 
 export default function USMap() {
+    const d3 = require("react-dom/test-utils");
     const classes = useStyles();
-    return (<Typography>Map Section</Typography>)
+    const sampleData = {};
+
+    function tooltipHtml(n:any, d:any){	/* function to create html content string in tooltip div. */
+        return "<h4>"+n+"</h4><table>"+
+            "<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
+            "<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
+            "<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
+            "</table>";
+    }
+
+    // @ts-ignore
+    Draw("#statesvg", sampleData, tooltipHtml);
+    d3.select(window.frameElement).style("height", "600px");
+    return (
+        <div>
+            <Typography>Map Section</Typography>
+            <svg width="960" height="600" id="statesvg" />
+        </div>
+    )
 }
