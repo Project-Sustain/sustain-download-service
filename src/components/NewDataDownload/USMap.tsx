@@ -62,7 +62,6 @@ import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Container, Grid, Paper, Typography} from '@material-ui/core';
 import theme from "../../global/GlobalTheme";
-import USMap from "./USMap";
 // import * as d3 from '../../library/d3.min.js';
 
 const useStyles = makeStyles({
@@ -81,22 +80,5 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
-    return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={classes.map}>
-                <Paper elevation={3} className={classes.paper}>
-                    <USMap />
-                </Paper>
-            </Grid>
-            <Grid item className={classes.datasetSection}>
-                <Paper elevation={3} className={classes.paper}>
-                    <Typography>Dataset Searching</Typography>
-                </Paper>
-            </Grid>
-        </Grid>
-    )
+    return (<Typography>Map Section</Typography>)
 }
