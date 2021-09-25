@@ -60,17 +60,50 @@ END OF TERMS AND CONDITIONS
 
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import {Container, Paper, Typography} from '@material-ui/core';
+import {Container, Grid, Paper, Typography} from '@material-ui/core';
+import theme from "../../global/GlobalTheme";
+// import * as d3 from '../../library/d3.min.js';
 
 const useStyles = makeStyles({
-    downloadSection: {
-        margin: "40px"
-    }
+    root: {
+        margin: theme.spacing(1),
+        overflow: "hidden",
+    },
+    gridItem: {
+        margin: theme.spacing(2),
+    },
+    paper: {
+        padding: theme.spacing(1),
+        margin: theme.spacing(1),
+        height: "70vh",
+    },
+    map: {
+        width: "70%",
+    },
+    datasetSection: {
+        width: "20%",
+    },
 });
 
 export default function Main() {
     const classes = useStyles();
-    return <Container maxWidth="md">
-            <Typography>Here's a new section</Typography>
-    </Container>
+    return (
+        <Grid
+            className={classes.root}
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center">
+            <Grid item className={classes.map}>
+                <Paper elevation={3} className={classes.paper}>
+                    <Typography>The Map</Typography>
+                </Paper>
+            </Grid>
+            <Grid item className={classes.datasetSection}>
+                <Paper elevation={3} className={classes.paper}>
+                    <Typography>Dataset Searching</Typography>
+                </Paper>
+            </Grid>
+        </Grid>
+    )
 }

@@ -1,7 +1,6 @@
-/*
-Apache License
-Version 2.0, January 2004
-http://www.apache.org/licenses/
+/*                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
 
 
 Software in the Sustain Ecosystem are Released Under Terms of Apache Software License
@@ -57,23 +56,13 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+import { createTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
-import React from 'react';
-import './App.css';
-import { Grid } from '@material-ui/core';
-// import Main from './components/Main';
-import NewMain from './components/NewDataDownload/NewMain';
+let theme = createTheme({
+    typography: {
+        fontFamily: 'Roboto, sans-serif'
+    }
+});
+theme = responsiveFontSizes(theme);
 
-function App() {
-    return (
-        <div className="App">
-            <Grid container>
-                <Grid item xs={12}>
-                    <NewMain/>
-                </Grid>
-            </Grid>
-        </div>
-    );
-}
-
-export default App;
+export default theme;
