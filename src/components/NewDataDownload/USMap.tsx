@@ -68,12 +68,22 @@ import { Draw } from "../../library/uStates";
 export default function USMap() {
     const sampleData = {};
 
-    function tooltipHtml(n:any, d:any){	/* function to create html content string in tooltip div. */
-        return "<h4>"+n+"</h4><table>"+
-            "<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
-            "<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
-            "<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
-            "</table>";
+    //This is an idea for state selection
+    // const svg = d3.select("svg");
+    // svg.on("click", function () {
+    //     const mouse = d3.mouse(this);
+    //     svg
+    //         .append("use")
+    //         .attr("href", "#pointer")
+    //         .attr("x", mouse[0])
+    //         .attr("y", mouse[1])
+    //         .attr("fill", "#039BE5")
+    //         .attr("stroke", "#039BE5")
+    //         .attr("stroke-width", "1px");
+    // });
+
+    function tooltipHtml(n:any){	/* function to create html content string in tooltip div. */
+        return "<h4>"+n+"</h4>";
     }
     ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
         "ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
