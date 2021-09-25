@@ -78,7 +78,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Main() {
+export default function USMap() {
     const classes = useStyles();
     return (<Typography>Map Section</Typography>)
 }
