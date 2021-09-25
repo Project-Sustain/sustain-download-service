@@ -99,11 +99,11 @@ export default function USMap() {
                 avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#800026")(low/100)};
         });
 
-    // useEffect(() => {
+    useEffect(() => {
         // @ts-ignore
         Draw("#statesvg", sampleData, tooltipHtml);
         d3.select(window.frameElement).style("height", "600px");
-    // }, [])
+    }, [])
     return (
         <div>
             <Typography>Map Section</Typography>
