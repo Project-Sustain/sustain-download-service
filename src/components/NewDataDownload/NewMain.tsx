@@ -60,11 +60,10 @@ END OF TERMS AND CONDITIONS
 
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import {Container, Grid, Paper, Typography} from '@material-ui/core';
+import {Grid, Paper} from '@material-ui/core';
 import theme from "../../global/GlobalTheme";
 import USMap from "./USMap";
 import DatasetSearching from "./DatasetSearching";
-// import * as d3 from '../../library/d3.min.js';
 
 const useStyles = makeStyles({
     paper: {
