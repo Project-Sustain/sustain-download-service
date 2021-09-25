@@ -58,27 +58,14 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Typography} from '@material-ui/core';
 import theme from "../../global/GlobalTheme";
 import * as d3 from 'd3';
 import { Draw } from "../../library/uStates";
 
-const useStyles = makeStyles({
-    state: {
-        fill: "none",
-        stroke: "#a9a9a9",
-        strokeWidth: "1",
-    },
-    // "&:hover": {
-    //     fillOpacity: "0.5",
-    // },
-});
-
 export default function USMap() {
-    const d3 = require("react-dom/test-utils");
-    const classes = useStyles();
     const sampleData = {};
 
     function tooltipHtml(n:any, d:any){	/* function to create html content string in tooltip div. */
@@ -88,10 +75,25 @@ export default function USMap() {
             "<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
             "</table>";
     }
+    ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+        "ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
+        "MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
+        "CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
+        "WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+        .forEach(function(d){
+            let low=Math.round(100*Math.random()),
+                mid=Math.round(100*Math.random()),
+                high=Math.round(100*Math.random());
+            // @ts-ignore
+            sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]),
+                avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#800026")(low/100)};
+        });
 
-    // @ts-ignore
-    Draw("#statesvg", sampleData, tooltipHtml);
-    d3.select(window.frameElement).style("height", "600px");
+    // useEffect(() => {
+        // @ts-ignore
+        Draw("#statesvg", sampleData, tooltipHtml);
+        d3.select(window.frameElement).style("height", "600px");
+    // }, [])
     return (
         <div>
             <Typography>Map Section</Typography>

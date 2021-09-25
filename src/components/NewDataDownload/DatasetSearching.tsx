@@ -62,7 +62,6 @@ import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Container, Grid, Paper, Typography} from '@material-ui/core';
 import theme from "../../global/GlobalTheme";
-// import * as d3 from '../../library/d3.min.js';
 
 const useStyles = makeStyles({
     paper: {
