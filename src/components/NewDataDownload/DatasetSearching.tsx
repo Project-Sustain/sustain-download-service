@@ -59,25 +59,8 @@ END OF TERMS AND CONDITIONS
 */
 
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import {Container, Grid, Paper, Typography} from '@material-ui/core';
-import theme from "../../global/GlobalTheme";
-
-const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-});
+import {Typography} from '@material-ui/core';
 
 export default function DatasetSearching() {
-    const classes = useStyles();
     return (<Typography>Dataset Section</Typography>)
 }
