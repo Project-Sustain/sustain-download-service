@@ -57,56 +57,24 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-
 import React, { useEffect } from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import {Typography} from '@material-ui/core';
-import theme from "../../global/GlobalTheme";
 import * as d3 from 'd3';
 import { Draw } from "../../library/uStates";
 
 export default function USMap() {
-    const sampleData = {};
 
-    //This is an idea for state selection
-    // const svg = d3.select("svg");
-    // svg.on("click", function () {
-    //     const mouse = d3.mouse(this);
-    //     svg
-    //         .append("use")
-    //         .attr("href", "#pointer")
-    //         .attr("x", mouse[0])
-    //         .attr("y", mouse[1])
-    //         .attr("fill", "#039BE5")
-    //         .attr("stroke", "#039BE5")
-    //         .attr("stroke-width", "1px");
-    // });
-
-    function tooltipHtml(n:any){	/* function to create html content string in tooltip div. */
-        return "<h4>"+n+"</h4>";
+    function tooltipHtml(data:any){
+        console.log(data)
+        return "<h4>"+data+"</h4>";
     }
-    ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
-        "ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
-        "MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
-        "CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
-        "WI", "MO", "AR", "OK", "KS", "LS", "VA"]
-        .forEach(function(d){
-            let low=Math.round(100*Math.random()),
-                mid=Math.round(100*Math.random()),
-                high=Math.round(100*Math.random());
-            // @ts-ignore
-            sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]),
-                avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#800026")(low/100)};
-        });
 
     useEffect(() => {
         // @ts-ignore
-        Draw("#statesvg", sampleData, tooltipHtml);
+        Draw("#statesvg", tooltipHtml);
         d3.select(window.frameElement).style("height", "600px");
     }, [])
     return (
         <div>
-            <Typography>Map Section</Typography>
             <svg width="960" height="600" id="statesvg" />
         </div>
     )
