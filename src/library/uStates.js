@@ -69,6 +69,7 @@ export function Draw(id, toolTip){
     d3.select(id).selectAll(".state")
         .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
         .attr("stateName",function(state){ return state.stateName;})
+        .on("click", function(state){return console.log(state.target.attributes.stateName.nodeValue)})
         .style("fill", "#747ED6")
         .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }
