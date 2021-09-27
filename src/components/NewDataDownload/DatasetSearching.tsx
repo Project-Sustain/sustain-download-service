@@ -61,11 +61,12 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {Typography} from '@material-ui/core';
 
-export default function DatasetSearching(props: { selectedState: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; }) {
+export default function DatasetSearching(props: { selectedState: any, hoveredState: any; }) {
     return (
         <>
             <Typography>Dataset Section</Typography>
             <Typography>Selected State: {props.selectedState}</Typography>
+            <Typography>Hovered State: {props.hoveredState}</Typography>
         </>
     )
 }

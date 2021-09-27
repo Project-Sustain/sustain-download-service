@@ -81,6 +81,7 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
+    const [hoveredState, setHoveredState] = useState("");
     const [selectedState, setSelectedState] = useState("");
     return (
         <Grid
@@ -90,12 +91,12 @@ export default function Main() {
             alignItems="center">
             <Grid item className={classes.map}>
                 <Paper elevation={3} className={classes.paper}>
-                    <USMap setSelectedState={setSelectedState} />
+                    <USMap setSelectedState={setSelectedState} setHoveredState={setHoveredState} />
                 </Paper>
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState} />
+                    <DatasetSearching selectedState={selectedState} hoveredState={hoveredState} />
                 </Paper>
             </Grid>
         </Grid>

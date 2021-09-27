@@ -61,11 +61,11 @@ import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "../../library/uStates";
 
-export default function USMap(props: { setSelectedState: any; }) {
+export default function USMap(props: { setSelectedState: any, setHoveredState: any; }) {
 
     useEffect(() => {
         // @ts-ignore
-        Draw("#statesvg", props.setSelectedState);
+        Draw("#statesvg", props.setSelectedState, props.setHoveredState);
         d3.select(window.frameElement).style("height", "600px");
     }, [])
     return (
