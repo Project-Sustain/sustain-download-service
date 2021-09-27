@@ -58,9 +58,8 @@ export function Draw(id, toolTip){
 
     function mouseOver(event){
         d3.select("#tooltip").transition().duration(200).style("opacity", .9);
-        d3.select("#tooltip").html(toolTip(event));
-            // .style("left", (d3.event.pageX) + "px")
-            // .style("top", (d3.event.pageY - 28) + "px");
+        d3.select("#tooltip").html(toolTip(event.target.getAttribute("stateName")));
+
     }
 
     function mouseOut(){
@@ -69,6 +68,7 @@ export function Draw(id, toolTip){
 
     d3.select(id).selectAll(".state")
         .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
+        .attr("stateName",function(state){ return state.stateName;})
         .style("fill", "#747ED6")
         .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }

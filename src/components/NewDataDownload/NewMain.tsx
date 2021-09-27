@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
+import React, {useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid, Paper} from '@material-ui/core';
 import theme from "../../global/GlobalTheme";
@@ -81,6 +81,7 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
+    const [selectedState, setSelectedState] = useState("");
     return (
         <Grid
             container
@@ -89,12 +90,12 @@ export default function Main() {
             alignItems="center">
             <Grid item className={classes.map}>
                 <Paper elevation={3} className={classes.paper}>
-                    <USMap />
+                    <USMap setSelectedState={setSelectedState} />
                 </Paper>
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching />
+                    <DatasetSearching selectedState={selectedState} />
                 </Paper>
             </Grid>
         </Grid>

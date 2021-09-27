@@ -61,16 +61,11 @@ import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "../../library/uStates";
 
-export default function USMap() {
-
-    function tooltipHtml(data:any){
-        console.log(data)
-        return "<h4>"+data+"</h4>";
-    }
+export default function USMap(props: { setSelectedState: any; }) {
 
     useEffect(() => {
         // @ts-ignore
-        Draw("#statesvg", tooltipHtml);
+        Draw("#statesvg", props.setSelectedState);
         d3.select(window.frameElement).style("height", "600px");
     }, [])
     return (
