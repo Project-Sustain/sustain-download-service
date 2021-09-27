@@ -60,17 +60,20 @@ END OF TERMS AND CONDITIONS
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "../../library/uStates";
+import {Typography} from "@material-ui/core";
 
-export default function USMap(props: { setSelectedState: any, setHoveredState: any; }) {
+export default function USMap(props: { setSelectedState: any, setHoveredState: any, hoveredState: any; }) {
 
     useEffect(() => {
         // @ts-ignore
         Draw("#statesvg", props.setSelectedState, props.setHoveredState);
         d3.select(window.frameElement).style("height", "600px");
-    }, [])
+    });
+
     return (
         <div>
             <svg width="960" height="600" id="statesvg" />
+            <Typography>{props.hoveredState}</Typography>
         </div>
     )
 }

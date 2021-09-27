@@ -91,12 +91,12 @@ export default function Main() {
             alignItems="center">
             <Grid item className={classes.map}>
                 <Paper elevation={3} className={classes.paper}>
-                    <USMap setSelectedState={setSelectedState} setHoveredState={setHoveredState} />
+                    <USMap setSelectedState={setSelectedState} setHoveredState={setHoveredState} hoveredState={hoveredState} />
                 </Paper>
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState} hoveredState={hoveredState} />
+                    <DatasetSearching selectedState={selectedState}  />
                 </Paper>
             </Grid>
         </Grid>
