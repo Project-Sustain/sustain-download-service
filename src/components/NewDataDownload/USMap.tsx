@@ -72,8 +72,7 @@ export default function USMap(props: any) {
                 node.style.opacity = "";
             }
             else {
-                const nodeData = node["__data__"];
-                if (props.statesMatchingSearch.includes(nodeData.stateName)) {
+                if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
                     node.style.opacity = "0.7";
                 } else {
                     node.style.opacity = "";
