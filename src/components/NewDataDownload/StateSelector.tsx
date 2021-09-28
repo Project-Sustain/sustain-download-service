@@ -57,7 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useState} from "react";
+import React from "react";
 import {uStatePaths} from "./StateInfo";
 import {TextField} from "@material-ui/core";
 
@@ -76,7 +76,7 @@ export default function StateSelector(props: any) {
         for (let i = 0; i < matches.length; i++) {
             const words = matches[i].split(" ");
             for(let j = 0; j < words.length; j++) {
-                if(words[j] == "dc") words[j] = "DC";
+                if(words[j] === "dc") words[j] = "DC";
                 else words[j] = words[j][0].toUpperCase() + words[j].substr(1);
             }
             capitalizedMatches.push(words.join(" "));

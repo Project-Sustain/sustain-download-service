@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
 import "../../library/stateStyles.css";
 import {uStatePaths} from "./StateInfo";
-import React from "react";
 
 export function Draw(id, setSelectedState, setHoveredState){
 

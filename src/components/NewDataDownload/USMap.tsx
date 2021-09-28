@@ -68,7 +68,7 @@ export default function USMap(props: any) {
 
     if(nodeList) {
         nodeList.forEach((node: any) => {
-            if(props.statesMatchingSearch.length == 51) {
+            if(props.statesMatchingSearch.length === 51) {
                 node.style.opacity = "";
             }
             else {
