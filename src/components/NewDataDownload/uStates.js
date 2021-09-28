@@ -9,9 +9,9 @@ export function Draw(id, setSelectedState, setHoveredState, toolTip){
         d3.select("#tooltip").html(setHoveredState(event.target.getAttribute("stateName")));
 
         //FIXME Get this to work
-        d3.select("#tooltip").html(event.target.getAttribute("stateName"))
-            .style("left", (event.target.pageX) + "px")
-            .style("top", (event.target.pageY - 28) + "px");
+        d3.select("#tooltip").html(toolTip(event.target.getAttribute("stateName")))
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 28) + "px");
     }
 
     function mouseOut(){

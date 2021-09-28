@@ -60,7 +60,6 @@ END OF TERMS AND CONDITIONS
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./uStates";
-import {Tooltip} from "@material-ui/core";
 
 export default function USMap(props: any) {
     const allStatesHTML = d3.select("#statesvg").selectAll(".state");
@@ -83,7 +82,7 @@ export default function USMap(props: any) {
     }
 
     function toolTip(name: any) {
-        return <Tooltip title={name}><></></Tooltip>
+        return <h4>{name}</h4>
     }
 
     useEffect(() => {
