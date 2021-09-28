@@ -58,22 +58,33 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
-import {uStatePaths} from "../../library/StateInfo";
+import {uStatePaths} from "./StateInfo";
 import {TextField} from "@material-ui/core";
 
 export default function StateSelector(props: any) {
     const [searchbarInput, setSearchbarInput] = useState("");
-    console.log({searchbarInput})
 
     let statesArray: string[] = [];
     uStatePaths.forEach((state) => {
-        statesArray.push(state.stateName);
+        statesArray.push(state.stateName.toLowerCase());
     });
 
+    //FIXME this could be better, maybe leave them all lower-case all the time? We'd just want to print them uppercase
     const handleChange = (event: any) => {
         setSearchbarInput(event.target.value);
-        const matches = statesArray.filter(state => state.includes(searchbarInput));
-        props.setStatesMatchingSearch(matches);
+        const matches = statesArray.filter(state => state.includes(searchbarInput.toLowerCase()));
+        let capitalizedMatches = [];
+        for (let i = 0; i < matches.length; i++) {
+            const words = matches[i].split(" ");
+            let stateWord = "";
+            for(let j = 0; j < words.length; j++) {
+                if(words[j] == "dc") words[j] = "DC";
+                else words[j] = words[j][0].toUpperCase() + words[j].substr(1);
+                stateWord = words.join(" ");
+            }
+            capitalizedMatches.push(stateWord);
+        }
+        props.setStatesMatchingSearch(capitalizedMatches);
     };
 
     return (
