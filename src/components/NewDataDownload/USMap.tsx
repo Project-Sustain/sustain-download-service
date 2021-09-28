@@ -64,6 +64,24 @@ import { Draw } from "./uStates";
 export default function USMap(props: any) {
     console.log(props.statesMatchingSearch);
 
+    if(props.statesMatchingSearch.length != 51) {
+        const allStatesHTML = d3.select("#statesvg").selectAll(".state");
+        // @ts-ignore
+        const nodeList = allStatesHTML["_groups"][0];
+        if(nodeList) {
+            nodeList.forEach((node: any) => {
+                const nodeData = node["__data__"];
+                if(props.statesMatchingSearch.includes(nodeData.stateName)) {
+                    console.log(nodeData.stateName)
+                    node.style.opacity = "0.7";
+                }
+                else {
+                    node.style.opacity = "";
+                }
+            })
+        }
+    }
+
     useEffect(() => {
         // @ts-ignore
         Draw("#statesvg", props.setSelectedState, props.setHoveredState);
