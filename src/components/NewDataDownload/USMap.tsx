@@ -62,6 +62,7 @@ import * as d3 from 'd3';
 import { Draw } from "./uStates";
 
 export default function USMap(props: any) {
+    console.log(props.statesMatchingSearch);
 
     useEffect(() => {
         // @ts-ignore

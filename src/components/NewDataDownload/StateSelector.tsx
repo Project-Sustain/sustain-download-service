@@ -75,13 +75,11 @@ export default function StateSelector(props: any) {
         let capitalizedMatches = [];
         for (let i = 0; i < matches.length; i++) {
             const words = matches[i].split(" ");
-            let stateWord = "";
             for(let j = 0; j < words.length; j++) {
                 if(words[j] == "dc") words[j] = "DC";
                 else words[j] = words[j][0].toUpperCase() + words[j].substr(1);
-                stateWord = words.join(" ");
             }
-            capitalizedMatches.push(stateWord);
+            capitalizedMatches.push(words.join(" "));
         }
         props.setStatesMatchingSearch(capitalizedMatches);
     };

@@ -85,7 +85,6 @@ export default function Main() {
     const [hoveredState, setHoveredState] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    console.log({statesMatchingSearch});
     return (
         <Grid
             container
