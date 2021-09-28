@@ -62,7 +62,6 @@ import {uStatePaths} from "./StateInfo";
 import {TextField} from "@material-ui/core";
 
 export default function StateSelector(props: any) {
-    const [searchbarInput, setSearchbarInput] = useState("");
 
     let statesArray: string[] = [];
     uStatePaths.forEach((state) => {
@@ -71,8 +70,8 @@ export default function StateSelector(props: any) {
 
     //FIXME this could be better, maybe leave them all lower-case all the time? We'd just want to print them uppercase
     const handleChange = (event: any) => {
-        setSearchbarInput(event.target.value);
-        const matches = statesArray.filter(state => state.includes(searchbarInput.toLowerCase()));
+        const searchString = event.target.value;
+        const matches = statesArray.filter(state => state.includes(searchString.toLowerCase()));
         let capitalizedMatches = [];
         for (let i = 0; i < matches.length; i++) {
             const words = matches[i].split(" ");
