@@ -57,53 +57,31 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-
 import React, {useState} from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Paper, Typography} from '@material-ui/core';
-import theme from "../../global/GlobalTheme";
-import USMap from "./USMap";
-import DatasetSearching from "./DatasetSearching";
-import StateSelector from "./StateSelector";
+import {uStatePaths} from "../../library/StateInfo";
+import {TextField} from "@material-ui/core";
 
-const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-});
+export default function StateSelector(props: any) {
+    const [searchbarInput, setSearchbarInput] = useState("");
+    console.log({searchbarInput})
 
-export default function Main() {
-    const classes = useStyles();
-    const [hoveredState, setHoveredState] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    console.log({statesMatchingSearch});
+    let statesArray: string[] = [];
+    uStatePaths.forEach((state) => {
+        statesArray.push(state.stateName);
+    });
+
+    const handleChange = (event: any) => {
+        setSearchbarInput(event.target.value);
+        const matches = statesArray.filter(state => state.includes(searchbarInput));
+        props.setStatesMatchingSearch(matches);
+    };
+
     return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={classes.map}>
-                <Paper elevation={3} className={classes.paper}>
-                    <StateSelector setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <USMap statesMatchingSearch={statesMatchingSearch} setSelectedState={setSelectedState} setHoveredState={setHoveredState} />
-                    <Typography>{hoveredState}</Typography>
-                </Paper>
-            </Grid>
-            <Grid item className={classes.datasetSection}>
-                <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState}  />
-                </Paper>
-            </Grid>
-        </Grid>
-    )
+        <TextField
+            variant="outlined"
+            onChange={handleChange}
+            placeholder="Search States"
+        />
+    );
+
 }

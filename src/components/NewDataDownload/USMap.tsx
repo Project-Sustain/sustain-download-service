@@ -59,10 +59,9 @@ END OF TERMS AND CONDITIONS
 */
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
-import { Draw } from "../../library/uStates";
-import {Typography} from "@material-ui/core";
+import { Draw } from "./uStates";
 
-export default function USMap(props: { setSelectedState: any, setHoveredState: any, hoveredState: any; }) {
+export default function USMap(props: any) {
 
     useEffect(() => {
         // @ts-ignore
@@ -73,7 +72,6 @@ export default function USMap(props: { setSelectedState: any, setHoveredState: a
     return (
         <div>
             <svg width="960" height="600" id="statesvg" />
-            <Typography>{props.hoveredState}</Typography>
         </div>
     )
 }
