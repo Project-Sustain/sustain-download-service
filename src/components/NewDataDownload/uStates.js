@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import "../../library/stateStyles.css";
+import "./stateStyles.css";
 import {uStatePaths} from "./StateInfo";
 
 export function Draw(id, setSelectedState, setHoveredState, toolTip){

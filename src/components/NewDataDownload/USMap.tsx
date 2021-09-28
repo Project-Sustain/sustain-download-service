@@ -82,7 +82,8 @@ export default function USMap(props: any) {
     }
 
     function toolTip(name: any) {
-        return <h4>{name}</h4>
+        console.log({name})
+        return "<h4>"+{name}+"</h4>";
     }
 
     useEffect(() => {
