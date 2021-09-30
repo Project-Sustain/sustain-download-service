@@ -89,7 +89,7 @@ export default async function Download(currentDataset: any, regionSelected: regi
     if (["county", "tract"].includes(currentDataset?.level)) {
         //get dataset data
         pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
-        
+
         let d = await mongoQuery(currentDataset.collection, pipeline)
         if (!includeGeospatialData) {
             return { data: d, meta };
@@ -98,6 +98,8 @@ export default async function Download(currentDataset: any, regionSelected: regi
         return { data: d, geometry: geospatialData, meta }
     }
     const regionGeometry = await getRegionGeometry(GISJOIN)
+    console.log({regionGeometry})
+
     let collection: string = currentDataset.collection;
     if (isLinked(currentDataset)) {
         collection = currentDataset.linked.collection;
@@ -108,7 +110,7 @@ export default async function Download(currentDataset: any, regionSelected: regi
     }
 
     let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
-    d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
+    d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null })
     let returnable: DownloadResult = { data: realD, meta }
     if (includeGeospatialData) {
         returnable.geometry = d;
@@ -117,7 +119,7 @@ export default async function Download(currentDataset: any, regionSelected: regi
 }
 
 const getRegionGeometry = async (GISJOIN: string) => {
-    if(GISJOIN.length === 8) {
+    if (GISJOIN.length === 8) {
         return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
     }
     return await mongoQuery("state_geo_40mb", [{ $match: { GISJOIN } }])
@@ -126,14 +128,29 @@ const getRegionGeometry = async (GISJOIN: string) => {
 
 const mongoQuery = async (collection: string, pipeline: any[]) => {
     return new Promise<any[]>((resolve) => {
-        const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
-        let returnData: any[] = [];
-        stream.on('data', (res: any) => {
-            const data = JSON.parse(res.getData());
-            returnData.push(data)
-        });
-        stream.on('end', () => {
-            resolve(returnData);
-        });
+        // const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
+        // let returnData: any[] = [];
+        // stream.on('data', (res: any) => {
+        //     const data = JSON.parse(res.getData());
+        //     returnData.push(data)
+        // });
+        // stream.on('end', () => {
+        //     resolve(returnData);
+        // });
+        fetch(`http://lattice-100.cs.colostate.edu:8003/mongo`, {
+            method: 'POST', //This could be any http method
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept-Encoding': 'gzip'
+            },
+            body: JSON.stringify({
+                collection,
+                pipeline
+            })
+        })
+            .then(async (response) => { 
+                const r = await response.json()
+                resolve(r)
+            })
     });
 }
