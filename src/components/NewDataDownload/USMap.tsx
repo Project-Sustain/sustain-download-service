@@ -68,14 +68,14 @@ export default function USMap(props: any) {
 
     if(nodeList) {
         nodeList.forEach((node: any) => {
-            if(props.statesMatchingSearch.length === 51) {
-                node.style.opacity = "";
+            if(props.statesMatchingSearch.length === nodeList.length) {
+                node.style.fill = "#919190";
             }
             else {
                 if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
-                    node.style.opacity = "0.7";
+                    node.style.fill = "#747ED6";
                 } else {
-                    node.style.opacity = "";
+                    node.style.fill = "#919190";
                 }
             }
         })
