@@ -63,7 +63,7 @@ END OF TERMS AND CONDITIONS
     stroke-width: 1;
 }
 .state:hover{
-    fill-opacity:0.5;
+    fill: #747ED6 !important;
 }
 #tooltip {
     position: absolute;
