@@ -70,24 +70,23 @@ export default function USMap(props: any) {
         nodeList.forEach((node: any) => {
             if(props.statesMatchingSearch.length === nodeList.length) {
                 node.style.fill = "#919190";
+                //FIXME Hide the associated tooltip
             }
             else {
                 if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
                     node.style.fill = "#747ED6";
+                    //FIXME Show the associated tooltip
                 } else {
                     node.style.fill = "#919190";
+                    //FIXME Hide the associated tooltip
                 }
             }
         })
     }
 
-    function toolTip(name: any) {
-        return "<h4>"+{name}+"</h4>";
-    }
-
     useEffect(() => {
         // @ts-ignore
-        Draw("#statesvg", props.setSelectedState, props.setHoveredState, toolTip);
+        Draw("#statesvg", props.setSelectedState, props.setHoveredState);
         d3.select(window.frameElement).style("height", "600px");
     });
 
