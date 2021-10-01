@@ -70,15 +70,12 @@ export default function USMap(props: any) {
         nodeList.forEach((node: any) => {
             if(props.statesMatchingSearch.length === nodeList.length) {
                 node.style.fill = "#919190";
-                //FIXME Hide the associated tooltip
             }
             else {
                 if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
                     node.style.fill = "#747ED6";
-                    //FIXME Show the associated tooltip
                 } else {
                     node.style.fill = "#919190";
-                    //FIXME Hide the associated tooltip
                 }
             }
         })

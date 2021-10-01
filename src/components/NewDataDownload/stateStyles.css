@@ -65,6 +65,11 @@ END OF TERMS AND CONDITIONS
 .state:hover{
     fill: #747ED6 !important;
 }
+.hovered-state-text{
+    display: none;
+    position: fixed;
+    padding: 10px;
+}
 #tooltip {
     position: absolute;
     text-align: center;

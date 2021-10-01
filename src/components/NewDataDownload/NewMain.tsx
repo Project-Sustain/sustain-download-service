@@ -95,7 +95,9 @@ export default function Main() {
                 <Paper elevation={3} className={classes.paper}>
                     <StateSelector setStatesMatchingSearch={setStatesMatchingSearch}/>
                     <USMap statesMatchingSearch={statesMatchingSearch} setSelectedState={setSelectedState} setHoveredState={setHoveredState} />
-                    <Typography>{hoveredState}</Typography>
+                    <Paper id="hovered-state-id" className="hovered-state-text">
+                        <Typography>{hoveredState}</Typography>
+                    </Paper>
                 </Paper>
             </Grid>
             <Grid item className={classes.datasetSection}>

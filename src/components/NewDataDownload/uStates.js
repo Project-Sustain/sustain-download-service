@@ -62,14 +62,26 @@ import "./stateStyles.css";
 import {uStatePaths} from "./StateInfo";
 
 export function Draw(id, setSelectedState, setHoveredState){
+    const hoverClass = document.getElementById("hovered-state-id");
+
+    function updateTooltip(left, top) {
+        hoverClass.style.display = "block";
+        hoverClass.style.left = left;
+        hoverClass.style.top = top;
+    }
 
     function mouseOver(event){
         setHoveredState(event.target.getAttribute("stateName"));
+        updateTooltip((event.pageX) + "px", (event.pageY - 100) + "px");
+    }
+
+    function mouseOut() {
+        hoverClass.style.display = "none";
     }
 
     d3.select(id).selectAll(".state")
         .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
         .attr("stateName",function(state){ return state.stateName;})
         .on("click", function(state){return setSelectedState(state.target.attributes.stateName.nodeValue)})
-        .on("mouseover", mouseOver);
+        .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }
