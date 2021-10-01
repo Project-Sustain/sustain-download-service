@@ -68,7 +68,6 @@ export default function StateSelector(props: any) {
         statesArray.push(state.stateName.toLowerCase());
     });
 
-    //FIXME this could be better, maybe leave them all lower-case all the time? We'd just want to print them uppercase
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         const matches = statesArray.filter(state => state.includes(searchString.toLowerCase()));
@@ -85,6 +84,7 @@ export default function StateSelector(props: any) {
 
     return (
         <TextField
+            className={props.class}
             variant="outlined"
             onChange={handleChange}
             placeholder="Search States"

@@ -57,59 +57,38 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+import React from "react";
+import {uStatePaths} from "./StateInfo";
+import {TextField} from "@material-ui/core";
 
-import React, {useState} from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Paper, Typography} from '@material-ui/core';
-import theme from "../../global/GlobalTheme";
-import USMap from "./USMap";
-import DatasetSearching from "./DatasetSearching";
-import StateSelector from "./StateSelector";
-import DatasetSelector from "./DatasetSelector";
+export default function DatasetSelector(props: any) {
 
-const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-    searchBox: {
-        margin: theme.spacing(1),
-    },
-});
+    let statesArray: string[] = [];
+    uStatePaths.forEach((state) => {
+        statesArray.push(state.stateName.toLowerCase());
+    });
 
-export default function Main() {
-    const classes = useStyles();
-    const [hoveredState, setHoveredState] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
+    const handleChange = (event: any) => {
+        const searchString = event.target.value;
+        const matches = statesArray.filter(state => state.includes(searchString.toLowerCase()));
+        let capitalizedMatches = [];
+        for (let i = 0; i < matches.length; i++) {
+            const words = matches[i].split(" ");
+            for(let j = 0; j < words.length; j++) {
+                words[j] = words[j][0].toUpperCase() + words[j].substr(1);
+            }
+            capitalizedMatches.push(words.join(" "));
+        }
+        props.setStatesMatchingSearch(capitalizedMatches);
+    };
+
     return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={classes.map}>
-                <Paper elevation={3} className={classes.paper}>
-                    <StateSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <DatasetSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <USMap statesMatchingSearch={statesMatchingSearch} setSelectedState={setSelectedState} setHoveredState={setHoveredState} />
-                    <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
-                        <Typography>{hoveredState}</Typography>
-                    </Paper>
-                </Paper>
-            </Grid>
-            <Grid item className={classes.datasetSection}>
-                <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState}  />
-                </Paper>
-            </Grid>
-        </Grid>
-    )
+        <TextField
+            className={props.class}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder="Search Datasets"
+        />
+    );
+
 }
