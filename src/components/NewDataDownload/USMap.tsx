@@ -60,6 +60,7 @@ END OF TERMS AND CONDITIONS
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./uStates";
+import {selectedState, unSelectedState} from "./StateInfo";
 
 export default function USMap(props: any) {
     const allStatesHTML = d3.select("#statesvg").selectAll(".state");
@@ -69,13 +70,13 @@ export default function USMap(props: any) {
     if(nodeList) {
         nodeList.forEach((node: any) => {
             if(props.statesMatchingSearch.length === nodeList.length) {
-                node.style.fill = "#919190";
+                node.style.fill = unSelectedState;
             }
             else {
                 if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
-                    node.style.fill = "#747ED6";
+                    node.style.fill = selectedState;
                 } else {
-                    node.style.fill = "#919190";
+                    node.style.fill = unSelectedState;
                 }
             }
         })

@@ -58,8 +58,8 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 .state{
-    fill: #919190;
-    stroke: #a9a9a9;
+    fill: #dbdbdb;
+    stroke: #777;
     stroke-width: 1;
 }
 .state:hover{
