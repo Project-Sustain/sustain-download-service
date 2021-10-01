@@ -58,53 +58,16 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 .state{
-    fill: #dbdbdb;
-    stroke: #777;
+    fill: #eee;
+    stroke: #666;
     stroke-width: 1;
 }
 .state:hover{
-    fill: #747ED6 !important;
+    fill: #1700e6 !important;
 }
 .hovered-state-text{
+    opacity: 0.95;
     display: none;
     position: fixed;
     padding: 10px;
-}
-#tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 20px;
-    margin: 10px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 1px;
-    border-radius: 2px;
-    pointer-events: none;
-}
-#tooltip h4{
-    margin:0;
-    font-size:14px;
-}
-#tooltip{
-    background:rgba(0,0,0,0.9);
-    border:1px solid grey;
-    border-radius:5px;
-    font-size:12px;
-    width:auto;
-    padding:4px;
-    color:white;
-    opacity:0;
-}
-#tooltip table{
-    table-layout:fixed;
-}
-#tooltip tr td{
-    padding:0;
-    margin:0;
-}
-#tooltip tr td:nth-child(1){
-    width:50px;
-}
-#tooltip tr td:nth-child(2){
-    text-align:center;
 }

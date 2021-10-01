@@ -76,8 +76,7 @@ export default function StateSelector(props: any) {
         for (let i = 0; i < matches.length; i++) {
             const words = matches[i].split(" ");
             for(let j = 0; j < words.length; j++) {
-                if(words[j] === "dc") words[j] = "DC";
-                else words[j] = words[j][0].toUpperCase() + words[j].substr(1);
+                words[j] = words[j][0].toUpperCase() + words[j].substr(1);
             }
             capitalizedMatches.push(words.join(" "));
         }
