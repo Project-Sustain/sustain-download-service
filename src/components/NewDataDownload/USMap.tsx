@@ -75,7 +75,8 @@ export default function USMap(props: any) {
             else {
                 if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
                     node.style.fill = selectedState;
-                } else {
+                }
+                else {
                     node.style.fill = unSelectedState;
                 }
             }

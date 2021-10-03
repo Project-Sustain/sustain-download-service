@@ -58,64 +58,14 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {
-    Button,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography
-} from '@material-ui/core';
-import {stateToDatasetMapping} from "./DummyDatasets";
+import DatasetTable from "./DatasetTable";
 
 export default function DatasetSearching(props: any) {
-    // @ts-ignore
-    const datasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]
-
-    function renderDatasetTable() {
-        if(datasets) {
-            return (
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Datasets in this State</TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {renderDatasetRows()}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            )
-        }
-    }
-
-    function renderDatasetRows() {
-        return datasets.map((dataset: any, index: any) => {
-            return (
-                <TableRow key={index}>
-                    <TableCell>
-                        {dataset}
-                    </TableCell>
-                    <TableCell>
-                        <Button color="primary" variant="outlined">Download</Button>
-                    </TableCell>
-                </TableRow>
-            )
-        })
-    }
 
     return (
         <>
-            <Typography>Dataset Section</Typography>
-            <Typography>Selected State: {props.selectedState}</Typography>
-            <br />
-            {renderDatasetTable()}
+            <DatasetTable selectedState={props.selectedState}/>
+            {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
         </>
     )
 }

@@ -57,60 +57,64 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-
-import React, {useState} from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Paper, Typography} from '@material-ui/core';
-import theme from "../../global/GlobalTheme";
-import USMap from "./USMap";
-import DatasetSearching from "./DatasetSearching";
-import StateSelector from "./StateSelector";
-import DatasetSelector from "./DatasetSelector";
+import React from "react";
+import {
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
+import {stateToDatasetMapping} from "./DummyDatasets";
+import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-    searchBox: {
-        margin: theme.spacing(1),
+    root: {
     },
 });
 
-export default function Main() {
+export default function DatasetTable(props: any) {
     const classes = useStyles();
-    const [hoveredState, setHoveredState] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={classes.map}>
-                <Paper elevation={3} className={classes.paper}>
-                    <StateSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <DatasetSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <USMap statesMatchingSearch={statesMatchingSearch} setSelectedState={setSelectedState}
-                           setHoveredState={setHoveredState} selectedState={selectedState} />
-                    <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
-                        <Typography>{hoveredState}</Typography>
-                    </Paper>
-                </Paper>
-            </Grid>
-            <Grid item className={classes.datasetSection}>
-                <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState}  />
-                </Paper>
-            </Grid>
-        </Grid>
-    )
+    // @ts-ignore
+    const datasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
+
+    if(datasets) {
+        return (
+            <TableContainer component={Paper} className={classes.root}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Datasets in {props.selectedState}</TableCell>
+                            <TableCell></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {renderDatasetRows()}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        )
+    }
+
+    else {
+        return null
+    }
+
+    function renderDatasetRows() {
+        return datasets.map((dataset: any, index: any) => {
+            return (
+                <TableRow key={index}>
+                    <TableCell>
+                        {dataset}
+                    </TableCell>
+                    <TableCell align="right">
+                        <Button color="primary" variant="outlined">More Info</Button>
+                    </TableCell>
+                </TableRow>
+            )
+        })
+    }
 }
