@@ -63,9 +63,6 @@ import {TextField} from "@material-ui/core";
 import {stateToDatasetMapping} from "./DummyDatasets";
 
 export default function DatasetSelector(props: any) {
-
-    console.log({stateToDatasetMapping});
-
     let statesArray: string[] = [];
     uStatePaths.forEach((state) => {
         statesArray.push(state.stateName.toLowerCase());
