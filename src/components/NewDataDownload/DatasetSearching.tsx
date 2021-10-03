@@ -59,11 +59,22 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import DatasetTable from "./DatasetTable";
+import {Button} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../global/GlobalTheme";
+
+const useStyles = makeStyles({
+    root: {
+        margin: theme.spacing(1),
+    },
+});
 
 export default function DatasetSearching(props: any) {
+    const classes = useStyles();
 
     return (
         <>
+            <Button className={classes.root} variant="outlined" onClick={() => props.setSelectedState("")}>Clear Selected State</Button>
             <DatasetTable selectedState={props.selectedState}/>
             {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
         </>

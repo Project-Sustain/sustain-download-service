@@ -108,7 +108,7 @@ export default function Main() {
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState}  />
+                    <DatasetSearching selectedState={selectedState} setSelectedState={setSelectedState} />
                 </Paper>
             </Grid>
         </Grid>
