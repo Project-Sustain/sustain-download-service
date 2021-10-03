@@ -58,10 +58,13 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {uStatePaths} from "./StateInfo";
+import {capitalizeStates, uStatePaths} from "./StateInfo";
 import {TextField} from "@material-ui/core";
+import {stateToDatasetMapping} from "./DummyDatasets";
 
 export default function DatasetSelector(props: any) {
+
+    console.log({stateToDatasetMapping});
 
     let statesArray: string[] = [];
     uStatePaths.forEach((state) => {
@@ -70,16 +73,18 @@ export default function DatasetSelector(props: any) {
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
-        const matches = statesArray.filter(state => state.includes(searchString.toLowerCase()));
-        let capitalizedMatches = [];
-        for (let i = 0; i < matches.length; i++) {
-            const words = matches[i].split(" ");
-            for(let j = 0; j < words.length; j++) {
-                words[j] = words[j][0].toUpperCase() + words[j].substr(1);
+        const statesWithMatchingDatasets = [];
+        for(const [state, datasets] of Object.entries(stateToDatasetMapping)) {
+            let lowercaseDatasets: any = [];
+            datasets.forEach((dataset: String) => {
+                lowercaseDatasets.push(dataset.toLowerCase());
+            })
+            const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
+            if(matches.length > 0) {
+                statesWithMatchingDatasets.push(state);
             }
-            capitalizedMatches.push(words.join(" "));
         }
-        props.setStatesMatchingSearch(capitalizedMatches);
+        props.setStatesMatchingSearch(capitalizeStates(statesWithMatchingDatasets));
     };
 
     return (

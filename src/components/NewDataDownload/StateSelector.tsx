@@ -58,28 +58,15 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {uStatePaths} from "./StateInfo";
+import {capitalizeStates, statesArray} from "./StateInfo";
 import {TextField} from "@material-ui/core";
 
 export default function StateSelector(props: any) {
 
-    let statesArray: string[] = [];
-    uStatePaths.forEach((state) => {
-        statesArray.push(state.stateName.toLowerCase());
-    });
-
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         const matches = statesArray.filter(state => state.includes(searchString.toLowerCase()));
-        let capitalizedMatches = [];
-        for (let i = 0; i < matches.length; i++) {
-            const words = matches[i].split(" ");
-            for(let j = 0; j < words.length; j++) {
-                words[j] = words[j][0].toUpperCase() + words[j].substr(1);
-            }
-            capitalizedMatches.push(words.join(" "));
-        }
-        props.setStatesMatchingSearch(capitalizedMatches);
+        props.setStatesMatchingSearch(capitalizeStates(matches));
     };
 
     return (
