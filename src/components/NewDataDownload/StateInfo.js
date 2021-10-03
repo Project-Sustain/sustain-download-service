@@ -135,4 +135,4 @@ export const statesArray = buildStateArray();
 
 export const unSelectedState = "#eee";
 export const selectedState = "#1700e6";
-export const chosenState = "#0a0066";
+export const chosenState = "#a60000";
