@@ -57,9 +57,9 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
+import React, {useState} from "react";
 import DatasetTable from "./DatasetTable";
-import {Button} from "@material-ui/core";
+import {Button, ButtonGroup} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
 
@@ -71,10 +71,29 @@ const useStyles = makeStyles({
 
 export default function DatasetSearching(props: any) {
     const classes = useStyles();
+    const [countiesVisible, setCountiesVisible] = useState(false);
+
+    function getCountyButtonName() {
+        return countiesVisible ? "Hide Counties" : "See Counties";
+    }
+
+    function renderStateControls() {
+        if(props.selectedState) {
+            return (
+                <ButtonGroup className={classes.root}>
+                    <Button variant="outlined" onClick={() => {
+                        props.setSelectedState("");
+                        setCountiesVisible(false);
+                    }}>Clear Selected State</Button>
+                    <Button variant="outlined" onClick={() => {setCountiesVisible(!countiesVisible)}}>{getCountyButtonName()}</Button>
+                </ButtonGroup>
+            )
+        }
+    }
 
     return (
         <>
-            <Button className={classes.root} variant="outlined" onClick={() => props.setSelectedState("")}>Clear Selected State</Button>
+            {renderStateControls()}
             <DatasetTable selectedState={props.selectedState}/>
             {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
         </>
