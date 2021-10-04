@@ -62,6 +62,9 @@ import DatasetTable from "./DatasetTable";
 import {Button, ButtonGroup} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
+import {stateCountyDataPaths} from "./StateCountyData";
+import * as d3 from 'd3';
+// import * as topojson from 'topojson';
 
 const useStyles = makeStyles({
     root: {
@@ -73,19 +76,31 @@ export default function DatasetSearching(props: any) {
     const classes = useStyles();
     const [countiesVisible, setCountiesVisible] = useState(false);
 
+    console.log({stateCountyDataPaths});
+
+    const objects = stateCountyDataPaths.objects.states.geometries;
+    console.log({objects});
+    objects.forEach(state => {
+        console.log(state.properties.name)
+    })
+
+    // const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
+
     function getCountyButtonName() {
         return countiesVisible ? "Hide Counties" : "See Counties";
     }
 
     function renderStateControls() {
-        if(props.selectedState) {
+        if (props.selectedState) {
             return (
                 <ButtonGroup className={classes.root}>
                     <Button variant="outlined" onClick={() => {
                         props.setSelectedState("");
                         setCountiesVisible(false);
                     }}>Clear Selected State</Button>
-                    <Button variant="outlined" onClick={() => {setCountiesVisible(!countiesVisible)}}>{getCountyButtonName()}</Button>
+                    <Button variant="outlined" onClick={() => {
+                        setCountiesVisible(!countiesVisible)
+                    }}>{getCountyButtonName()}</Button>
                 </ButtonGroup>
             )
         }
