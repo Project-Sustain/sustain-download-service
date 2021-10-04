@@ -76,15 +76,26 @@ export default function DatasetSearching(props: any) {
     const classes = useStyles();
     const [countiesVisible, setCountiesVisible] = useState(false);
 
+
+    // const topojson = require('topojson-client@3');
+    const width = 960;
+    const height = 600;
+    const selectedStateId = 7;
+    // const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
+    // const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
+    // const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
+    // const path = d3.geoPath().projection(projection);
+
+    // console.log({countiesData})
+
     console.log({stateCountyDataPaths});
 
     const objects = stateCountyDataPaths.objects.states.geometries;
     console.log({objects});
-    objects.forEach(state => {
-        console.log(state.properties.name)
-    })
+    // objects.forEach(state => {
+    //     console.log(state.properties.name)
+    // })
 
-    // const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
 
     function getCountyButtonName() {
         return countiesVisible ? "Hide Counties" : "See Counties";
