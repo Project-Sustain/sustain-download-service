@@ -62,9 +62,11 @@ END OF TERMS AND CONDITIONS
     stroke: #666;
     stroke-width: 1;
 }
+
 .state:hover{
     fill: #1700e6 !important;
 }
+
 .hovered-state-text{
     opacity: 0.95;
     display: none;

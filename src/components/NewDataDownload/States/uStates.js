@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import * as d3 from 'd3';
-import "../stateStyles.css";
+import "../rawStyles.css";
 import {uStatePaths} from "./StateInfo";
 
 export function Draw(id, setSelectedState, setHoveredState){
