@@ -57,32 +57,44 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
-import CountyMap from "./CountyMap";
-import DatasetSearching from "./DatasetSearching";
-import {Grid, Paper} from "@material-ui/core";
+import React, { useEffect } from "react";
+import * as d3 from 'd3';
+import { Draw } from "./uStates";
+import {chosenState, selectedState, unSelectedState} from "./StateInfo";
 
-export default function CounySection(props: any) {
-    if(props.state.countiesVisible) {
-        return (
-            <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <Grid item className={props.classes.map}>
-                    <CountyMap countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible} classes={props.classes} />
-                </Grid>
-                <Grid item className={props.classes.datasetSection}>
-                    <Paper elevation={3} className={props.classes.paper}>
-                        <DatasetSearching county={true}/>
-                    </Paper>
-                </Grid>
-            </Grid>
-        )
+export default function StatesMap(props: any) {
+    const allStatesHTML = d3.select("#statesvg").selectAll(".state");
+    // @ts-ignore
+    const nodeList = allStatesHTML["_groups"][0];
+
+    if(nodeList) {
+        nodeList.forEach((node: any) => {
+            if(props.statesMatchingSearch.length === nodeList.length) {
+                node.style.fill = unSelectedState;
+            }
+            else {
+                if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
+                    node.style.fill = selectedState;
+                }
+                else {
+                    node.style.fill = unSelectedState;
+                }
+            }
+            if(props.selectedState === node["__data__"].stateName) {
+                node.style.fill = chosenState;
+            }
+        })
     }
-    else {
-        return null;
-    }
+
+    useEffect(() => {
+        // @ts-ignore
+        Draw("#statesvg", props.setSelectedState, props.setHoveredState);
+        d3.select(window.frameElement).style("height", "600px");
+    });
+
+    return (
+        <div>
+            <svg width="960" height="600" id="statesvg" />
+        </div>
+    )
 }

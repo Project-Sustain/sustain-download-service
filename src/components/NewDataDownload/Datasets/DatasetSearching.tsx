@@ -61,7 +61,7 @@ import React from "react";
 import DatasetTable from "./DatasetTable";
 import {Button, ButtonGroup} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../global/GlobalTheme";
+import theme from "../../../global/GlobalTheme";
 // @ts-ignore
 import * as topojson from 'topojson';
 

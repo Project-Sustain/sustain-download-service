@@ -57,44 +57,34 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, { useEffect } from "react";
+import React from "react";
+import {Paper, Typography} from "@material-ui/core";
+import {stateCountyDataPaths} from "../Utils/StateCountyData";
 import * as d3 from 'd3';
-import { Draw } from "./uStates";
-import {chosenState, selectedState, unSelectedState} from "./StateInfo";
+// @ts-ignore
+import * as topojson from 'topojson';
 
-export default function USMap(props: any) {
-    const allStatesHTML = d3.select("#statesvg").selectAll(".state");
-    // @ts-ignore
-    const nodeList = allStatesHTML["_groups"][0];
+export default function CounyMap(props: any) {
 
-    if(nodeList) {
-        nodeList.forEach((node: any) => {
-            if(props.statesMatchingSearch.length === nodeList.length) {
-                node.style.fill = unSelectedState;
-            }
-            else {
-                if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
-                    node.style.fill = selectedState;
-                }
-                else {
-                    node.style.fill = unSelectedState;
-                }
-            }
-            if(props.selectedState === node["__data__"].stateName) {
-                node.style.fill = chosenState;
-            }
-        })
-    }
+    const width = 960;
+    const height = 600;
+    const selectedStateId = 7;
+    const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
+    const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
+    const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
+    const path = d3.geoPath().projection(projection);
 
-    useEffect(() => {
-        // @ts-ignore
-        Draw("#statesvg", props.setSelectedState, props.setHoveredState);
-        d3.select(window.frameElement).style("height", "600px");
-    });
+    console.log({stateCountyDataPaths});
+    const objects = stateCountyDataPaths.objects.states.geometries;
+    console.log({objects});
+    // objects.forEach(state => {
+    //     console.log(state.properties.name)
+    // })
 
     return (
-        <div>
-            <svg width="960" height="600" id="statesvg" />
-        </div>
+        <Paper className={props.classes.paper} elevation={3}>
+            <Typography>Counties Here</Typography>
+        </Paper>
     )
+
 }

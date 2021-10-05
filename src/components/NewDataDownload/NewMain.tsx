@@ -60,14 +60,9 @@ END OF TERMS AND CONDITIONS
 
 import React, {useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Paper, Typography} from '@material-ui/core';
 import theme from "../../global/GlobalTheme";
-import USMap from "./USMap";
-import DatasetSearching from "./DatasetSearching";
-import StateSelector from "./StateSelector";
-import DatasetSelector from "./DatasetSelector";
-import CountySection from "./CountySection";
-import StateSection from "./StateSection";
+import CountySection from "./Counties/CountySection";
+import StateSection from "./States/StateSection";
 
 const useStyles = makeStyles({
     paper: {

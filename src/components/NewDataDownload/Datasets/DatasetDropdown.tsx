@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import {FormControl, InputLabel, Select} from "@material-ui/core";
 import {stateToDatasetMapping} from "./DummyDatasets";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../global/GlobalTheme";
+import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
     root: {

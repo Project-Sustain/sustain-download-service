@@ -1,4 +1,4 @@
-import {statesArray} from "./StateInfo";
+import {statesArray} from "../States/StateInfo";
 
 const dummyDatasets = ["Heatwaves", "Social Vulnerability Index (SVI)", "Neon Barometric Pressure", "Neon Soil Temperature", "Maximum Heatwave Temperature",
                         "Neon 2d Wind", "Neon Precipitation", "National Risk Index", "Electrical Substations", "Electrical Transmission Lines", "Minimum Heatwave Temperature"];
@@ -22,8 +22,7 @@ function associateDatasetsAndStates() {
 function generateRandomDatasetArray() {
     const length = getRandomInt(2, 11);
     const indexArray = Array.from({length: length}, () => Math.floor(Math.random() * length));
-    const uniqueIndexArray = [...new Set(indexArray)];
-    return uniqueIndexArray;
+    return [...new Set(indexArray)];
 }
 
 function getRandomInt(min, max) {

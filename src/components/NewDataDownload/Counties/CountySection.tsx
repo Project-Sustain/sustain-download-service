@@ -57,37 +57,32 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-
 import React from "react";
-import {Grid, Paper, Typography} from '@material-ui/core';
-import USMap from "./USMap";
-import DatasetSearching from "./DatasetSearching";
-import StateSelector from "./StateSelector";
-import DatasetSelector from "./DatasetSelector";
-import FauxTooltip from "./FauxTooltip";
+import CountyMap from "./CountyMap";
+import DatasetSearching from "../Datasets/DatasetSearching";
+import {Grid, Paper} from "@material-ui/core";
 
-export default function StateSection(props:any) {
-    return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={props.classes.map}>
-                <Paper elevation={3} className={props.classes.paper}>
-                    <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
-                    <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
-                    <USMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
-                           setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} />
-                    <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
-                </Paper>
+export default function CounySection(props: any) {
+    if(props.state.countiesVisible) {
+        return (
+            <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Grid item className={props.classes.map}>
+                    <CountyMap countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible} classes={props.classes} />
+                </Grid>
+                <Grid item className={props.classes.datasetSection}>
+                    <Paper elevation={3} className={props.classes.paper}>
+                        <DatasetSearching county={true}/>
+                    </Paper>
+                </Grid>
             </Grid>
-            <Grid item className={props.classes.datasetSection}>
-                <Paper elevation={3} className={props.classes.paper}>
-                    <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
-                                      countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
-                </Paper>
-            </Grid>
-        </Grid>
-    )
+        )
+    }
+    else {
+        return null;
+    }
 }

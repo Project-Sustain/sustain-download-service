@@ -57,40 +57,37 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React from "react";
-import {capitalizeStates, uStatePaths} from "./StateInfo";
-import {TextField} from "@material-ui/core";
-import {stateToDatasetMapping} from "./DummyDatasets";
+import {Grid, Paper} from '@material-ui/core';
+import StatesMap from "./StatesMap";
+import DatasetSearching from "../Datasets/DatasetSearching";
+import StateSelector from "./StateSelector";
+import DatasetSelector from "../Datasets/DatasetSelector";
+import FauxTooltip from "../Utils/FauxTooltip";
 
-export default function DatasetSelector(props: any) {
-    let statesArray: string[] = [];
-    uStatePaths.forEach((state) => {
-        statesArray.push(state.stateName.toLowerCase());
-    });
-
-    const handleChange = (event: any) => {
-        const searchString = event.target.value;
-        const statesWithMatchingDatasets = [];
-        for(const [state, datasets] of Object.entries(stateToDatasetMapping)) {
-            let lowercaseDatasets: any = [];
-            datasets.forEach((dataset: String) => {
-                lowercaseDatasets.push(dataset.toLowerCase());
-            })
-            const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
-            if(matches.length > 0) {
-                statesWithMatchingDatasets.push(state);
-            }
-        }
-        props.setStatesMatchingSearch(capitalizeStates(statesWithMatchingDatasets));
-    };
-
+export default function StateSection(props:any) {
     return (
-        <TextField
-            className={props.class}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder="Search Datasets"
-        />
-    );
-
+        <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center">
+            <Grid item className={props.classes.map}>
+                <Paper elevation={3} className={props.classes.paper}>
+                    <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+                    <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+                    <StatesMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
+                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} />
+                    <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
+                </Paper>
+            </Grid>
+            <Grid item className={props.classes.datasetSection}>
+                <Paper elevation={3} className={props.classes.paper}>
+                    <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
+                                      countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
+                </Paper>
+            </Grid>
+        </Grid>
+    )
 }
