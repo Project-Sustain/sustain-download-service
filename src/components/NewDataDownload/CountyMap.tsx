@@ -81,14 +81,10 @@ export default function CounyMap(props: any) {
     //     console.log(state.properties.name)
     // })
 
-    if(props.countiesVisible) {
-        return (
-            <Paper className={props.class} elevation={3}>
-                <Typography>Counties Here</Typography>
-            </Paper>
-        )
-    }
-    else {
-        return null;
-    }
+    return (
+        <Paper className={props.class} elevation={3}>
+            <Typography>Counties Here</Typography>
+        </Paper>
+    )
+
 }

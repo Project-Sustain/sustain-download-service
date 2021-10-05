@@ -66,7 +66,7 @@ import USMap from "./USMap";
 import DatasetSearching from "./DatasetSearching";
 import StateSelector from "./StateSelector";
 import DatasetSelector from "./DatasetSelector";
-import CountyMap from "./CountyMap";
+import CountySection from "./CountySection";
 
 const useStyles = makeStyles({
     paper: {
@@ -92,31 +92,38 @@ export default function Main() {
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
     const [countiesVisible, setCountiesVisible] = useState(false);
     return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={classes.map}>
-                <Paper elevation={3} className={classes.paper}>
-                    <StateSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <DatasetSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <USMap statesMatchingSearch={statesMatchingSearch} setSelectedState={setSelectedState}
-                           setHoveredState={setHoveredState} selectedState={selectedState} />
-                    <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
-                        <Typography>{hoveredState}</Typography>
+        <>
+            <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center">
+                <Grid item className={classes.map}>
+                    <Paper elevation={3} className={classes.paper}>
+                        <StateSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
+                        <DatasetSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
+                        <USMap statesMatchingSearch={statesMatchingSearch} setSelectedState={setSelectedState}
+                               setHoveredState={setHoveredState} selectedState={selectedState} />
+                        <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
+                            <Typography>{hoveredState}</Typography>
+                        </Paper>
                     </Paper>
-                </Paper>
+                </Grid>
+                <Grid item className={classes.datasetSection}>
+                    <Paper elevation={3} className={classes.paper}>
+                        <DatasetSearching state={true} selectedState={selectedState} setSelectedState={setSelectedState}
+                                          countiesVisible={countiesVisible} setCountiesVisible={setCountiesVisible}/>
+                    </Paper>
+                </Grid>
             </Grid>
-            <Grid item className={classes.datasetSection}>
-                <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState} setSelectedState={setSelectedState}
-                                      countiesVisible={countiesVisible} setCountiesVisible={setCountiesVisible}/>
-                </Paper>
+            <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                >
+                <CountySection countiesVisible={countiesVisible} setCountiesVisible={setCountiesVisible} paperClass={classes.paper} mapClass={classes.map} dataSection={classes.datasetSection} />
             </Grid>
-            <Grid item className={classes.map}>
-                <CountyMap countiesVisible={countiesVisible} setCountiesVisible={setCountiesVisible} class={classes.paper} />
-            </Grid>
-        </Grid>
+        </>
     )
 }

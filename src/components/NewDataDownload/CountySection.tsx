@@ -58,60 +58,31 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import DatasetTable from "./DatasetTable";
-import {Button, ButtonGroup} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../global/GlobalTheme";
-// @ts-ignore
-import * as topojson from 'topojson';
+import CountyMap from "./CountyMap";
+import DatasetSearching from "./DatasetSearching";
+import {Grid, Paper} from "@material-ui/core";
 
-const useStyles = makeStyles({
-    root: {
-        margin: theme.spacing(1),
-    },
-});
-
-export default function DatasetSearching(props: any) {
-    const classes = useStyles();
-
-    function getCountyButtonName() {
-        if(props.state) {
-            return props.countiesVisible ? "Hide Counties" : "See Counties";
-        }
+export default function CounySection(props: any) {
+    if(props.countiesVisible) {
+        return (
+            <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Grid item className={props.mapClass}>
+                    <CountyMap countiesVisible={props.countiesVisible} setCountiesVisible={props.setCountiesVisible} class={props.paperClass} />
+                </Grid>
+                <Grid item className={props.dataSection}>
+                    <Paper elevation={3} className={props.paperClass}>
+                        <DatasetSearching county={true}/>
+                    </Paper>
+                </Grid>
+            </Grid>
+        )
     }
-
-    function renderControls() {
-        if(props.state) {
-            if (props.selectedState) {
-                return (
-                    <ButtonGroup className={classes.root}>
-                        <Button variant="outlined" onClick={() => {
-                            props.setSelectedState("");
-                            props.setCountiesVisible(false);
-                        }}>Clear Selected State</Button>
-                        <Button variant="outlined" onClick={() => {
-                            props.setCountiesVisible(!props.countiesVisible)
-                        }}>{getCountyButtonName()}</Button>
-                    </ButtonGroup>
-                )
-            }
-        }
-         else if(props.county) {
-             return (
-                    <Button variant="outlined" onClick={() => {
-                        // props.setSelectedState("");
-                        // props.setCountiesVisible(false);
-                    }}>Clear Selected County</Button>
-             )
-        }
+    else {
+        return null;
     }
-
-    return (
-        <>
-            {renderControls()}
-            {props.state ? <DatasetTable selectedState={props.selectedState}/> : null}
-
-            {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
-        </>
-    )
 }
