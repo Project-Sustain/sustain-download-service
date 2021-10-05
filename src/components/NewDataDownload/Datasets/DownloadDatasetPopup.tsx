@@ -57,36 +57,62 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
-import {capitalizeStates} from "../States/StateInfo";
-import {TextField} from "@material-ui/core";
-import {stateToDatasetMapping} from "./DummyDatasets";
+import React, {useState} from "react";
+import {Button, ButtonGroup, Grid, Modal, Paper, Typography} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../../global/GlobalTheme";
 
-export default function DatasetSelector(props: any) {
+const useStyles = makeStyles({
+    modal: {
+        padding: theme.spacing(1),
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: "400px",
+        bgcolor: 'background.paper',
+        p: "4",
+    },
+    modalSection: {
+        margin: theme.spacing(1),
+    }
+});
 
-    const handleChange = (event: any) => {
-        const searchString = event.target.value;
-        const statesWithMatchingDatasets = [];
-        for(const [state, datasets] of Object.entries(stateToDatasetMapping)) {
-            let lowercaseDatasets: any = [];
-            datasets.forEach((dataset: String) => {
-                lowercaseDatasets.push(dataset.toLowerCase());
-            })
-            const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
-            if(matches.length > 0) {
-                statesWithMatchingDatasets.push(state);
-            }
-        }
-        props.setStatesMatchingSearch(capitalizeStates(statesWithMatchingDatasets));
-    };
+export default function DownloadDatasetPopup(props: any) {
+    const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     return (
-        <TextField
-            className={props.class}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder="Search Datasets"
-        />
+        <div>
+            <Button variant="outlined" color="primary" onClick={handleOpen}>Download</Button>
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <Paper elevation={3} className={classes.modal}>
+                    <Typography className={classes.modalSection} variant="h6" component="h2">
+                        {props.dataset}
+                    </Typography>
+                    <Typography className={classes.modalSection}>
+                        Here is some more info about this dataset. We should include an example of the data.
+                    </Typography>
+                    <Grid
+                        className={classes.modalSection}
+                        container
+                        direction="row"
+                        justifyContent="space-evenly"
+                        alignItems="center">
+                        <Grid item>
+                            <Button variant="outlined" color="primary">Download this Dataset</Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="outlined" onClick={handleClose}>Close</Button>
+                        </Grid>
+                    </Grid>
+                    </Paper>
+            </Modal>
+        </div>
     );
-
 }

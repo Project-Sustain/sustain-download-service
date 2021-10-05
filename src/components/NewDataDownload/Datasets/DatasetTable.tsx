@@ -70,6 +70,7 @@ import {
 } from '@material-ui/core';
 import {stateToDatasetMapping} from "./DummyDatasets";
 import {makeStyles} from "@material-ui/core/styles";
+import DownloadDatasetPopup from "./DownloadDatasetPopup";
 
 const useStyles = makeStyles({
     root: {
@@ -112,7 +113,7 @@ export default function DatasetTable(props: any) {
                         {dataset}
                     </TableCell>
                     <TableCell align="right">
-                        <Button color="primary" variant="outlined">More Info</Button>
+                        <DownloadDatasetPopup dataset={dataset} />
                     </TableCell>
                 </TableRow>
             )
