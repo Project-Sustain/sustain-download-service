@@ -64,7 +64,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
 import {stateCountyDataPaths} from "./StateCountyData";
 import * as d3 from 'd3';
-// import * as topojson from 'topojson';
+// @ts-ignore
+import * as topojson from 'topojson';
 
 const useStyles = makeStyles({
     root: {
@@ -76,20 +77,15 @@ export default function DatasetSearching(props: any) {
     const classes = useStyles();
     const [countiesVisible, setCountiesVisible] = useState(false);
 
-
-    // const topojson = require('topojson-client@3');
     const width = 960;
     const height = 600;
     const selectedStateId = 7;
-    // const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
-    // const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
-    // const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
-    // const path = d3.geoPath().projection(projection);
-
-    // console.log({countiesData})
+    const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
+    const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
+    const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
+    const path = d3.geoPath().projection(projection);
 
     console.log({stateCountyDataPaths});
-
     const objects = stateCountyDataPaths.objects.states.geometries;
     console.log({objects});
     // objects.forEach(state => {
