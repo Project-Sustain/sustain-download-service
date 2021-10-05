@@ -59,35 +59,12 @@ END OF TERMS AND CONDITIONS
 */
 
 import React from "react";
-import {Grid, Paper, Typography} from '@material-ui/core';
-import USMap from "./USMap";
-import DatasetSearching from "./DatasetSearching";
-import StateSelector from "./StateSelector";
-import DatasetSelector from "./DatasetSelector";
-import FauxTooltip from "./FauxTooltip";
+import {Paper, Typography} from '@material-ui/core';
 
-export default function StateSection(props:any) {
+export default function FauxTooltip(props:any) {
     return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={props.classes.map}>
-                <Paper elevation={3} className={props.classes.paper}>
-                    <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
-                    <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
-                    <USMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
-                           setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} />
-                    <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
-                </Paper>
-            </Grid>
-            <Grid item className={props.classes.datasetSection}>
-                <Paper elevation={3} className={props.classes.paper}>
-                    <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
-                                      countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
-                </Paper>
-            </Grid>
-        </Grid>
+        <Paper elevation={3} id={props.id} className={props.class}>
+            <Typography>{props.title}</Typography>
+        </Paper>
     )
 }
