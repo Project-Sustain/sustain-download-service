@@ -88,7 +88,7 @@ export default function DatasetTable(props: any) {
                     <TableHead>
                         <TableRow>
                             <TableCell>Datasets in {props.selectedState}</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
