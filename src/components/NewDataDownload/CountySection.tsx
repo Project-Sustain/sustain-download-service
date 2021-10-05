@@ -63,7 +63,7 @@ import DatasetSearching from "./DatasetSearching";
 import {Grid, Paper} from "@material-ui/core";
 
 export default function CounySection(props: any) {
-    if(props.countiesVisible) {
+    if(props.state.countiesVisible) {
         return (
             <Grid
                 container
@@ -71,11 +71,11 @@ export default function CounySection(props: any) {
                 justifyContent="center"
                 alignItems="center"
             >
-                <Grid item className={props.mapClass}>
-                    <CountyMap countiesVisible={props.countiesVisible} setCountiesVisible={props.setCountiesVisible} class={props.paperClass} />
+                <Grid item className={props.classes.map}>
+                    <CountyMap countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible} classes={props.classes} />
                 </Grid>
-                <Grid item className={props.dataSection}>
-                    <Paper elevation={3} className={props.paperClass}>
+                <Grid item className={props.classes.datasetSection}>
+                    <Paper elevation={3} className={props.classes.paper}>
                         <DatasetSearching county={true}/>
                     </Paper>
                 </Grid>

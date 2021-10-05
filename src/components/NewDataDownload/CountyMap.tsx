@@ -82,7 +82,7 @@ export default function CounyMap(props: any) {
     // })
 
     return (
-        <Paper className={props.class} elevation={3}>
+        <Paper className={props.classes.paper} elevation={3}>
             <Typography>Counties Here</Typography>
         </Paper>
     )

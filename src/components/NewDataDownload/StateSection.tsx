@@ -58,55 +58,37 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
 import {Grid, Paper, Typography} from '@material-ui/core';
-import theme from "../../global/GlobalTheme";
 import USMap from "./USMap";
 import DatasetSearching from "./DatasetSearching";
 import StateSelector from "./StateSelector";
 import DatasetSelector from "./DatasetSelector";
-import CountySection from "./CountySection";
-import StateSection from "./StateSection";
 
-const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-    searchBox: {
-        margin: theme.spacing(1),
-    },
-});
-
-export default function Main() {
-    const classes = useStyles();
-    const [hoveredState, setHoveredState] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    const [countiesMatchingSearch, setCountiesMatchingSearch] = useState([]);
-    const [countiesVisible, setCountiesVisible] = useState(false);
-
-    const stateForStates = {
-        hoveredState, setHoveredState, selectedState, setSelectedState, statesMatchingSearch, setStatesMatchingSearch,
-        countiesVisible, setCountiesVisible
-    }
-
-    const stateForCounties = {
-        selectedState, countiesMatchingSearch, setCountiesMatchingSearch, countiesVisible
-    }
-
+export default function StateSection(props:any) {
     return (
-        <>
-            <StateSection state={stateForStates} classes={classes} />
-            <CountySection state={stateForCounties} classes={classes} />
-        </>
+        <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center">
+            <Grid item className={props.classes.map}>
+                <Paper elevation={3} className={props.classes.paper}>
+                    <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+                    <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+                    <USMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
+                           setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} />
+                    <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
+                        <Typography>{props.state.hoveredState}</Typography>
+                    </Paper>
+                </Paper>
+            </Grid>
+            <Grid item className={props.classes.datasetSection}>
+                <Paper elevation={3} className={props.classes.paper}>
+                    <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
+                                      countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
+                </Paper>
+            </Grid>
+        </Grid>
     )
 }
