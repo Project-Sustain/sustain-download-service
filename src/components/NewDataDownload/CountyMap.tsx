@@ -57,66 +57,38 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+import React from "react";
+import {Paper, Typography} from "@material-ui/core";
+import {stateCountyDataPaths} from "./StateCountyData";
+import * as d3 from 'd3';
+// @ts-ignore
+import * as topojson from 'topojson';
 
-import React, {useState} from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Paper, Typography} from '@material-ui/core';
-import theme from "../../global/GlobalTheme";
-import USMap from "./USMap";
-import DatasetSearching from "./DatasetSearching";
-import StateSelector from "./StateSelector";
-import DatasetSelector from "./DatasetSelector";
-import CountyMap from "./CountyMap";
+export default function CounyMap(props: any) {
 
-const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-    searchBox: {
-        margin: theme.spacing(1),
-    },
-});
+    const width = 960;
+    const height = 600;
+    const selectedStateId = 7;
+    const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
+    const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
+    const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
+    const path = d3.geoPath().projection(projection);
 
-export default function Main() {
-    const classes = useStyles();
-    const [hoveredState, setHoveredState] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    const [countiesVisible, setCountiesVisible] = useState(false);
-    return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <Grid item className={classes.map}>
-                <Paper elevation={3} className={classes.paper}>
-                    <StateSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <DatasetSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-                    <USMap statesMatchingSearch={statesMatchingSearch} setSelectedState={setSelectedState}
-                           setHoveredState={setHoveredState} selectedState={selectedState} />
-                    <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
-                        <Typography>{hoveredState}</Typography>
-                    </Paper>
-                </Paper>
-            </Grid>
-            <Grid item className={classes.datasetSection}>
-                <Paper elevation={3} className={classes.paper}>
-                    <DatasetSearching selectedState={selectedState} setSelectedState={setSelectedState}
-                                      countiesVisible={countiesVisible} setCountiesVisible={setCountiesVisible}/>
-                </Paper>
-            </Grid>
-            <Grid item className={classes.map}>
-                <CountyMap countiesVisible={countiesVisible} setCountiesVisible={setCountiesVisible} class={classes.paper} />
-            </Grid>
-        </Grid>
-    )
+    console.log({stateCountyDataPaths});
+    const objects = stateCountyDataPaths.objects.states.geometries;
+    console.log({objects});
+    // objects.forEach(state => {
+    //     console.log(state.properties.name)
+    // })
+
+    if(props.countiesVisible) {
+        return (
+            <Paper className={props.class} elevation={3}>
+                <Typography>Counties Here</Typography>
+            </Paper>
+        )
+    }
+    else {
+        return null;
+    }
 }

@@ -57,13 +57,11 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useState} from "react";
+import React from "react";
 import DatasetTable from "./DatasetTable";
 import {Button, ButtonGroup} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
-import {stateCountyDataPaths} from "./StateCountyData";
-import * as d3 from 'd3';
 // @ts-ignore
 import * as topojson from 'topojson';
 
@@ -75,26 +73,9 @@ const useStyles = makeStyles({
 
 export default function DatasetSearching(props: any) {
     const classes = useStyles();
-    const [countiesVisible, setCountiesVisible] = useState(false);
-
-    const width = 960;
-    const height = 600;
-    const selectedStateId = 7;
-    const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
-    const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
-    const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
-    const path = d3.geoPath().projection(projection);
-
-    console.log({stateCountyDataPaths});
-    const objects = stateCountyDataPaths.objects.states.geometries;
-    console.log({objects});
-    // objects.forEach(state => {
-    //     console.log(state.properties.name)
-    // })
-
 
     function getCountyButtonName() {
-        return countiesVisible ? "Hide Counties" : "See Counties";
+        return props.countiesVisible ? "Hide Counties" : "See Counties";
     }
 
     function renderStateControls() {
@@ -103,10 +84,10 @@ export default function DatasetSearching(props: any) {
                 <ButtonGroup className={classes.root}>
                     <Button variant="outlined" onClick={() => {
                         props.setSelectedState("");
-                        setCountiesVisible(false);
+                        props.setCountiesVisible(false);
                     }}>Clear Selected State</Button>
                     <Button variant="outlined" onClick={() => {
-                        setCountiesVisible(!countiesVisible)
+                        props.setCountiesVisible(!props.countiesVisible)
                     }}>{getCountyButtonName()}</Button>
                 </ButtonGroup>
             )
