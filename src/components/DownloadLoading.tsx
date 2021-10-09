@@ -74,6 +74,7 @@ export default function DownloadLoading() {
 
     return <div>
         <Typography variant="h4" gutterBottom>Fetching your data...</Typography>
+        <Typography variant="subtitle1">This may take some time ({'>'} than a few minutes for some State-level downloads). Do not close your browser during this process.</Typography>
         <br/>
         <CircularProgress className={classes.progress}/>
     </div>
