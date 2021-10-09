@@ -62,6 +62,7 @@ import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
 import { sustain_querier } from "../library/grpc_querier.js";
 import DownloadResult, { downloadMeta } from "../types/DownloadResult";
 import region from "../types/region";
+const simplify = require('simplify-geojson')
 
 const querier = sustain_querier();
 
@@ -98,7 +99,6 @@ export default async function Download(currentDataset: any, regionSelected: regi
         return { data: d, geometry: geospatialData, meta }
     }
     const regionGeometry = await getRegionGeometry(GISJOIN)
-    console.log({regionGeometry})
 
     let collection: string = currentDataset.collection;
     if (isLinked(currentDataset)) {
@@ -122,7 +122,7 @@ const getRegionGeometry = async (GISJOIN: string) => {
     if (GISJOIN.length === 8) {
         return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
     }
-    return await mongoQuery("state_geo_40mb", [{ $match: { GISJOIN } }])
+    return await mongoQuery("state_geo_7mb", [{ $match: { GISJOIN } }])
 }
 
 
