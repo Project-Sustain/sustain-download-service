@@ -85,7 +85,7 @@ export default function DatasetSelector(props: any) {
             className={props.class}
             variant="outlined"
             onChange={handleChange}
-            placeholder="Search Datasets"
+            placeholder="ex: Neon 2d Wind"
         />
     );
 

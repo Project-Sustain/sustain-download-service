@@ -74,7 +74,7 @@ export default function StateSelector(props: any) {
             className={props.class}
             variant="outlined"
             onChange={handleChange}
-            placeholder="Search States"
+            placeholder="ex: Colorado"
         />
     );
 
