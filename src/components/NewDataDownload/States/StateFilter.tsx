@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FormControl, MenuItem, Select} from "@material-ui/core";
+import {Select} from "@material-ui/core";
 
 export default function BasicSelect(props: any) {
 
@@ -8,15 +8,13 @@ export default function BasicSelect(props: any) {
     };
 
     return (
-        <FormControl>
-            <Select
-                variant="outlined"
-                value={props.stateFilterType}
-                onChange={handleChange}
-            >
-                <MenuItem value={0}>Name</MenuItem>
-                <MenuItem value={1}>Dataset</MenuItem>
-            </Select>
-        </FormControl>
+        <Select
+            variant="outlined"
+            value={props.stateFilterType}
+            onChange={handleChange}
+        >
+            <option value={0}>Name</option>
+            <option value={1}>Dataset</option>
+        </Select>
     );
 }
