@@ -66,7 +66,8 @@ import {stateToDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
-        margin: theme.spacing(1),
+        // margin: theme.spacing(1),
+        width: "100%"
     },
 });
 
@@ -75,6 +76,8 @@ export default function DatasetFiler(props: any) {
     const [searchString, setSearchString] = useState("");
     // @ts-ignore
     const allStateDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
+
+    const placeHolderText = `Filter Datasets in ${props.selectedState}`;
 
     useEffect(() => {
         if(searchString === "") {
@@ -94,7 +97,7 @@ export default function DatasetFiler(props: any) {
             className={classes.root}
             variant="outlined"
             onChange={handleChange}
-            placeholder="Filter Datasets"
+            placeholder={placeHolderText}
         />
     );
 }

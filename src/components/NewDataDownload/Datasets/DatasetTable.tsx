@@ -85,7 +85,7 @@ export default function DatasetTable(props: any) {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Displaying {props.stateDatasets.length} for {props.selectedState}</TableCell>
+                            <TableCell>Displaying {props.stateDatasets.length} in {props.selectedState}</TableCell>
                             <TableCell align="center"></TableCell>
                         </TableRow>
                     </TableHead>
