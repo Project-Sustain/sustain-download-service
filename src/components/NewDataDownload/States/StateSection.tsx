@@ -67,6 +67,14 @@ import DatasetSelector from "../Datasets/DatasetSelector";
 import FauxTooltip from "../Utils/FauxTooltip";
 
 export default function StateSection(props:any) {
+
+    function renderDatasets() {
+        if(props.state.selectedState) {
+            return <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
+                                  countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
+        }
+    }
+
     return (
         <Grid
             container
@@ -84,8 +92,7 @@ export default function StateSection(props:any) {
             </Grid>
             <Grid item className={props.classes.datasetSection}>
                 <Paper elevation={3} className={props.classes.paper}>
-                    <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
-                                      countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
+                    {renderDatasets()}
                 </Paper>
             </Grid>
         </Grid>

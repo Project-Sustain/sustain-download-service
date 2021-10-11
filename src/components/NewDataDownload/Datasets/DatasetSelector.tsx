@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {capitalizeStates} from "../States/StateInfo";
+import {capitalizeArray} from "../States/StateInfo";
 import {TextField} from "@material-ui/core";
 import {stateToDatasetMapping} from "./DummyDatasets";
 
@@ -77,7 +77,7 @@ export default function DatasetSelector(props: any) {
                 statesWithMatchingDatasets.push(state);
             }
         }
-        props.setStatesMatchingSearch(capitalizeStates(statesWithMatchingDatasets));
+        props.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
     };
 
     return (

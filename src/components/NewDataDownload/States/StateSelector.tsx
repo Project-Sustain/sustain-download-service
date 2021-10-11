@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {capitalizeStates, statesArray} from "./StateInfo";
+import {capitalizeArray, statesArray} from "./StateInfo";
 import {TextField} from "@material-ui/core";
 
 export default function StateSelector(props: any) {
@@ -66,7 +66,7 @@ export default function StateSelector(props: any) {
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         const matches = statesArray.filter(state => state.includes(searchString.toLowerCase()));
-        props.setStatesMatchingSearch(capitalizeStates(matches));
+        props.setStatesMatchingSearch(capitalizeArray(matches));
     };
 
     return (

@@ -58,63 +58,33 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {
-    Button,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-} from '@material-ui/core';
-import {stateToDatasetMapping} from "./DummyDatasets";
 import {makeStyles} from "@material-ui/core/styles";
-import DownloadDatasetPopup from "./DownloadDatasetPopup";
+import theme from "../../../global/GlobalTheme";
+import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
+import {TextField} from "@material-ui/core";
 
 const useStyles = makeStyles({
     root: {
-        maxHeight: "80%",
+        margin: theme.spacing(1),
     },
 });
 
-export default function DatasetTable(props: any) {
+export default function DatasetFiler(props: any) {
     const classes = useStyles();
 
-    if(props.stateDatasets) {
-        return (
-            <TableContainer component={Paper} className={classes.root}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Datasets in {props.selectedState}</TableCell>
-                            <TableCell align="center">{props.stateDatasets.length}</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {renderDatasetRows()}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        )
-    }
+    const handleChange = (event: any) => {
+        const searchString = event.target.value;
+        const datasets = lowercaseArray(props.stateDatasets);
+        const matches = datasets.filter((state:any) => state.includes(searchString.toLowerCase()));
+        props.setStateDatasets(capitalizeArray(matches));
+    };
 
-    else {
-        return null
-    }
-
-    function renderDatasetRows() {
-        return props.stateDatasets.map((dataset: any, index: any) => {
-            return (
-                <TableRow key={index}>
-                    <TableCell>
-                        {dataset}
-                    </TableCell>
-                    <TableCell align="right">
-                        <DownloadDatasetPopup dataset={dataset} />
-                    </TableCell>
-                </TableRow>
-            )
-        })
-    }
+    return (
+        <TextField
+            className={classes.root}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder="Search States"
+        />
+    );
 }
