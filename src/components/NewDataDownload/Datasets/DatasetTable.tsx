@@ -59,7 +59,6 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {
-    Button,
     Paper,
     Table,
     TableBody,
@@ -68,7 +67,6 @@ import {
     TableHead,
     TableRow,
 } from '@material-ui/core';
-import {stateToDatasetMapping} from "./DummyDatasets";
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 
@@ -87,8 +85,8 @@ export default function DatasetTable(props: any) {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Datasets in {props.selectedState}</TableCell>
-                            <TableCell align="center">{props.stateDatasets.length}</TableCell>
+                            <TableCell>Displaying {props.stateDatasets.length} for {props.selectedState}</TableCell>
+                            <TableCell align="center"></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

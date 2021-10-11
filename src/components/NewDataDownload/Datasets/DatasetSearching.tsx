@@ -64,7 +64,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
 // @ts-ignore
-import * as topojson from 'topojson';
+// import * as topojson from 'topojson';
 import {stateToDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
@@ -113,7 +113,7 @@ export default function DatasetSearching(props: any) {
     return (
         <>
             {renderControls()}
-            <DatasetFilter stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} />
+            <DatasetFilter stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} selectedState={props.selectedState} />
             <DatasetTable selectedState={props.selectedState} stateDatasets={stateDatasets}/>
             {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
         </>

@@ -57,11 +57,12 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
 import {TextField} from "@material-ui/core";
+import {stateToDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
@@ -71,11 +72,20 @@ const useStyles = makeStyles({
 
 export default function DatasetFiler(props: any) {
     const classes = useStyles();
+    const [searchString, setSearchString] = useState("");
+    // @ts-ignore
+    const allStateDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
+
+    useEffect(() => {
+        if(searchString === "") {
+            props.setStateDatasets(allStateDatasets)
+        }
+    })
 
     const handleChange = (event: any) => {
-        const searchString = event.target.value;
-        const datasets = lowercaseArray(props.stateDatasets);
-        const matches = datasets.filter((state:any) => state.includes(searchString.toLowerCase()));
+        const input = event.target.value;
+        setSearchString(input);
+        const matches = lowercaseArray(allStateDatasets).filter((state:any) => state.includes(input.toLowerCase()));
         props.setStateDatasets(capitalizeArray(matches));
     };
 
@@ -84,7 +94,7 @@ export default function DatasetFiler(props: any) {
             className={classes.root}
             variant="outlined"
             onChange={handleChange}
-            placeholder="Search States"
+            placeholder="Filter Datasets"
         />
     );
 }

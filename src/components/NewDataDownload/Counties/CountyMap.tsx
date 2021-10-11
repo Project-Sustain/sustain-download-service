@@ -60,19 +60,19 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {Paper, Typography} from "@material-ui/core";
 import {stateCountyDataPaths} from "../Utils/StateCountyData";
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 // @ts-ignore
-import * as topojson from 'topojson';
+// import * as topojson from 'topojson';
 
 export default function CounyMap(props: any) {
 
-    const width = 960;
-    const height = 600;
-    const selectedStateId = 7;
-    const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
-    const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
-    const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
-    const path = d3.geoPath().projection(projection);
+    // const width = 960;
+    // const height = 600;
+    // const selectedStateId = 7;
+    // const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
+    // const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
+    // const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
+    // const path = d3.geoPath().projection(projection);
 
     console.log({stateCountyDataPaths});
     const objects = stateCountyDataPaths.objects.states.geometries;

@@ -71,7 +71,7 @@ export default function StateSection(props:any) {
     function renderDatasets() {
         if(props.state.selectedState) {
             return <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
-                                  countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
+                                     countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible} />
         }
     }
 
