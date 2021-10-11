@@ -59,14 +59,12 @@ END OF TERMS AND CONDITIONS
 */
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../../global/GlobalTheme";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
 import {TextField} from "@material-ui/core";
 import {stateToDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
-        // margin: theme.spacing(1),
         width: "100%"
     },
 });

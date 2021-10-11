@@ -69,7 +69,7 @@ import {stateToDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2),
     },
 });
 
@@ -88,7 +88,7 @@ export default function DatasetSearching(props: any) {
         if(props.state) {
             if (props.selectedState) {
                 return (
-                    <ButtonGroup className={classes.root}>
+                    <ButtonGroup size="large" className={classes.root}>
                         <Button variant="outlined" onClick={() => {
                             props.setSelectedState("");
                             props.setCountiesVisible(false);
@@ -114,7 +114,7 @@ export default function DatasetSearching(props: any) {
         <>
             {renderControls()}
             <DatasetFilter stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} selectedState={props.selectedState} />
-            <DatasetTable selectedState={props.selectedState} stateDatasets={stateDatasets}/>
+            <DatasetTable selectedState={props.selectedState} stateDatasets={stateDatasets} />
             {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
         </>
     )
