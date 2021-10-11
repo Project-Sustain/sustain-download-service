@@ -93,7 +93,7 @@ export default function DatasetSearching(props: any) {
                             props.setSelectedState("");
                             props.setCountiesVisible(false);
                         }}>Clear Selected State</Button>
-                        <Button variant="outlined" onClick={() => {
+                        <Button variant="outlined" disabled={true} onClick={() => {
                             props.setCountiesVisible(!props.countiesVisible)
                         }}>{getCountyButtonName()}</Button>
                     </ButtonGroup>

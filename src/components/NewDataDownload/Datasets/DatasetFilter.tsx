@@ -74,7 +74,6 @@ export default function DatasetFiler(props: any) {
     const [searchString, setSearchString] = useState("");
     // @ts-ignore
     const allStateDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
-
     const placeHolderText = `Filter Datasets in ${props.selectedState}`;
 
     useEffect(() => {
