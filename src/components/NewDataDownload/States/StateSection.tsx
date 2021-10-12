@@ -73,10 +73,6 @@ const useStyles = makeStyles({
     text: {
         margin: theme.spacing(1),
     },
-    filterGroup: {
-        // width: "50%",
-        // border: "1px solid #ccc",
-    },
 });
 
 export default function StateSection(props:any) {
@@ -108,7 +104,6 @@ export default function StateSection(props:any) {
             <Grid item className={props.classes.map}>
                 <Paper elevation={3} className={props.classes.paper}>
                     <Grid
-                        className={classes.filterGroup}
                         container
                         direction="row"
                         justifyContent="center"
