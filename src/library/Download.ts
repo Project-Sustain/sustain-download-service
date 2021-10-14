@@ -137,7 +137,7 @@ const mongoQuery = async (collection: string, pipeline: any[]) => {
         // stream.on('end', () => {
         //     resolve(returnData);
         // });
-        fetch(`http://lattice-100.cs.colostate.edu:8003/mongo`, {
+        fetch(`http://lattice-100.cs.colostate.edu:27182/mongo`, {
             method: 'POST', //This could be any http method
             headers: {
                 'Content-Type': 'application/json',
