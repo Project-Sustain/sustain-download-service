@@ -73,7 +73,7 @@ const useStyles = makeStyles({
 
     map: {
         position: "relative",
-    }
+    },
     text: {
         margin: theme.spacing(1),
     },
@@ -107,7 +107,6 @@ export default function StateSection(props:any) {
             justifyContent="center"
             alignItems="flex-start">
             <Grid item className={props.classes.map}>
-                <Paper elevation={3} className={props.classes.paper}>
                     <Grid
                         container
                         direction="row"
@@ -124,10 +123,7 @@ export default function StateSection(props:any) {
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
             </Grid>
             <Grid item className={props.classes.datasetSection}>
-
-                <Paper elevation={3} className={props.classes.paper}>
-                    {renderDatasets()}
-                </Paper>
+                {renderDatasets()}
             </Grid>
         </Grid>
     )
