@@ -62,7 +62,7 @@ import CountyMap from "./CountyMap";
 import DatasetSearching from "../Datasets/DatasetSearching";
 import {Grid, Paper} from "@material-ui/core";
 
-export default function CounySection(props: any) {
+export default function CountySection(props: any) {
     if(props.state.countiesVisible) {
         return (
             <Grid

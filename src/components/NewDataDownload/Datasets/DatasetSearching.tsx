@@ -57,13 +57,15 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
+import React, {useState} from "react";
 import DatasetTable from "./DatasetTable";
 import {Button, ButtonGroup} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
+import DatasetFilter from "./DatasetFilter";
 // @ts-ignore
-import * as topojson from 'topojson';
+// import * as topojson from 'topojson';
+import {stateToDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
@@ -77,6 +79,8 @@ const useStyles = makeStyles({
 
 export default function DatasetSearching(props: any) {
     const classes = useStyles();
+    // @ts-ignore
+    const [stateDatasets, setStateDatasets] = useState(stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]);
 
     function getCountyButtonName() {
         if(props.state) {
@@ -88,12 +92,13 @@ export default function DatasetSearching(props: any) {
         if(props.state) {
             if (props.selectedState) {
                 return (
+
                     <ButtonGroup className={classes.controls}>
                         <Button variant="outlined" onClick={() => {
                             props.setSelectedState("");
                             props.setCountiesVisible(false);
                         }}>Clear Selected State</Button>
-                        <Button variant="outlined" onClick={() => {
+                        <Button variant="outlined" disabled={true} onClick={() => {
                             props.setCountiesVisible(!props.countiesVisible)
                         }}>{getCountyButtonName()}</Button>
                     </ButtonGroup>
@@ -114,8 +119,8 @@ export default function DatasetSearching(props: any) {
 
         <div className={classes.root}>
             {renderControls()}
-            {props.state ? <DatasetTable selectedState={props.selectedState}/> : null}
-
+            <DatasetFilter stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} selectedState={props.selectedState} />
+            <DatasetTable selectedState={props.selectedState} stateDatasets={stateDatasets} />
             {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
         </div>
     )

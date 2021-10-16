@@ -57,34 +57,44 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
-import {Paper, Typography} from "@material-ui/core";
-import {stateCountyDataPaths} from "../Utils/StateCountyData";
-// import * as d3 from 'd3';
-// @ts-ignore
-// import * as topojson from 'topojson';
+import React, {useEffect, useState} from "react";
+import {makeStyles} from "@material-ui/core/styles";
+import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
+import {TextField} from "@material-ui/core";
+import {stateToDatasetMapping} from "./DummyDatasets";
 
-export default function CounyMap(props: any) {
+const useStyles = makeStyles({
+    root: {
+        width: "100%"
+    },
+});
 
-    // const width = 960;
-    // const height = 600;
-    // const selectedStateId = 7;
-    // const stateData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.states).features.filter((d: any) => d.id === selectedStateId);
-    // const countiesData = topojson.feature(stateCountyDataPaths, stateCountyDataPaths.objects.counties).features;
-    // const projection = d3.geoIdentity().fitSize([width, height], stateData[0]);
-    // const path = d3.geoPath().projection(projection);
+export default function DatasetFiler(props: any) {
+    const classes = useStyles();
+    const [searchString, setSearchString] = useState("");
+    // @ts-ignore
+    const allStateDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
+    const placeHolderText = `Filter Datasets in ${props.selectedState}`;
 
-    console.log({stateCountyDataPaths});
-    const objects = stateCountyDataPaths.objects.states.geometries;
-    console.log({objects});
-    // objects.forEach(state => {
-    //     console.log(state.properties.name)
-    // })
+    useEffect(() => {
+        if(searchString === "") {
+            props.setStateDatasets(allStateDatasets)
+        }
+    })
+
+    const handleChange = (event: any) => {
+        const input = event.target.value;
+        setSearchString(input);
+        const matches = lowercaseArray(allStateDatasets).filter((state:any) => state.includes(input.toLowerCase()));
+        props.setStateDatasets(capitalizeArray(matches));
+    };
 
     return (
-        <Paper className={props.classes.paper} elevation={3}>
-            <Typography>Counties Here</Typography>
-        </Paper>
-    )
-
+        <TextField
+            className={classes.root}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder={placeHolderText}
+        />
+    );
 }

@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
-import {Button, ButtonGroup, Grid, Modal, Paper, Typography} from "@material-ui/core";
+import {Button, Grid, Modal, Paper, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 

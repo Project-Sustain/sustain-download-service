@@ -59,7 +59,6 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {
-    Button,
     Paper,
     Table,
     TableBody,
@@ -68,7 +67,6 @@ import {
     TableHead,
     TableRow,
 } from '@material-ui/core';
-import {stateToDatasetMapping} from "./DummyDatasets";
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 
@@ -80,17 +78,15 @@ const useStyles = makeStyles({
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
-    // @ts-ignore
-    const datasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
 
-    if(datasets) {
+    if(props.stateDatasets) {
         return (
             <TableContainer component={Paper} className={classes.root}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Datasets in {props.selectedState}</TableCell>
-                            <TableCell align="center">{datasets.length}</TableCell>
+                            <TableCell>Displaying {props.stateDatasets.length} in {props.selectedState}</TableCell>
+                            <TableCell align="center"></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,7 +102,7 @@ export default function DatasetTable(props: any) {
     }
 
     function renderDatasetRows() {
-        return datasets.map((dataset: any, index: any) => {
+        return props.stateDatasets.map((dataset: any, index: any) => {
             return (
                 <TableRow key={index}>
                     <TableCell>

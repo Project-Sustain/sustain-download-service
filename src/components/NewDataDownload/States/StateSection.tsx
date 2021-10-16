@@ -58,23 +58,48 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
-import {Grid, Paper} from '@material-ui/core';
+import React, {useState} from "react";
+import {Grid, Paper, Typography} from '@material-ui/core';
 import StatesMap from "./StatesMap";
 import DatasetSearching from "../Datasets/DatasetSearching";
 import StateSelector from "./StateSelector";
 import DatasetSelector from "../Datasets/DatasetSelector";
 import FauxTooltip from "../Utils/FauxTooltip";
+import StateFilter from "./StateFilter";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
+
     map: {
         position: "relative",
     }
+    text: {
+        margin: theme.spacing(1),
+    },
+
 });
 
 export default function StateSection(props:any) {
+    const classes = useStyles();
+    const [stateFilterType, setStateFilterType] = useState(0);
+
+    function renderDatasets() {
+        if(props.state.selectedState) {
+            return <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
+                                     countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible} />
+        }
+    }
+
+    function renderSelector() {
+        if(stateFilterType === 0) {
+            return <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+        }
+        else {
+            return <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+        }
+    }
+
     return (
         <Grid
             container
@@ -82,17 +107,27 @@ export default function StateSection(props:any) {
             justifyContent="center"
             alignItems="flex-start">
             <Grid item className={props.classes.map}>
+                <Paper elevation={3} className={props.classes.paper}>
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
+                        <Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>
+                        <Grid item>{renderSelector()}</Grid>
+                    </Grid>
 
-                    <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
-                    <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
                     <StatesMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
                                setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState}/>
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
             </Grid>
             <Grid item className={props.classes.datasetSection}>
-                    <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
-                                      countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
 
+                <Paper elevation={3} className={props.classes.paper}>
+                    {renderDatasets()}
+                </Paper>
             </Grid>
         </Grid>
     )
