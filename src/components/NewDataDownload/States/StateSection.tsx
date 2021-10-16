@@ -65,6 +65,14 @@ import DatasetSearching from "../Datasets/DatasetSearching";
 import StateSelector from "./StateSelector";
 import DatasetSelector from "../Datasets/DatasetSelector";
 import FauxTooltip from "../Utils/FauxTooltip";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../../global/GlobalTheme";
+
+const useStyles = makeStyles({
+    map: {
+        position: "relative",
+    }
+});
 
 export default function StateSection(props:any) {
     return (
@@ -72,21 +80,19 @@ export default function StateSection(props:any) {
             container
             direction="row"
             justifyContent="center"
-            alignItems="center">
+            alignItems="flex-start">
             <Grid item className={props.classes.map}>
-                <Paper elevation={3} className={props.classes.paper}>
+
                     <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
                     <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
                     <StatesMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
-                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} />
+                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState}/>
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
-                </Paper>
             </Grid>
             <Grid item className={props.classes.datasetSection}>
-                <Paper elevation={3} className={props.classes.paper}>
                     <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
                                       countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible}/>
-                </Paper>
+
             </Grid>
         </Grid>
     )

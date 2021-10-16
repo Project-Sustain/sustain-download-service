@@ -67,8 +67,12 @@ import * as topojson from 'topojson';
 
 const useStyles = makeStyles({
     root: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2),
     },
+    controls: {
+        margin: theme.spacing(1),
+    }
+
 });
 
 export default function DatasetSearching(props: any) {
@@ -84,7 +88,7 @@ export default function DatasetSearching(props: any) {
         if(props.state) {
             if (props.selectedState) {
                 return (
-                    <ButtonGroup className={classes.root}>
+                    <ButtonGroup className={classes.controls}>
                         <Button variant="outlined" onClick={() => {
                             props.setSelectedState("");
                             props.setCountiesVisible(false);
@@ -107,11 +111,12 @@ export default function DatasetSearching(props: any) {
     }
 
     return (
-        <>
+
+        <div className={classes.root}>
             {renderControls()}
             {props.state ? <DatasetTable selectedState={props.selectedState}/> : null}
 
             {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
-        </>
+        </div>
     )
 }
