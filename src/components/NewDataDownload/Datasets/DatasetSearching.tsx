@@ -71,6 +71,10 @@ const useStyles = makeStyles({
     root: {
         margin: theme.spacing(2),
     },
+    controls: {
+        margin: theme.spacing(1),
+    }
+
 });
 
 export default function DatasetSearching(props: any) {
@@ -88,7 +92,8 @@ export default function DatasetSearching(props: any) {
         if(props.state) {
             if (props.selectedState) {
                 return (
-                    <ButtonGroup size="large" className={classes.root}>
+
+                    <ButtonGroup className={classes.controls}>
                         <Button variant="outlined" onClick={() => {
                             props.setSelectedState("");
                             props.setCountiesVisible(false);
@@ -111,11 +116,12 @@ export default function DatasetSearching(props: any) {
     }
 
     return (
-        <>
+
+        <div className={classes.root}>
             {renderControls()}
             <DatasetFilter stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} selectedState={props.selectedState} />
             <DatasetTable selectedState={props.selectedState} stateDatasets={stateDatasets} />
             {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
-        </>
+        </div>
     )
 }

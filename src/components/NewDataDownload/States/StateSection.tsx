@@ -70,9 +70,14 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
+
+    map: {
+        position: "relative",
+    },
     text: {
         margin: theme.spacing(1),
     },
+
 });
 
 export default function StateSection(props:any) {
@@ -100,9 +105,8 @@ export default function StateSection(props:any) {
             container
             direction="row"
             justifyContent="center"
-            alignItems="center">
+            alignItems="flex-start">
             <Grid item className={props.classes.map}>
-                <Paper elevation={3} className={props.classes.paper}>
                     <Grid
                         container
                         direction="row"
@@ -113,15 +117,13 @@ export default function StateSection(props:any) {
                         <Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>
                         <Grid item>{renderSelector()}</Grid>
                     </Grid>
+
                     <StatesMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
-                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} />
+                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState}/>
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
-                </Paper>
             </Grid>
             <Grid item className={props.classes.datasetSection}>
-                <Paper elevation={3} className={props.classes.paper}>
-                    {renderDatasets()}
-                </Paper>
+                {renderDatasets()}
             </Grid>
         </Grid>
     )
