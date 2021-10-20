@@ -61,7 +61,6 @@ END OF TERMS AND CONDITIONS
 import React, {useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import theme from "../../global/GlobalTheme";
-import CountySection from "./Counties/CountySection";
 import StateSection from "./States/StateSection";
 
 const useStyles = makeStyles({
@@ -86,7 +85,6 @@ export default function Main() {
     const [hoveredState, setHoveredState] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    const [countiesMatchingSearch, setCountiesMatchingSearch] = useState([]);
     const [countiesVisible, setCountiesVisible] = useState(false);
 
     const stateForStates = {
@@ -94,14 +92,5 @@ export default function Main() {
         countiesVisible, setCountiesVisible
     }
 
-    const stateForCounties = {
-        selectedState, countiesMatchingSearch, setCountiesMatchingSearch, countiesVisible
-    }
-
-    return (
-        <>
-            <StateSection state={stateForStates} classes={classes} />
-            <CountySection state={stateForCounties} classes={classes} />
-        </>
-    )
+    return <StateSection state={stateForStates} classes={classes} />
 }

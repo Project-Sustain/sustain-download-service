@@ -62,7 +62,6 @@ import * as d3 from 'd3';
 import { Draw } from "./uStates";
 import {chosenState, selectedState, unSelectedState} from "./StateInfo";
 import { makeStyles } from '@material-ui/core/styles';
-import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
     map: {

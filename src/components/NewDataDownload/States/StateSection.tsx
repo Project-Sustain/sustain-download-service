@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, {useState} from "react";
-import {Grid, Paper, Typography} from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 import StatesMap from "./StatesMap";
 import DatasetSearching from "../Datasets/DatasetSearching";
 import StateSelector from "./StateSelector";
@@ -86,7 +86,7 @@ export default function StateSection(props:any) {
 
     function renderDatasets() {
         if(props.state.selectedState) {
-            return <DatasetSearching state={true} selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
+            return <DatasetSearching selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
                                      countiesVisible={props.state.countiesVisible} setCountiesVisible={props.state.setCountiesVisible} />
         }
     }

@@ -83,27 +83,24 @@ export default function DatasetSearching(props: any) {
     const [stateDatasets, setStateDatasets] = useState(stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]);
 
     function getCountyButtonName() {
-        if(props.state) {
+        // if(props.state) {
             return props.countiesVisible ? "Hide Counties" : "See Counties";
-        }
+        // }
     }
 
     function renderControls() {
-        if(props.state) {
-            if (props.selectedState) {
-                return (
-
-                    <ButtonGroup className={classes.controls}>
-                        <Button variant="outlined" onClick={() => {
-                            props.setSelectedState("");
-                            props.setCountiesVisible(false);
-                        }}>Clear Selected State</Button>
-                        <Button variant="outlined" disabled={true} onClick={() => {
-                            props.setCountiesVisible(!props.countiesVisible)
-                        }}>{getCountyButtonName()}</Button>
-                    </ButtonGroup>
-                )
-            }
+        if (props.selectedState) {
+            return (
+                <ButtonGroup className={classes.controls}>
+                    <Button variant="outlined" onClick={() => {
+                        props.setSelectedState("");
+                        props.setCountiesVisible(false);
+                    }}>Clear Selected State</Button>
+                    <Button variant="outlined" onClick={() => {
+                        props.setCountiesVisible(!props.countiesVisible)
+                    }}>{getCountyButtonName()}</Button>
+                </ButtonGroup>
+            )
         }
          else if(props.county) {
              return (
