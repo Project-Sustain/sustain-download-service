@@ -60,14 +60,15 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {capitalizeArray} from "../States/StateInfo";
 import {TextField} from "@material-ui/core";
-import {stateToDatasetMapping, stateCountyDatasetMapping} from "./DummyDatasets";
+import {stateCountyDatasetMapping} from "./DummyDatasets";
 
 export default function DatasetSelector(props: any) {
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         const statesWithMatchingDatasets = [];
-        for(const [state, datasets] of Object.entries(stateToDatasetMapping)) {
+        for(const [state, data] of Object.entries(stateCountyDatasetMapping)) {
+            const datasets = data.datasets
             let lowercaseDatasets: any = [];
             datasets.forEach((dataset: String) => {
                 lowercaseDatasets.push(dataset.toLowerCase());

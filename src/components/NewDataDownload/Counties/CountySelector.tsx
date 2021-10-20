@@ -62,6 +62,7 @@ import {TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import {Autocomplete} from "@material-ui/lab";
+import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
@@ -73,6 +74,13 @@ const useStyles = makeStyles({
 export default function CountySelector(props: any) {
     const classes = useStyles();
 
+    function findVisibleDatasets() {
+        // @ts-ignore
+        const relevantDatasetsWithCounties = stateCountyDatasetMapping[`${props.selectedState}`].datasets;
+        console.log({relevantDatasetsWithCounties})
+        return relevantDatasetsWithCounties;
+    }
+
     return (
         <Autocomplete
             className={classes.root}
@@ -82,6 +90,7 @@ export default function CountySelector(props: any) {
                 if (newValue) {
                     console.log(newValue)
                     props.setSelectedCounty(newValue)
+                    props.setVisibleDatasets(findVisibleDatasets())
                 }
             }}
             autoHighlight

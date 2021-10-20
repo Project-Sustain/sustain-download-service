@@ -79,6 +79,7 @@ export default function DatasetSearching(props: any) {
     const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${props.selectedState.datasets}`]);
     const [granularity, setGranularity] = useState("state");
     const [selectedCounty, setSelectedCounty] = useState();
+    console.log({visibleDatasets})
 
     function countyButtonName() {
         return granularity === "county" ? "See State Datasets" : "See County Datasets";
@@ -110,7 +111,7 @@ export default function DatasetSearching(props: any) {
     function renderCountySelector() {
         if (granularity === "county") {
             return <Grid item><CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty}
-                                              counties={props.counties} setCounties={props.setCounties}/></Grid>
+                                              counties={props.counties} setCounties={props.setCounties} setVisibleDatasets={setVisibleDatasets}/></Grid>
         }
     }
 
