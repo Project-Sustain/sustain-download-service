@@ -146,5 +146,5 @@ export function capitalizeArray(matches) {
 export const statesArray = buildStateArray();
 
 export const unSelectedState = "#eee";
-export const selectedState = "#1700e6";
-export const chosenState = "#a60000";
+export const selectedState = "#458AB9";
+export const chosenState = "#2DA661";

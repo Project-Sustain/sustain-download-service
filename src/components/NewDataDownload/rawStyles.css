@@ -59,12 +59,12 @@ END OF TERMS AND CONDITIONS
 */
 .state{
     fill: #eee;
-    stroke: #666;
+    stroke: #333;
     stroke-width: 1;
 }
 
 .state:hover{
-    fill: #1700e6 !important;
+    fill: #458AB9 !important;
 }
 
 .hovered-state-text{
