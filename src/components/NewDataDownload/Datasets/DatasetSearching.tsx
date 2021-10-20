@@ -119,7 +119,7 @@ export default function DatasetSearching(props: any) {
                 container
                 direction="column"
                 justifyContent="center"
-                alignItems="center"
+                alignItems="stretch"
             >
                 {renderControls()}
                 {renderCountySelector()}
