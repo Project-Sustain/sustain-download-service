@@ -91,6 +91,7 @@ export default function DatasetSearching(props: any) {
                     <ButtonGroup>
                         <Button
                             variant="outlined"
+                            disabled={!props.selectedState}
                             onClick={() => props.setSelectedState("")}
                         >
                             Clear Selected State

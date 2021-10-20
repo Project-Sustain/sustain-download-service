@@ -90,10 +90,12 @@ export default function DatasetFiler(props: any) {
     }
 
     const handleChange = (event: any) => {
-        const input = event.target.value;
-        setSearchString(input);
-        const matches = lowercaseArray(allStateDatasets).filter((state:any) => state.includes(input.toLowerCase()));
-        props.setVisibleDatasets(capitalizeArray(matches));
+        if(props.selectedState) {
+            const input = event.target.value;
+            setSearchString(input);
+            const matches = lowercaseArray(allStateDatasets).filter((state: any) => state.includes(input.toLowerCase()));
+            props.setVisibleDatasets(capitalizeArray(matches));
+        }
     };
 
     // if (props.visibleDatasets) {
