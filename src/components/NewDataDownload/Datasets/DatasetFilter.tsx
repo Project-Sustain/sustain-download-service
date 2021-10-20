@@ -61,7 +61,7 @@ import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
 import {Grid, TextField} from "@material-ui/core";
-import {stateToDatasetMapping} from "./DummyDatasets";
+import {stateToDatasetMapping, stateCountyDatasetMapping} from "./DummyDatasets";
 import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({

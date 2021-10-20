@@ -57,10 +57,13 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
-import {Select} from "@material-ui/core";
+import React, {useEffect, useState} from "react";
+import {Select, TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
+import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
+import {regionGranularityType} from "../../../types/Granularity";
+import {Autocomplete} from "@material-ui/lab";
 
 const useStyles = makeStyles({
     root: {
@@ -71,22 +74,43 @@ const useStyles = makeStyles({
 
 export default function CountySelector(props: any) {
     const classes = useStyles();
+    const [counties, setCounties] = useState(extractCounties());
 
-    const handleChange = (event: any) => {
-        props.setSelectedCounty(event.target.value);
-    };
+    function extractCounties() {
+        let countyList = [];
+        // @ts-ignore
+        for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${props.selectedState}`].counties)) {
+            countyList.push(county);
+        }
+        return countyList;
+    }
 
     return (
-        <Select
+        <Autocomplete
             className={classes.root}
-            variant="outlined"
+            options={counties}
             value={props.selectedCounty}
-            onChange={handleChange}
-        >
-            <option value="Larimer">Larimer</option>
-            <option value="Weld">Weld</option>
-            <option value="Denver Metro">Denver Metro</option>
-        </Select>
-    );
+            onChange={(event, newValue) => {
+                if (newValue) {
+                    console.log(newValue)
+                    props.setSelectedCounty(newValue as regionGranularityType)
+                }
+            }}
+            autoHighlight
+            getOptionLabel={(option) => option}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    placeholder="Choose a County..."
+                    // label="Choose a County"
+                    variant="outlined"
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                />
+            )}
+        />
+    )
 
 }

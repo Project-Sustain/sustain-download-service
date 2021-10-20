@@ -63,7 +63,7 @@ import {Button, ButtonGroup, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
-import {stateToDatasetMapping} from "./DummyDatasets";
+import {stateCountyDatasetMapping} from "./DummyDatasets";
 import CountySelector from "../Counties/CountySelector";
 
 const useStyles = makeStyles({
@@ -76,9 +76,9 @@ const useStyles = makeStyles({
 export default function DatasetSearching(props: any) {
     const classes = useStyles();
     // @ts-ignore
-    const [visibleDatasets, setVisibleDatasets] = useState(stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]);
+    const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${props.selectedState.datasets}`]);
     const [granularity, setGranularity] = useState("state");
-    const [selectedCounty, setSelectedCounty] = useState("Larimer");
+    const [selectedCounty, setSelectedCounty] = useState();
 
     function countyButtonName() {
         return granularity === "county" ? "See State Datasets" : "See County Datasets";
@@ -109,7 +109,7 @@ export default function DatasetSearching(props: any) {
 
     function renderCountySelector() {
         if (granularity === "county") {
-            return <Grid item><CountySelector selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} /></Grid>
+            return <Grid item><CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} /></Grid>
         }
     }
 
