@@ -7,15 +7,10 @@ const dummyDatasets = ["Heatwaves", "SVI County", "Neon Barometric Pressure", "N
                         "Power Plants", "Natural Gas Pipelines", "Dams", "Hospitals", "Urgent Care Facilities", "Fire Stations", "Public Schools", "Flood Zones", "Covid-19"];
 
 export const stateToDatasetMapping = associateDatasetsAndStates();
+export const stateCountyDatasetMapping = associateStateAndCountyDatasets();
 
 function associateDatasetsAndStates() {
     let stateDatasetMapping = {};
-    console.log({countyMap})
-    for (const [state, counties] of Object.entries(countyMap)) {
-        console.log({state})
-        console.log({counties})
-    }
-
     for(const key of statesArray) {
         const datasets = generateRandomDatasetArray();
         let theseDatasets = [];
@@ -27,8 +22,41 @@ function associateDatasetsAndStates() {
     return stateDatasetMapping;
 }
 
-function generateRandomDatasetArray() {
-    const length = getRandomInt(7, dummyDatasets.length);
+function associateStateAndCountyDatasets() {
+    let stateCountyDatasetMapping = {};
+    for (const [state, counties] of Object.entries(countyMap)) {
+        let individualStateObject = {};
+        individualStateObject.datasets = getDatasets();
+        let countyObject = {};
+        for (const county in counties) {
+            countyObject[counties[county]] = getDatasets(individualStateObject.datasets);
+        }
+        individualStateObject.counties = countyObject;
+        stateCountyDatasetMapping[state] = individualStateObject;
+    }
+    console.log({stateCountyDatasetMapping})
+    return stateCountyDatasetMapping;
+}
+
+function getDatasets(set) {
+    let theseDatasets = [];
+    if (set) {
+        const datasets = generateRandomDatasetArray(set.length);
+        for (let i = 0; i < datasets.length; i++) {
+            theseDatasets.push(set[datasets[i]]);
+        }
+    }
+    else {
+        const datasets = generateRandomDatasetArray();
+        for (let i = 0; i < datasets.length; i++) {
+            theseDatasets.push(dummyDatasets[datasets[i]]);
+        }
+    }
+    return theseDatasets;
+}
+
+function generateRandomDatasetArray(setLength) {
+    const length = setLength ? setLength : getRandomInt(7, dummyDatasets.length);
     const indexArray = Array.from({length: length}, () => Math.floor(Math.random() * length));
     return [...new Set(indexArray)];
 }
