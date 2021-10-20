@@ -85,11 +85,9 @@ export default function Main() {
     const [hoveredState, setHoveredState] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    const [countiesVisible, setCountiesVisible] = useState(false);
 
     const stateForStates = {
-        hoveredState, setHoveredState, selectedState, setSelectedState, statesMatchingSearch, setStatesMatchingSearch,
-        countiesVisible, setCountiesVisible
+        hoveredState, setHoveredState, selectedState, setSelectedState, statesMatchingSearch, setStatesMatchingSearch
     }
 
     return <StateSection state={stateForStates} classes={classes} />

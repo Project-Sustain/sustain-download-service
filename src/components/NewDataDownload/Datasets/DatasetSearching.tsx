@@ -79,29 +79,34 @@ export default function DatasetSearching(props: any) {
     const classes = useStyles();
     // @ts-ignore
     const [visibleDatasets, setVisibleDatasets] = useState(stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]);
+    const [granularity, setGranularity] = useState("state");
 
     function countyButtonName() {
-        return props.countiesVisible ? "Hide Counties" : "See Counties";
+        return granularity === "county" ? "See State Datasets" : "See County Datasets";
     }
 
     function renderControls() {
         if (props.selectedState) {
             return (
                 <ButtonGroup className={classes.controls}>
-                    <Button variant="outlined" onClick={() => {
-                        props.setSelectedState("");
-                        props.setCountiesVisible(false);
-                    }}>Clear Selected State</Button>
-                    <Button variant="outlined" onClick={() => {
-                        props.setCountiesVisible(!props.countiesVisible)
-                    }}>{countyButtonName()}</Button>
+                    <Button
+                        variant="outlined"
+                        onClick={() => props.setSelectedState("")}
+                    >
+                        Clear Selected State
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        onClick={() => setGranularity(granularity === "state" ? "county" : "state")}
+                    >
+                        {countyButtonName()}
+                    </Button>
                 </ButtonGroup>
             )
         }
     }
 
     return (
-
         <div className={classes.root}>
             {renderControls()}
             <DatasetFilter visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets} selectedState={props.selectedState} />
