@@ -64,6 +64,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
 import {stateToDatasetMapping} from "./DummyDatasets";
+import CountySelector from "../Counties/CountySelector";
 
 const useStyles = makeStyles({
     root: {
@@ -106,10 +107,17 @@ export default function DatasetSearching(props: any) {
         }
     }
 
+    function renderCountySelector() {
+        if (granularity === "county") {
+            return <CountySelector/>
+        }
+    }
+
     return (
         <div className={classes.root}>
             {renderControls()}
-            <DatasetFilter visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets} selectedState={props.selectedState} />
+            {renderCountySelector()}
+            <DatasetFilter visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets} selectedState={props.selectedState} granularity={granularity} />
             <DatasetTable selectedState={props.selectedState} visibleDatasets={visibleDatasets} />
         </div>
     )

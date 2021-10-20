@@ -57,44 +57,11 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useEffect, useState} from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
-import {TextField} from "@material-ui/core";
-import {stateToDatasetMapping} from "./DummyDatasets";
+import React from "react";
+import {Typography} from "@material-ui/core";
 
-const useStyles = makeStyles({
-    root: {
-        width: "100%"
-    },
-});
+export default function CountySelector(props: any) {
 
-export default function DatasetFiler(props: any) {
-    const classes = useStyles();
-    const [searchString, setSearchString] = useState("");
-    // @ts-ignore
-    const allStateDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
-    const placeHolderText = props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : "Filter Datasets in County";
+    return <Typography>Selector here</Typography>
 
-    useEffect(() => {
-        if(searchString === "") {
-            props.setVisibleDatasets(allStateDatasets)
-        }
-    })
-
-    const handleChange = (event: any) => {
-        const input = event.target.value;
-        setSearchString(input);
-        const matches = lowercaseArray(allStateDatasets).filter((state:any) => state.includes(input.toLowerCase()));
-        props.setVisibleDatasets(capitalizeArray(matches));
-    };
-
-    return (
-        <TextField
-            className={classes.root}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder={placeHolderText}
-        />
-    );
 }
