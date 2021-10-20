@@ -59,9 +59,10 @@ END OF TERMS AND CONDITIONS
 */
 import * as d3 from 'd3';
 import "../rawStyles.css";
-import {uStatePaths} from "./StateInfo";
+import {selectedState, uStatePaths} from "./StateInfo";
+import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
-export function Draw(id, setSelectedState, setHoveredState){
+export function Draw(id, setSelectedState, setHoveredState, setCounties, selectedState){
     const hoverClass = document.getElementById("hovered-state-id");
 
     function updateTooltip(left, top) {
@@ -79,9 +80,25 @@ export function Draw(id, setSelectedState, setHoveredState){
         hoverClass.style.display = "none";
     }
 
+    function click(state) {
+        const stateName = state.target.attributes.stateName.nodeValue;
+        setSelectedState(stateName);
+        setCounties(extractCounties(stateName));
+    }
+
+    function extractCounties(stateName) {
+        let countyList = [];
+        // @ts-ignore
+        for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
+            countyList.push(county);
+        }
+        return countyList;
+    }
+
     d3.select(id).selectAll(".state")
         .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
         .attr("stateName",function(state){ return state.stateName;})
-        .on("click", function(state){return setSelectedState(state.target.attributes.stateName.nodeValue)})
+        .on("click", click)
+        // .on("click", function(state){return setSelectedState(state.target.attributes.stateName.nodeValue)})
         .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }

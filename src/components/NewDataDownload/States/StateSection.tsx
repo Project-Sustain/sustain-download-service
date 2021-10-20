@@ -85,7 +85,8 @@ export default function StateSection(props:any) {
     const [stateFilterType, setStateFilterType] = useState(0);
 
     function renderDatasets() {
-        return <DatasetSearching selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState} />
+        return <DatasetSearching selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
+                                 counties={props.state.counties} setCounties={props.state.setCounties} />
     }
 
     function renderSelector() {
@@ -116,7 +117,7 @@ export default function StateSection(props:any) {
                     </Grid>
 
                     <StatesMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
-                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState}/>
+                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} setCounties={props.state.setCounties}/>
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
             </Grid>
             <Grid item className={props.classes.datasetSection}>

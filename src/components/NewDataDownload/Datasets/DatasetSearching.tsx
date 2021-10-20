@@ -109,7 +109,8 @@ export default function DatasetSearching(props: any) {
 
     function renderCountySelector() {
         if (granularity === "county") {
-            return <Grid item><CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} /></Grid>
+            return <Grid item><CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty}
+                                              counties={props.counties} setCounties={props.setCounties}/></Grid>
         }
     }
 
