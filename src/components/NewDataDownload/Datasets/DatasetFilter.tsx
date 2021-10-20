@@ -98,20 +98,14 @@ export default function DatasetFiler(props: any) {
         }
     };
 
-    // if (props.visibleDatasets) {
-        return (
-            <Grid item>
-                <TextField
-                    className={classes.root}
-                    variant="outlined"
-                    onChange={handleChange}
-                    placeholder={createPlaceholderText()}
-                />
-            </Grid>
-        );
-    // }
-
-    // else {
-    //     return null;
-    // }
+    return (
+        <Grid item>
+            <TextField
+                className={classes.root}
+                variant="outlined"
+                onChange={handleChange}
+                placeholder={createPlaceholderText()}
+            />
+        </Grid>
+    );
 }

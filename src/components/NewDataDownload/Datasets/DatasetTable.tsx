@@ -115,11 +115,6 @@ export default function DatasetTable(props: any) {
                                 <TableCell>Select a State To Browse Datasets</TableCell>
                             </TableRow>
                         </TableHead>
-                        {/*<TableBody>*/}
-                        {/*    <TableRow>*/}
-                        {/*        <TableCell>Datasets will appear here</TableCell>*/}
-                        {/*    </TableRow>*/}
-                        {/*</TableBody>*/}
                     </Table>
                 </TableContainer>
             </Grid>

@@ -85,29 +85,27 @@ export default function DatasetSearching(props: any) {
     }
 
     function renderControls() {
-        // if (props.selectedState) {
-            return (
-                <Grid item>
-                    <ButtonGroup>
-                        <Button
-                            variant="outlined"
-                            disabled={!props.selectedState}
-                            onClick={() => props.setSelectedState("")}
-                        >
-                            Clear Selected State
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            disabled={!props.selectedState}
-                            onClick={() => setGranularity(granularity === "state" ? "county" : "state")}
-                        >
-                            {countyButtonName()}
-                        </Button>
-                    </ButtonGroup>
-                </Grid>
-            )
-        }
-    // }
+        return (
+            <Grid item>
+                <ButtonGroup>
+                    <Button
+                        variant="outlined"
+                        disabled={!props.selectedState}
+                        onClick={() => props.setSelectedState("")}
+                    >
+                        Clear Selected State
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        disabled={!props.selectedState}
+                        onClick={() => setGranularity(granularity === "state" ? "county" : "state")}
+                    >
+                        {countyButtonName()}
+                    </Button>
+                </ButtonGroup>
+            </Grid>
+        )
+    }
 
     function renderCountySelector() {
         if (granularity === "county") {

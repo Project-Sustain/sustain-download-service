@@ -85,9 +85,7 @@ export default function StateSection(props:any) {
     const [stateFilterType, setStateFilterType] = useState(0);
 
     function renderDatasets() {
-        // if(props.state.selectedState) {
-            return <DatasetSearching selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState} />
-        // }
+        return <DatasetSearching selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState} />
     }
 
     function renderSelector() {
