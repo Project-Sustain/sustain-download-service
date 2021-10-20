@@ -1,4 +1,5 @@
 import {statesArray} from "../States/StateInfo";
+import {countyMap} from "../Counties/CountyMapping";
 
 const dummyDatasets = ["Heatwaves", "SVI County", "Neon Barometric Pressure", "Neon Soil Temperature", "Maximum Heatwave Temperature",
                         "Neon 2d Wind", "Neon Precipitation", "National Risk Index", "Electrical Substations", "Electrical Transmission Lines", "Minimum Heatwave Temperature",
@@ -9,6 +10,11 @@ export const stateToDatasetMapping = associateDatasetsAndStates();
 
 function associateDatasetsAndStates() {
     let stateDatasetMapping = {};
+    console.log({countyMap})
+    for (const [state, counties] of Object.entries(countyMap)) {
+        console.log({state})
+        console.log({counties})
+    }
 
     for(const key of statesArray) {
         const datasets = generateRandomDatasetArray();
