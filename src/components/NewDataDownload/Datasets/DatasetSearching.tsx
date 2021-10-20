@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
 import DatasetTable from "./DatasetTable";
-import {Button, ButtonGroup} from "@material-ui/core";
+import {Button, ButtonGroup, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
@@ -70,9 +70,6 @@ const useStyles = makeStyles({
     root: {
         margin: theme.spacing(2),
     },
-    controls: {
-        margin: theme.spacing(1),
-    }
 
 });
 
@@ -81,6 +78,7 @@ export default function DatasetSearching(props: any) {
     // @ts-ignore
     const [visibleDatasets, setVisibleDatasets] = useState(stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]);
     const [granularity, setGranularity] = useState("state");
+    const [selectedCounty, setSelectedCounty] = useState("Larimer");
 
     function countyButtonName() {
         return granularity === "county" ? "See State Datasets" : "See County Datasets";
@@ -89,36 +87,47 @@ export default function DatasetSearching(props: any) {
     function renderControls() {
         if (props.selectedState) {
             return (
-                <ButtonGroup className={classes.controls}>
-                    <Button
-                        variant="outlined"
-                        onClick={() => props.setSelectedState("")}
-                    >
-                        Clear Selected State
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        onClick={() => setGranularity(granularity === "state" ? "county" : "state")}
-                    >
-                        {countyButtonName()}
-                    </Button>
-                </ButtonGroup>
+                <Grid item>
+                    <ButtonGroup>
+                        <Button
+                            variant="outlined"
+                            onClick={() => props.setSelectedState("")}
+                        >
+                            Clear Selected State
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={() => setGranularity(granularity === "state" ? "county" : "state")}
+                        >
+                            {countyButtonName()}
+                        </Button>
+                    </ButtonGroup>
+                </Grid>
             )
         }
     }
 
     function renderCountySelector() {
         if (granularity === "county") {
-            return <CountySelector/>
+            return <Grid item><CountySelector selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} /></Grid>
         }
     }
 
     return (
         <div className={classes.root}>
-            {renderControls()}
-            {renderCountySelector()}
-            <DatasetFilter visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets} selectedState={props.selectedState} granularity={granularity} />
-            <DatasetTable selectedState={props.selectedState} visibleDatasets={visibleDatasets} />
+            <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+            >
+                {renderControls()}
+                {renderCountySelector()}
+                <DatasetFilter visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}
+                               selectedState={props.selectedState} granularity={granularity} selectedCounty={selectedCounty} />
+                <DatasetTable selectedState={props.selectedState} visibleDatasets={visibleDatasets}
+                              selectedCounty={selectedCounty} granularity={granularity} />
+            </Grid>
         </div>
     )
 }

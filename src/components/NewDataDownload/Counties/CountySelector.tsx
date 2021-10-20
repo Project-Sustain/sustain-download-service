@@ -58,10 +58,35 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {Typography} from "@material-ui/core";
+import {Select} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../../global/GlobalTheme";
+
+const useStyles = makeStyles({
+    root: {
+        marginTop: theme.spacing(1),
+        width: "100%"
+    },
+});
 
 export default function CountySelector(props: any) {
+    const classes = useStyles();
 
-    return <Typography>Selector here</Typography>
+    const handleChange = (event: any) => {
+        props.setSelectedCounty(event.target.value);
+    };
+
+    return (
+        <Select
+            className={classes.root}
+            variant="outlined"
+            value={props.selectedCounty}
+            onChange={handleChange}
+        >
+            <option value="Larimer">Larimer</option>
+            <option value="Weld">Weld</option>
+            <option value="Denver Metro">Denver Metro</option>
+        </Select>
+    );
 
 }

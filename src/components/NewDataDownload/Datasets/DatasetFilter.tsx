@@ -60,12 +60,13 @@ END OF TERMS AND CONDITIONS
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
-import {TextField} from "@material-ui/core";
+import {Grid, TextField} from "@material-ui/core";
 import {stateToDatasetMapping} from "./DummyDatasets";
+import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
     root: {
-        width: "100%"
+        margin: theme.spacing(1),
     },
 });
 
@@ -74,7 +75,7 @@ export default function DatasetFiler(props: any) {
     const [searchString, setSearchString] = useState("");
     // @ts-ignore
     const allStateDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
-    const placeHolderText = props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : "Filter Datasets in County";
+    const placeHolderText = props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
 
     useEffect(() => {
         if(searchString === "") {
@@ -90,11 +91,13 @@ export default function DatasetFiler(props: any) {
     };
 
     return (
-        <TextField
-            className={classes.root}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder={placeHolderText}
-        />
+        <Grid item>
+            <TextField
+                className={classes.root}
+                variant="outlined"
+                onChange={handleChange}
+                placeholder={placeHolderText}
+            />
+        </Grid>
     );
 }

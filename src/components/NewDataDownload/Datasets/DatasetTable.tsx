@@ -59,6 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {
+    Grid,
     Paper,
     Table,
     TableBody,
@@ -72,28 +73,35 @@ import DownloadDatasetPopup from "./DownloadDatasetPopup";
 
 const useStyles = makeStyles({
     root: {
-        maxHeight: "80%",
+        maxHeight: "55vh",
+        overflow: "auto"
     },
 });
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
 
+    function stateOrCountyName() {
+        return props.granularity === "state" ? props.selectedState : `${props.selectedCounty} County`;
+    }
+
     if(props.visibleDatasets) {
         return (
-            <TableContainer component={Paper} className={classes.root}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Displaying {props.visibleDatasets.length} in {props.selectedState}</TableCell>
-                            <TableCell align="center" />
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {renderDatasetRows()}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Grid item>
+                <TableContainer component={Paper} className={classes.root}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Found {props.visibleDatasets.length} Datasets in </TableCell>
+                                <TableCell align="left">{stateOrCountyName()}</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {renderDatasetRows()}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Grid>
         )
     }
 
