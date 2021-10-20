@@ -75,13 +75,19 @@ export default function DatasetFiler(props: any) {
     const [searchString, setSearchString] = useState("");
     // @ts-ignore
     const allStateDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
-    const placeHolderText = props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
 
     useEffect(() => {
         if(searchString === "") {
             props.setVisibleDatasets(allStateDatasets)
         }
     })
+
+    function createPlaceholderText() {
+        if (!props.visibleDatasets) return "Filter Datasets in...";
+        else {
+            return props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
+        }
+    }
 
     const handleChange = (event: any) => {
         const input = event.target.value;
@@ -90,14 +96,20 @@ export default function DatasetFiler(props: any) {
         props.setVisibleDatasets(capitalizeArray(matches));
     };
 
-    return (
-        <Grid item>
-            <TextField
-                className={classes.root}
-                variant="outlined"
-                onChange={handleChange}
-                placeholder={placeHolderText}
-            />
-        </Grid>
-    );
+    // if (props.visibleDatasets) {
+        return (
+            <Grid item>
+                <TextField
+                    className={classes.root}
+                    variant="outlined"
+                    onChange={handleChange}
+                    placeholder={createPlaceholderText()}
+                />
+            </Grid>
+        );
+    // }
+
+    // else {
+    //     return null;
+    // }
 }

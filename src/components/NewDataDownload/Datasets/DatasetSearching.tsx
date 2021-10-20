@@ -85,7 +85,7 @@ export default function DatasetSearching(props: any) {
     }
 
     function renderControls() {
-        if (props.selectedState) {
+        // if (props.selectedState) {
             return (
                 <Grid item>
                     <ButtonGroup>
@@ -97,6 +97,7 @@ export default function DatasetSearching(props: any) {
                         </Button>
                         <Button
                             variant="outlined"
+                            disabled={!props.selectedState}
                             onClick={() => setGranularity(granularity === "state" ? "county" : "state")}
                         >
                             {countyButtonName()}
@@ -105,7 +106,7 @@ export default function DatasetSearching(props: any) {
                 </Grid>
             )
         }
-    }
+    // }
 
     function renderCountySelector() {
         if (granularity === "county") {
