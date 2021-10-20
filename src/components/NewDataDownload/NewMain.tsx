@@ -62,7 +62,6 @@ import React, {useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import theme from "../../global/GlobalTheme";
 import StateSection from "./States/StateSection";
-import {stateCountyDatasetMapping} from "./Datasets/DummyDatasets";
 
 const useStyles = makeStyles({
     paper: {
@@ -87,8 +86,6 @@ export default function Main() {
     const [selectedState, setSelectedState] = useState("");
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
     const [counties, setCounties] = useState([]);
-    console.log({selectedState})
-    console.log({counties})
 
     const stateForStates = {
         hoveredState, setHoveredState, selectedState, setSelectedState, statesMatchingSearch, setStatesMatchingSearch,

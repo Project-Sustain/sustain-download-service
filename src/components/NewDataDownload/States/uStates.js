@@ -59,10 +59,10 @@ END OF TERMS AND CONDITIONS
 */
 import * as d3 from 'd3';
 import "../rawStyles.css";
-import {selectedState, uStatePaths} from "./StateInfo";
+import {uStatePaths} from "./StateInfo";
 import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
-export function Draw(id, setSelectedState, setHoveredState, setCounties, selectedState){
+export function Draw(id, setSelectedState, setHoveredState, setCounties){
     const hoverClass = document.getElementById("hovered-state-id");
 
     function updateTooltip(left, top) {
