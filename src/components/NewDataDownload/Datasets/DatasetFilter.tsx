@@ -78,7 +78,7 @@ export default function DatasetFiler(props: any) {
 
     useEffect(() => {
         if(searchString === "") {
-            props.setStateDatasets(allStateDatasets)
+            props.setVisibleDatasets(allStateDatasets)
         }
     })
 
@@ -86,7 +86,7 @@ export default function DatasetFiler(props: any) {
         const input = event.target.value;
         setSearchString(input);
         const matches = lowercaseArray(allStateDatasets).filter((state:any) => state.includes(input.toLowerCase()));
-        props.setStateDatasets(capitalizeArray(matches));
+        props.setVisibleDatasets(capitalizeArray(matches));
     };
 
     return (

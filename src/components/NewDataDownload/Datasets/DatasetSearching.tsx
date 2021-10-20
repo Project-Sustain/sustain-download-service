@@ -63,8 +63,6 @@ import {Button, ButtonGroup} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
-// @ts-ignore
-// import * as topojson from 'topojson';
 import {stateToDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
@@ -80,12 +78,10 @@ const useStyles = makeStyles({
 export default function DatasetSearching(props: any) {
     const classes = useStyles();
     // @ts-ignore
-    const [stateDatasets, setStateDatasets] = useState(stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]);
+    const [visibleDatasets, setVisibleDatasets] = useState(stateToDatasetMapping[`${props.selectedState.toLowerCase()}`]);
 
-    function getCountyButtonName() {
-        // if(props.state) {
-            return props.countiesVisible ? "Hide Counties" : "See Counties";
-        // }
+    function countyButtonName() {
+        return props.countiesVisible ? "Hide Counties" : "See Counties";
     }
 
     function renderControls() {
@@ -98,17 +94,9 @@ export default function DatasetSearching(props: any) {
                     }}>Clear Selected State</Button>
                     <Button variant="outlined" onClick={() => {
                         props.setCountiesVisible(!props.countiesVisible)
-                    }}>{getCountyButtonName()}</Button>
+                    }}>{countyButtonName()}</Button>
                 </ButtonGroup>
             )
-        }
-         else if(props.county) {
-             return (
-                    <Button variant="outlined" onClick={() => {
-                        // props.setSelectedState("");
-                        // props.setCountiesVisible(false);
-                    }}>Clear Selected County</Button>
-             )
         }
     }
 
@@ -116,9 +104,8 @@ export default function DatasetSearching(props: any) {
 
         <div className={classes.root}>
             {renderControls()}
-            <DatasetFilter stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} selectedState={props.selectedState} />
-            <DatasetTable selectedState={props.selectedState} stateDatasets={stateDatasets} />
-            {/*<DatasetDropdown selectedState={props.selectedState}/>*/}
+            <DatasetFilter visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets} selectedState={props.selectedState} />
+            <DatasetTable selectedState={props.selectedState} visibleDatasets={visibleDatasets} />
         </div>
     )
 }

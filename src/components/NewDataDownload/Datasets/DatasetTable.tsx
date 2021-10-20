@@ -79,14 +79,14 @@ const useStyles = makeStyles({
 export default function DatasetTable(props: any) {
     const classes = useStyles();
 
-    if(props.stateDatasets) {
+    if(props.visibleDatasets) {
         return (
             <TableContainer component={Paper} className={classes.root}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Displaying {props.stateDatasets.length} in {props.selectedState}</TableCell>
-                            <TableCell align="center"></TableCell>
+                            <TableCell>Displaying {props.visibleDatasets.length} in {props.selectedState}</TableCell>
+                            <TableCell align="center" />
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -102,7 +102,7 @@ export default function DatasetTable(props: any) {
     }
 
     function renderDatasetRows() {
-        return props.stateDatasets.map((dataset: any, index: any) => {
+        return props.visibleDatasets.map((dataset: any, index: any) => {
             return (
                 <TableRow key={index}>
                     <TableCell>
