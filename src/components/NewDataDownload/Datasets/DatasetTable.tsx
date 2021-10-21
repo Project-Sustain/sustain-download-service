@@ -76,6 +76,9 @@ const useStyles = makeStyles({
         maxHeight: "55vh",
         overflow: "auto"
     },
+    header: {
+        borderRadius: "5px 5px 0px 0px",
+    },
 });
 
 export default function DatasetTable(props: any) {
@@ -101,25 +104,29 @@ export default function DatasetTable(props: any) {
 
     if(datasets) {
         return (
-            <Grid item>
-                <TableContainer component={Paper} className={classes.root}>
-                    <Table>
-                        <TableHead>
-                            <TableRow style={{background: "#eee"}}>
-                                <TableCell>
-                                    State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
-                                </TableCell>
-                                <TableCell align="left">
-                                    {datasets.length} Datasets
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {renderDatasetRows()}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
+            <Paper>
+                <Grid item style={{background: "#eee"}} className={classes.header}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>
+                                State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
+                            </TableCell>
+                            <TableCell align="left">
+                                {datasets.length} Datasets
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                </Grid>
+                <Grid item>
+                    <TableContainer className={classes.root}>
+                        <Table>
+                            <TableBody>
+                                {renderDatasetRows()}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+            </Paper>
         )
     }
 

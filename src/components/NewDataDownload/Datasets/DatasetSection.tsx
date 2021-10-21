@@ -85,7 +85,7 @@ export default function DatasetSection(props: any) {
             >
                 <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
                                 setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
-                                setCountyDatasets={props.setCountyDatasets}/>
+                                setCountyDatasets={props.setCountyDatasets} granularity={granularity} />
                 <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
                                countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={props.selectedCounty} />

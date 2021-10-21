@@ -71,12 +71,20 @@ const useStyles = makeStyles({
 export default function CountySelector(props: any) {
     const classes = useStyles();
 
+    function getDisabled() {
+        return props.granularity !== "county";
+    }
+
+    function getPlaceholderText() {
+        return props.granularity === "county" ? `${props.selectedCounty} County` : "Select County to view Counties";
+    }
+
     return (
         <Grid item>
             <Autocomplete
                 className={classes.root}
+                disabled={getDisabled()}
                 options={props.counties}
-                // value={props.selectedCounty}
                 // @ts-ignore
                 onChange={(event, newValue: String) => {
                     if (newValue) {
@@ -88,7 +96,7 @@ export default function CountySelector(props: any) {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder={props.selectedCounty}
+                        placeholder={getPlaceholderText()}
                         variant="outlined"
                     />
                 )}
