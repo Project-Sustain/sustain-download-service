@@ -63,11 +63,13 @@ import StateSection from "./States/StateSection";
 
 /*
 FIXME
-Known issues
-    - When filtering states by dataset, clearing the search string keeps all state highlighted
-    - Dataset filter box is too narrow
-    - useEffect() in DatasetSection.tsx is causing an infinite re-render, but does initialize counties correctly
-    - DatasetTable not updating based on County selection (always shows all datasets in the selectedState)
+    - When filtering states by dataset, clearing the search string keeps all state highlighted.
+    - Dataset filter box is too narrow.
+    - <MATT> useEffect() in DatasetSection.tsx is causing an infinite re-render, but does initialize counties correctly.
+        This may be because draw() calls setState() from StatesMap.tsx
+    - DatasetTable not updating based on County selection (always shows all datasets in the selectedState).
+    - Filter states based off of first letter of state name, not any letter match. If state is 2 words,
+        filter off first letter of either word.
  */
 
 export default function Main() {
