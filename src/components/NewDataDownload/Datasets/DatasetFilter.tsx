@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {capitalizeArray, lowercaseArray, selectedState} from "../States/StateInfo";
+import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
 import {Grid, TextField} from "@material-ui/core";
 import {stateToDatasetMapping, stateCountyDatasetMapping} from "./DummyDatasets";
 import theme from "../../../global/GlobalTheme";
