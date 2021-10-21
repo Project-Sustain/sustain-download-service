@@ -34,7 +34,6 @@ function associateStateAndCountyDatasets() {
         individualStateObject.counties = countyObject;
         stateCountyDatasetMapping[state] = individualStateObject;
     }
-    console.log({stateCountyDatasetMapping})
     return stateCountyDatasetMapping;
 }
 

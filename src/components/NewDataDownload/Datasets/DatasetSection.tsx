@@ -84,8 +84,8 @@ export default function DatasetSection(props: any) {
                 justifyContent="center"
                 alignItems="stretch"
             >
-                <CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} counties={props.counties} setCounties={props.setCounties} setVisibleDatasets={props.setVisibleDatasets}/>
-                <DatasetFilter visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
+                <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} counties={props.counties} setCounties={props.setCounties} setVisibleDatasets={props.setVisibleDatasets}/>
+                <DatasetFilter mappedDatasets={props.mappedDatasets} visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={selectedCounty} />
                 <DatasetTable selectedState={props.selectedState} visibleDatasets={props.visibleDatasets}
                               selectedCounty={selectedCounty} granularity={granularity} setGranularity={setGranularity} />

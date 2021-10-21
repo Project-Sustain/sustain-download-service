@@ -98,12 +98,16 @@ export default function StateSection() {
     const [selectedState, setSelectedState] = useState("Colorado");
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
     const [counties, setCounties] = useState([]);
+    const [mappedDatasets, setMappedDatasets] = useState();
     // @ts-ignore
     const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${selectedState.datasets}`]);
 
+
+    useEffect(() => {
+        // @ts-ignore
+        setMappedDatasets(stateCountyDatasetMapping);
     //FIXME This is causing infinite recursion, but still works...? See console error. If commented out, counties aren't set until a state is clicked.
 
-    // useEffect(() => {
     //     let countyList = [];
     //     // @ts-ignore
     //     for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${selectedState}`].counties)) {
@@ -111,19 +115,19 @@ export default function StateSection() {
     //     }
     //     // @ts-ignore
     //     setCounties(countyList);
-    // })
+    })
 
     function renderDatasets() {
-        return <DatasetSection selectedState={selectedState} setSelectedState={setSelectedState}
+        return <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
                                counties={counties} setCounties={setCounties} visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}/>
     }
 
     function renderSelector() {
         if(stateFilterType === 0) {
-            return <StateSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
+            return <StateSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
         }
         else {
-            return <DatasetSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
+            return <DatasetSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
         }
     }
 
@@ -145,7 +149,7 @@ export default function StateSection() {
                         <Grid item>{renderSelector()}</Grid>
                     </Grid>
 
-                    <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState}
+                    <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState} mappedDatasets={mappedDatasets}
                                setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}/>
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
             </Grid>

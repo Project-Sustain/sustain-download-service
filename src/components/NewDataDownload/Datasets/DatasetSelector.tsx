@@ -67,6 +67,7 @@ export default function DatasetSelector(props: any) {
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         const statesWithMatchingDatasets = [];
+        //FIXME Do this based off of props.mappedDatasets
         for(const [state, data] of Object.entries(stateCountyDatasetMapping)) {
             const datasets = data.datasets
             let lowercaseDatasets: any = [];

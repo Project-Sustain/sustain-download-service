@@ -61,7 +61,7 @@ import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
 import {Grid, TextField} from "@material-ui/core";
-import {stateToDatasetMapping, stateCountyDatasetMapping} from "./DummyDatasets";
+import {stateToDatasetMapping} from "./DummyDatasets";
 import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
@@ -73,6 +73,8 @@ const useStyles = makeStyles({
 export default function DatasetFiler(props: any) {
     const classes = useStyles();
     const [searchString, setSearchString] = useState("");
+
+    //FIXME use the props.mappedDatasets object here instead
 
     // @ts-ignore
     const relevantDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];

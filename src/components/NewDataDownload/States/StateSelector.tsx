@@ -65,6 +65,7 @@ export default function StateSelector(props: any) {
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
+        //FIXME Do this based off of props.mappedDatasets
         const matches = statesArray.filter(state => state.includes(searchString.toLowerCase()));
         props.setStatesMatchingSearch(capitalizeArray(matches));
     };

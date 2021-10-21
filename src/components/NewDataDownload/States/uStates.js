@@ -73,6 +73,8 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties){
 
     function extractCounties(stateName) {
         let countyList = [];
+        //FIXME Do this based off of props.mappedDatasets
+        
         // @ts-ignore
         for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
             countyList.push(county);
