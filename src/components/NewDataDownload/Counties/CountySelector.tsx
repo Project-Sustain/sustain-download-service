@@ -82,7 +82,7 @@ export default function CountySelector(props: any) {
                     if (newValue) {
                         props.setSelectedCounty(newValue);
                         //FIXME Get this to work. Currently it is updating then being set right back to state datasets
-                        props.setVisibleDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
+                        props.setCountyDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
                     }
                 }}
                 autoHighlight

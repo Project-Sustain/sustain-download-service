@@ -75,15 +75,7 @@ const useStyles = makeStyles({
 export default function DatasetSection(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
-    // @ts-ignore
-    const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${props.selectedState.datasets}`]);
-    console.log({visibleDatasets})
-
-    // useEffect(() => {
-    //     if(props.mappedDatasets) {
-    //         setVisibleDatasets(props.mappedDatasets[`${props.selectedState}`].datasets);
-    //     }
-    // })
+    const [countyDatasets, setCountyDatasets] = useState([]);
 
     return (
         <div className={classes.root}>
@@ -95,11 +87,14 @@ export default function DatasetSection(props: any) {
             >
                 <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
                                 setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
-                                setVisibleDatasets={setVisibleDatasets}/>
-                <DatasetFilter mappedDatasets={props.mappedDatasets} visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}
+                                setCountyDatasets={setCountyDatasets}/>
+                <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
+                               countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={props.selectedCounty} />
-                <DatasetTable selectedState={props.selectedState} visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}
-                              selectedCounty={props.selectedCounty} granularity={granularity} setGranularity={setGranularity} mappedDatasets={props.mappedDatasets} />
+                <DatasetTable selectedState={props.selectedState} selectedCounty={props.selectedCounty}
+                              granularity={granularity} setGranularity={setGranularity} mappedDatasets={props.mappedDatasets}
+                              stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
+                              countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}/>
             </Grid>
         </div>
     )

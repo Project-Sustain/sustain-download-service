@@ -100,6 +100,8 @@ export default function StateSection() {
     const [counties, setCounties] = useState([]);
     const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
+    // @ts-ignore
+    const [stateDatasets, setStateDatasets] = useState(stateCountyDatasetMapping[`${selectedState}`].datasets);
 
     useEffect(() => {
         // @ts-ignore
@@ -113,7 +115,7 @@ export default function StateSection() {
     //     }
     //     // @ts-ignore
     //     setCounties(countyList);
-    })
+    }, [])
 
     function renderSelector() {
         if(stateFilterType === 0) {
@@ -143,12 +145,14 @@ export default function StateSection() {
                     </Grid>
 
                     <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState} mappedDatasets={mappedDatasets}
-                               setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties} setSelectedCounty={setSelectedCounty} />
+                               setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}
+                               setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty} />
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
-                                counties={counties} setCounties={setCounties} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty}/>
+                                counties={counties} setCounties={setCounties} selectedCounty={selectedCounty}
+                                stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty}/>
             </Grid>
         </Grid>
     )

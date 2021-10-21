@@ -80,12 +80,23 @@ const useStyles = makeStyles({
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
+    const datasets = props.granularity === "state" ? props.stateDatasets : props.countyDatasets;
+    console.log({datasets})
+
+    const stateDatasets = props.stateDatasets;
+    const countyDatasets = props.countyDatasets;
+    console.log({stateDatasets})
+    console.log({countyDatasets})
 
     function handleChange() {
         const newGranularity = props.granularity === "state" ? "county" : "state";
         if(newGranularity === "county") {
             const countyDatasets = props.mappedDatasets[`${props.selectedState}`].counties[`${props.selectedCounty}`];
-            props.setVisibleDatasets(countyDatasets);
+            props.setCountyDatasets(countyDatasets);
+        }
+        else {
+            const stateDatasets = props.mappedDatasets[`${props.selectedState}`].datasets;
+            props.setStateDatasets(stateDatasets);
         }
         props.setGranularity(newGranularity);
     }
@@ -94,7 +105,7 @@ export default function DatasetTable(props: any) {
         return props.granularity === "county";
     }
 
-    if(props.visibleDatasets) {
+    if(datasets) {
         return (
             <Grid item>
                 <TableContainer component={Paper} className={classes.root}>
@@ -105,7 +116,7 @@ export default function DatasetTable(props: any) {
                                     State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
                                 </TableCell>
                                 <TableCell align="left">
-                                    {props.visibleDatasets.length} Datasets
+                                    {datasets.length} Datasets
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -123,7 +134,7 @@ export default function DatasetTable(props: any) {
     }
 
     function renderDatasetRows() {
-        return props.visibleDatasets.map((dataset: any, index: any) => {
+        return datasets.map((dataset: any, index: any) => {
             return (
                 <TableRow key={index}>
                     <TableCell>

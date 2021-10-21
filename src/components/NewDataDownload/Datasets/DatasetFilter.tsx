@@ -79,17 +79,14 @@ export default function DatasetFiler(props: any) {
     // @ts-ignore
     const relevantDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
 
-    useEffect(() => {
-        if(searchString === "") {
-            props.setVisibleDatasets(relevantDatasets)
-        }
-    })
+    // useEffect(() => {
+    //     if(searchString === "") {
+    //         props.setVisibleDatasets(relevantDatasets)
+    //     }
+    // })
 
     function createPlaceholderText() {
-        if (!props.visibleDatasets) return "Filter Datasets in...";
-        else {
-            return props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
-        }
+        return props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
     }
 
     const handleChange = (event: any) => {
@@ -97,7 +94,7 @@ export default function DatasetFiler(props: any) {
             const input = event.target.value;
             setSearchString(input);
             const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
-            props.setVisibleDatasets(capitalizeArray(matches));
+            props.granularity === "state" ? props.setStateDatasets(capitalizeArray(matches)) : props.setCountyDatasets(capitalizeArray(matches));
         }
     };
 
