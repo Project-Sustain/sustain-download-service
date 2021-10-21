@@ -61,41 +61,67 @@ END OF TERMS AND CONDITIONS
 import React, {useState} from "react";
 import {Grid, Typography} from '@material-ui/core';
 import StatesMap from "./StatesMap";
-import DatasetSearching from "../Datasets/DatasetSearching";
+import DatasetSection from "../Datasets/DatasetSection";
 import StateSelector from "./StateSelector";
 import DatasetSelector from "../Datasets/DatasetSelector";
 import FauxTooltip from "../Utils/FauxTooltip";
 import StateFilter from "./StateFilter";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
+import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
 const useStyles = makeStyles({
-
     map: {
         position: "relative",
+        width: "75%",
     },
     text: {
         margin: theme.spacing(1),
     },
-
+    paper: {
+        padding: theme.spacing(1),
+        margin: theme.spacing(1),
+        height: "70vh",
+    },
+    datasetSection: {
+        width: "25%",
+    },
+    searchBox: {
+        margin: theme.spacing(1),
+    },
 });
 
-export default function StateSection(props:any) {
+export default function StateSection() {
     const classes = useStyles();
     const [stateFilterType, setStateFilterType] = useState(0);
+    const [hoveredState, setHoveredState] = useState("");
+    const [selectedState, setSelectedState] = useState("Colorado");
+    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
+    const [counties, setCounties] = useState([extractCounties()]);
+    // @ts-ignore
+    const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${selectedState.datasets}`]);
 
+    function extractCounties() {
+        let countyList = [];
+        // @ts-ignore
+        for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${selectedState}`].counties)) {
+            countyList.push(county);
+        }
+        console.log({countyList})
+        return countyList;
+    }
 
     function renderDatasets() {
-        return <DatasetSearching selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
-                                 counties={props.state.counties} setCounties={props.state.setCounties} />
+        return <DatasetSection selectedState={selectedState} setSelectedState={setSelectedState}
+                               counties={counties} setCounties={setCounties} visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}/>
     }
 
     function renderSelector() {
         if(stateFilterType === 0) {
-            return <StateSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+            return <StateSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
         }
         else {
-            return <DatasetSelector class={props.classes.searchBox} setStatesMatchingSearch={props.state.setStatesMatchingSearch}/>
+            return <DatasetSelector class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
         }
     }
 
@@ -105,7 +131,7 @@ export default function StateSection(props:any) {
             direction="row"
             justifyContent="center"
             alignItems="flex-start">
-            <Grid item className={props.classes.map}>
+            <Grid item className={classes.map}>
                     <Grid
                         container
                         direction="row"
@@ -117,11 +143,11 @@ export default function StateSection(props:any) {
                         <Grid item>{renderSelector()}</Grid>
                     </Grid>
 
-                    <StatesMap statesMatchingSearch={props.state.statesMatchingSearch} setSelectedState={props.state.setSelectedState}
-                               setHoveredState={props.state.setHoveredState} selectedState={props.state.selectedState} setCounties={props.state.setCounties}/>
-                    <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={props.state.hoveredState}/>
+                    <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState}
+                               setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}/>
+                    <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
             </Grid>
-            <Grid item className={props.classes.datasetSection}>
+            <Grid item className={classes.datasetSection}>
                 {renderDatasets()}
             </Grid>
         </Grid>

@@ -64,21 +64,17 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
 import CountySelector from "../Counties/CountySelector";
-import {stateCountyDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
         margin: theme.spacing(2),
     },
-
 });
 
-export default function DatasetSearching(props: any) {
+export default function DatasetSection(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
     const [selectedCounty, setSelectedCounty] = useState();
-    // @ts-ignore
-    const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${props.selectedState.datasets}`]);
 
     function countyButtonName() {
         return granularity === "county" ? "See State Datasets" : "See County Datasets";
@@ -107,13 +103,6 @@ export default function DatasetSearching(props: any) {
         )
     }
 
-    function renderCountySelector() {
-        if (granularity === "county") {
-            return <Grid item><CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty}
-                                              counties={props.counties} setCounties={props.setCounties} setVisibleDatasets={setVisibleDatasets}/></Grid>
-        }
-    }
-
     return (
         <div className={classes.root}>
             <Grid
@@ -122,11 +111,11 @@ export default function DatasetSearching(props: any) {
                 justifyContent="center"
                 alignItems="stretch"
             >
-                {renderControls()}
-                {renderCountySelector()}
-                <DatasetFilter visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}
+                {/*{renderControls()}*/}
+                <CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} counties={props.counties} setCounties={props.setCounties} setVisibleDatasets={props.setVisibleDatasets}/>
+                <DatasetFilter visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={selectedCounty} />
-                <DatasetTable selectedState={props.selectedState} visibleDatasets={visibleDatasets}
+                <DatasetTable selectedState={props.selectedState} visibleDatasets={props.visibleDatasets}
                               selectedCounty={selectedCounty} granularity={granularity} />
             </Grid>
         </div>

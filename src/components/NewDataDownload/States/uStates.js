@@ -71,6 +71,15 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties){
         hoverClass.style.top = top;
     }
 
+    function extractCounties(stateName) {
+        let countyList = [];
+        // @ts-ignore
+        for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
+            countyList.push(county);
+        }
+        return countyList;
+    }
+
     function mouseOver(event){
         setHoveredState(event.target.getAttribute("stateName"));
         updateTooltip((event.pageX - 50) + "px", (event.pageY - 120) + "px");
@@ -86,19 +95,9 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties){
         setCounties(extractCounties(stateName));
     }
 
-    function extractCounties(stateName) {
-        let countyList = [];
-        // @ts-ignore
-        for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
-            countyList.push(county);
-        }
-        return countyList;
-    }
-
     d3.select(id).selectAll(".state")
         .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
         .attr("stateName",function(state){ return state.stateName;})
         .on("click", click)
-        // .on("click", function(state){return setSelectedState(state.target.attributes.stateName.nodeValue)})
         .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }

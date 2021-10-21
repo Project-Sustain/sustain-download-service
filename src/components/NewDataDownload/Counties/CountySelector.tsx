@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {TextField} from "@material-ui/core";
+import {Grid, TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import {Autocomplete} from "@material-ui/lab";
@@ -66,7 +66,7 @@ import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
-        marginTop: theme.spacing(1),
+        // marginTop: theme.spacing(1),
         width: "100%"
     },
 });
@@ -82,31 +82,33 @@ export default function CountySelector(props: any) {
     }
 
     return (
-        <Autocomplete
-            className={classes.root}
-            options={props.counties}
-            value={props.selectedCounty}
-            onChange={(event, newValue) => {
-                if (newValue) {
-                    console.log(newValue)
-                    props.setSelectedCounty(newValue)
-                    props.setVisibleDatasets(findVisibleDatasets())
-                }
-            }}
-            autoHighlight
-            getOptionLabel={(option) => option}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    placeholder="Choose a County..."
-                    variant="outlined"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password',
-                    }}
-                />
-            )}
-        />
+        <Grid item>
+            <Autocomplete
+                className={classes.root}
+                options={props.counties}
+                value={props.selectedCounty}
+                onChange={(event, newValue) => {
+                    if (newValue) {
+                        console.log(newValue)
+                        props.setSelectedCounty(newValue)
+                        props.setVisibleDatasets(findVisibleDatasets())
+                    }
+                }}
+                autoHighlight
+                getOptionLabel={(option) => option}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        placeholder="Choose a County..."
+                        variant="outlined"
+                        inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password',
+                        }}
+                    />
+                )}
+            />
+        </Grid>
     )
 
 }

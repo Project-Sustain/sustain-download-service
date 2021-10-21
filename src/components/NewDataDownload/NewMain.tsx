@@ -58,39 +58,9 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import theme from "../../global/GlobalTheme";
+import React from "react";
 import StateSection from "./States/StateSection";
 
-const useStyles = makeStyles({
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    map: {
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-    searchBox: {
-        margin: theme.spacing(1),
-    },
-});
-
 export default function Main() {
-    const classes = useStyles();
-    const [hoveredState, setHoveredState] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    const [counties, setCounties] = useState([]);
-
-    const stateForStates = {
-        hoveredState, setHoveredState, selectedState, setSelectedState, statesMatchingSearch, setStatesMatchingSearch,
-        counties, setCounties
-    }
-
-    return <StateSection state={stateForStates} classes={classes} />
+    return <StateSection />
 }
