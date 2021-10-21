@@ -84,6 +84,7 @@ export default function StateSection(props:any) {
     const classes = useStyles();
     const [stateFilterType, setStateFilterType] = useState(0);
 
+
     function renderDatasets() {
         return <DatasetSearching selectedState={props.state.selectedState} setSelectedState={props.state.setSelectedState}
                                  counties={props.state.counties} setCounties={props.state.setCounties} />
