@@ -64,7 +64,6 @@ import {Autocomplete} from "@material-ui/lab";
 
 const useStyles = makeStyles({
     root: {
-        // marginTop: theme.spacing(1),
         width: "100%"
     },
 });
@@ -108,5 +107,4 @@ export default function CountySelector(props: any) {
             />
         </Grid>
     )
-
 }
