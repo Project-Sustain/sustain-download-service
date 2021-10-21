@@ -61,19 +61,6 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import StateSection from "./States/StateSection";
 
-/*
-FIXME
-    - When filtering states by dataset, clearing the search string keeps all state highlighted.
-    - Update StateSelector to operature based off of props.mappedDatasets
-    - Dataset filter box is too narrow.
-    - <MATT> Move object containing state/county/dataset mapping into StateSection.tsx, pass along
-    - useEffect() in DatasetSection.tsx is causing an infinite re-render, but does initialize counties correctly.
-        This may be because draw() calls setState() from StatesMap.tsx
-    - DatasetTable not updating based on County selection (always shows all datasets in the selectedState).
-    - Filter states based off of first letter of state name, not any letter match. If state is 2 words,
-        filter off first letter of either word.
- */
-
 export default function Main() {
     return <StateSection />
 }
