@@ -81,7 +81,6 @@ export default function CountySelector(props: any) {
                 onChange={(event, newValue: String) => {
                     if (newValue) {
                         props.setSelectedCounty(newValue);
-                        //FIXME Get this to work. Currently it is updating then being set right back to state datasets
                         props.setCountyDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
                     }
                 }}
