@@ -100,9 +100,6 @@ export default function StateSection() {
     const [counties, setCounties] = useState([]);
     const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    // @ts-ignore
-    const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${selectedState.datasets}`]);
-    console.log({visibleDatasets})
 
     useEffect(() => {
         // @ts-ignore
@@ -151,8 +148,7 @@ export default function StateSection() {
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
-                                counties={counties} setCounties={setCounties} visibleDatasets={visibleDatasets}
-                                setVisibleDatasets={setVisibleDatasets} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty}/>
+                                counties={counties} setCounties={setCounties} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty}/>
             </Grid>
         </Grid>
     )

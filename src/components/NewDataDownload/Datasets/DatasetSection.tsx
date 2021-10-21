@@ -75,8 +75,9 @@ const useStyles = makeStyles({
 export default function DatasetSection(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
-    // const [visibleDatasets, setVisibleDatasets] = useState();
-    // console.log({visibleDatasets})
+    // @ts-ignore
+    const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${props.selectedState.datasets}`]);
+    console.log({visibleDatasets})
 
     // useEffect(() => {
     //     if(props.mappedDatasets) {
@@ -94,10 +95,10 @@ export default function DatasetSection(props: any) {
             >
                 <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
                                 setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
-                                setVisibleDatasets={props.setVisibleDatasets}/>
-                <DatasetFilter mappedDatasets={props.mappedDatasets} visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
+                                setVisibleDatasets={setVisibleDatasets}/>
+                <DatasetFilter mappedDatasets={props.mappedDatasets} visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={props.selectedCounty} />
-                <DatasetTable selectedState={props.selectedState} visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
+                <DatasetTable selectedState={props.selectedState} visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}
                               selectedCounty={props.selectedCounty} granularity={granularity} setGranularity={setGranularity} mappedDatasets={props.mappedDatasets} />
             </Grid>
         </div>
