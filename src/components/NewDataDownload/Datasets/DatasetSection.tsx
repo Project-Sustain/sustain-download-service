@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
 import DatasetTable from "./DatasetTable";
-import {Button, ButtonGroup, Grid} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";

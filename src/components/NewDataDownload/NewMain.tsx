@@ -61,6 +61,15 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import StateSection from "./States/StateSection";
 
+/*
+FIXME
+Known issues
+    - When filtering states by dataset, clearing the search string keeps all state highlighted
+    - Dataset filter box is too narrow
+    - useEffect() in DatasetSection.tsx is causing an infinite re-render, but does initialize counties correctly
+    - DatasetTable not updating based on County selection (always shows all datasets in the selectedState)
+ */
+
 export default function Main() {
     return <StateSection />
 }
