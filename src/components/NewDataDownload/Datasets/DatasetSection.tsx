@@ -57,14 +57,13 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import DatasetTable from "./DatasetTable";
 import {Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
 import CountySelector from "../Counties/CountySelector";
-import {stateCountyDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {

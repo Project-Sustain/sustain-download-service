@@ -78,7 +78,7 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties,
         // though it is defined at the top of the 'class'...
 
         // @ts-ignore
-        for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
+        for (const [county] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
             countyList.push(county);
         }
         return countyList;

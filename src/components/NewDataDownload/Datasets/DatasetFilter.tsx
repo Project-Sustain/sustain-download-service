@@ -57,7 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
 import {Grid, TextField} from "@material-ui/core";
@@ -72,18 +72,11 @@ const useStyles = makeStyles({
 
 export default function DatasetFiler(props: any) {
     const classes = useStyles();
-    const [searchString, setSearchString] = useState("");
 
     //FIXME use the props.mappedDatasets object here instead
 
     // @ts-ignore
     const relevantDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
-
-    // useEffect(() => {
-    //     if(searchString === "") {
-    //         props.setVisibleDatasets(relevantDatasets)
-    //     }
-    // })
 
     function createPlaceholderText() {
         return props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
@@ -92,7 +85,6 @@ export default function DatasetFiler(props: any) {
     const handleChange = (event: any) => {
         if(props.selectedState) {
             const input = event.target.value;
-            setSearchString(input);
             const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
             props.granularity === "state" ? props.setStateDatasets(capitalizeArray(matches)) : props.setCountyDatasets(capitalizeArray(matches));
         }
