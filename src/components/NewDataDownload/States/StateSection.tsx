@@ -93,16 +93,16 @@ const useStyles = makeStyles({
 
 export default function StateSection() {
     const classes = useStyles();
-    const [stateFilterType, setStateFilterType] = useState(0);
-    const [hoveredState, setHoveredState] = useState("");
-    const [selectedState, setSelectedState] = useState("Colorado");
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    console.log({statesMatchingSearch})
-    const [counties, setCounties] = useState([]);
     const [mappedDatasets, setMappedDatasets] = useState();
+    const [selectedState, setSelectedState] = useState("Colorado");
+    const [hoveredState, setHoveredState] = useState("");
+    const [selectedCounty, setSelectedCounty] = useState();
+    const [counties, setCounties] = useState([]);
+    const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
+    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
     // @ts-ignore
     const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${selectedState.datasets}`]);
-
+    console.log({visibleDatasets})
 
     useEffect(() => {
         // @ts-ignore
@@ -117,11 +117,6 @@ export default function StateSection() {
     //     // @ts-ignore
     //     setCounties(countyList);
     })
-
-    function renderDatasets() {
-        return <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
-                               counties={counties} setCounties={setCounties} visibleDatasets={visibleDatasets} setVisibleDatasets={setVisibleDatasets}/>
-    }
 
     function renderSelector() {
         if(stateFilterType === 0) {
@@ -151,11 +146,13 @@ export default function StateSection() {
                     </Grid>
 
                     <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState} mappedDatasets={mappedDatasets}
-                               setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}/>
+                               setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties} setSelectedCounty={setSelectedCounty} />
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
             </Grid>
             <Grid item className={classes.datasetSection}>
-                {renderDatasets()}
+                <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
+                                counties={counties} setCounties={setCounties} visibleDatasets={visibleDatasets}
+                                setVisibleDatasets={setVisibleDatasets} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty}/>
             </Grid>
         </Grid>
     )

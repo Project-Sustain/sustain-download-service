@@ -57,13 +57,14 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import DatasetTable from "./DatasetTable";
 import {Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import DatasetFilter from "./DatasetFilter";
 import CountySelector from "../Counties/CountySelector";
+import {stateCountyDatasetMapping} from "./DummyDatasets";
 
 const useStyles = makeStyles({
     root: {
@@ -74,7 +75,14 @@ const useStyles = makeStyles({
 export default function DatasetSection(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
-    const [selectedCounty, setSelectedCounty] = useState();
+    // const [visibleDatasets, setVisibleDatasets] = useState();
+    // console.log({visibleDatasets})
+
+    // useEffect(() => {
+    //     if(props.mappedDatasets) {
+    //         setVisibleDatasets(props.mappedDatasets[`${props.selectedState}`].datasets);
+    //     }
+    // })
 
     return (
         <div className={classes.root}>
@@ -84,11 +92,13 @@ export default function DatasetSection(props: any) {
                 justifyContent="center"
                 alignItems="stretch"
             >
-                <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} counties={props.counties} setCounties={props.setCounties} setVisibleDatasets={props.setVisibleDatasets}/>
+                <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
+                                setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
+                                setVisibleDatasets={props.setVisibleDatasets}/>
                 <DatasetFilter mappedDatasets={props.mappedDatasets} visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
-                               selectedState={props.selectedState} granularity={granularity} selectedCounty={selectedCounty} />
-                <DatasetTable selectedState={props.selectedState} visibleDatasets={props.visibleDatasets}
-                              selectedCounty={selectedCounty} granularity={granularity} setGranularity={setGranularity} />
+                               selectedState={props.selectedState} granularity={granularity} selectedCounty={props.selectedCounty} />
+                <DatasetTable selectedState={props.selectedState} visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
+                              selectedCounty={props.selectedCounty} granularity={granularity} setGranularity={setGranularity} mappedDatasets={props.mappedDatasets} />
             </Grid>
         </div>
     )

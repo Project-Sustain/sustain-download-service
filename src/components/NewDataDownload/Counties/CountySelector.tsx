@@ -64,7 +64,6 @@ import {Autocomplete} from "@material-ui/lab";
 
 const useStyles = makeStyles({
     root: {
-        // marginTop: theme.spacing(1),
         width: "100%"
     },
 });
@@ -72,37 +71,26 @@ const useStyles = makeStyles({
 export default function CountySelector(props: any) {
     const classes = useStyles();
 
-    function findVisibleDatasets() {
-        // @ts-ignore
-        const relevantDatasetsWithCounties = props.mappedDatasets[`${props.selectedState}`].datasets;
-        console.log({relevantDatasetsWithCounties})
-        return relevantDatasetsWithCounties;
-    }
-
     return (
         <Grid item>
             <Autocomplete
                 className={classes.root}
                 options={props.counties}
-                value={props.selectedCounty}
-                onChange={(event, newValue) => {
+                // value={props.selectedCounty}
+                // @ts-ignore
+                onChange={(event, newValue: String) => {
                     if (newValue) {
-                        console.log(newValue)
-                        props.setSelectedCounty(newValue)
-                        props.setVisibleDatasets(findVisibleDatasets())
+                        props.setSelectedCounty(newValue);
+                        //FIXME Get this to work. Currently it is updating then being set right back to state datasets
+                        props.setVisibleDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
                     }
                 }}
                 autoHighlight
-                getOptionLabel={(option) => option}
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder="Choose a County..."
+                        placeholder={props.selectedCounty}
                         variant="outlined"
-                        inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'new-password',
-                        }}
                     />
                 )}
             />

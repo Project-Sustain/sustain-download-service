@@ -103,7 +103,7 @@ export default function StatesMap(props: any) {
 
     useEffect(() => {
         // @ts-ignore
-        Draw("#statesvg", props.setSelectedState, props.setHoveredState, props.setCounties, props.selectedState);
+        Draw("#statesvg", props.setSelectedState, props.setHoveredState, props.setCounties, props.mappedDatasets, props.setSelectedCounty);
         d3.select(window.frameElement).style("height", "600px");
     });
 

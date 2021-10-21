@@ -83,6 +83,10 @@ export default function DatasetTable(props: any) {
 
     function handleChange() {
         const newGranularity = props.granularity === "state" ? "county" : "state";
+        if(newGranularity === "county") {
+            const countyDatasets = props.mappedDatasets[`${props.selectedState}`].counties[`${props.selectedCounty}`];
+            props.setVisibleDatasets(countyDatasets);
+        }
         props.setGranularity(newGranularity);
     }
 
@@ -115,19 +119,7 @@ export default function DatasetTable(props: any) {
     }
 
     else {
-        return (
-            <Grid item>
-                <TableContainer component={Paper} className={classes.root}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Select a State To Browse Datasets</TableCell>
-                            </TableRow>
-                        </TableHead>
-                    </Table>
-                </TableContainer>
-            </Grid>
-        )
+        return null
     }
 
     function renderDatasetRows() {

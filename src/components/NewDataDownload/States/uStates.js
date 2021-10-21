@@ -62,7 +62,7 @@ import "../rawStyles.css";
 import {uStatePaths} from "./StateInfo";
 import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
-export function Draw(id, setSelectedState, setHoveredState, setCounties){
+export function Draw(id, setSelectedState, setHoveredState, setCounties, mappedDatasets, setSelectedCounty) {
     const hoverClass = document.getElementById("hovered-state-id");
 
     function updateTooltip(left, top) {
@@ -73,8 +73,9 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties){
 
     function extractCounties(stateName) {
         let countyList = [];
-        //FIXME Do this based off of props.mappedDatasets
-        
+        //FIXME Do this based off of props.mappedDatasets. ISSUE for some reason mappedDatasets is undefined in this function
+        // though it is defined at the top of the 'class'...
+
         // @ts-ignore
         for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
             countyList.push(county);
@@ -94,7 +95,9 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties){
     function click(state) {
         const stateName = state.target.attributes.stateName.nodeValue;
         setSelectedState(stateName);
-        setCounties(extractCounties(stateName));
+        const counties = extractCounties(stateName);
+        setCounties(counties);
+        setSelectedCounty(counties[0]);
     }
 
     d3.select(id).selectAll(".state")
