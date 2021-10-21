@@ -76,33 +76,6 @@ export default function DatasetSection(props: any) {
     const [granularity, setGranularity] = useState("state");
     const [selectedCounty, setSelectedCounty] = useState();
 
-    function countyButtonName() {
-        return granularity === "county" ? "See State Datasets" : "See County Datasets";
-    }
-
-    function renderControls() {
-        return (
-            <Grid item>
-                <ButtonGroup>
-                    <Button
-                        variant="outlined"
-                        disabled={!props.selectedState}
-                        onClick={() => props.setSelectedState("")}
-                    >
-                        Clear Selected State
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        disabled={!props.selectedState}
-                        onClick={() => setGranularity(granularity === "state" ? "county" : "state")}
-                    >
-                        {countyButtonName()}
-                    </Button>
-                </ButtonGroup>
-            </Grid>
-        )
-    }
-
     return (
         <div className={classes.root}>
             <Grid
@@ -111,7 +84,6 @@ export default function DatasetSection(props: any) {
                 justifyContent="center"
                 alignItems="stretch"
             >
-                {/*{renderControls()}*/}
                 <CountySelector selectedState={props.selectedState} selectedCounty={selectedCounty} setSelectedCounty={setSelectedCounty} counties={props.counties} setCounties={props.setCounties} setVisibleDatasets={props.setVisibleDatasets}/>
                 <DatasetFilter visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={selectedCounty} />
