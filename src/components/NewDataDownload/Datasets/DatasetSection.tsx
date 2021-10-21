@@ -116,7 +116,7 @@ export default function DatasetSection(props: any) {
                 <DatasetFilter visibleDatasets={props.visibleDatasets} setVisibleDatasets={props.setVisibleDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={selectedCounty} />
                 <DatasetTable selectedState={props.selectedState} visibleDatasets={props.visibleDatasets}
-                              selectedCounty={selectedCounty} granularity={granularity} />
+                              selectedCounty={selectedCounty} granularity={granularity} setGranularity={setGranularity} />
             </Grid>
         </div>
     )

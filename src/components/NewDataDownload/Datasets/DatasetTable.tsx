@@ -60,7 +60,7 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {
     Grid,
-    Paper,
+    Paper, Switch,
     Table,
     TableBody,
     TableCell,
@@ -81,8 +81,13 @@ const useStyles = makeStyles({
 export default function DatasetTable(props: any) {
     const classes = useStyles();
 
-    function stateOrCountyName() {
-        return props.granularity === "state" ? props.selectedState : `${props.selectedCounty}`;
+    function handleChange() {
+        const newGranularity = props.granularity === "state" ? "county" : "state";
+        props.setGranularity(newGranularity);
+    }
+
+    function getChecked() {
+        return props.granularity === "county";
     }
 
     if(props.visibleDatasets) {
@@ -91,9 +96,13 @@ export default function DatasetTable(props: any) {
                 <TableContainer component={Paper} className={classes.root}>
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCell>Found {props.visibleDatasets.length} Datasets in </TableCell>
-                                <TableCell align="left">{stateOrCountyName()}</TableCell>
+                            <TableRow style={{background: "#eee"}}>
+                                <TableCell>
+                                    State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
+                                </TableCell>
+                                <TableCell align="left">
+                                    {props.visibleDatasets.length} Datasets
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
