@@ -60,26 +60,30 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {capitalizeArray} from "../States/StateInfo";
 import {TextField} from "@material-ui/core";
-import {stateCountyDatasetMapping} from "./DummyDatasets";
 
 export default function DatasetSelector(props: any) {
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
-        const statesWithMatchingDatasets = [];
-        //FIXME Do this based off of props.mappedDatasets
-        for(const [state, data] of Object.entries(stateCountyDatasetMapping)) {
-            const datasets = data.datasets
-            let lowercaseDatasets: any = [];
-            datasets.forEach((dataset: String) => {
-                lowercaseDatasets.push(dataset.toLowerCase());
-            })
-            const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
-            if(matches.length > 0) {
-                statesWithMatchingDatasets.push(state);
-            }
+        if(searchString === "") {
+            props.setStatesMatchingSearch([]);
         }
-        props.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
+        else {
+            const statesWithMatchingDatasets = [];
+            for (const [state, data] of Object.entries(props.mappedDatasets)) {
+                // @ts-ignore
+                const datasets = data.datasets
+                let lowercaseDatasets: any = [];
+                datasets.forEach((dataset: String) => {
+                    lowercaseDatasets.push(dataset.toLowerCase());
+                })
+                const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
+                if (matches.length > 0) {
+                    statesWithMatchingDatasets.push(state);
+                }
+            }
+            props.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
+        }
     };
 
     return (

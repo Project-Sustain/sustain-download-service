@@ -97,6 +97,7 @@ export default function StateSection() {
     const [hoveredState, setHoveredState] = useState("");
     const [selectedState, setSelectedState] = useState("Colorado");
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
+    console.log({statesMatchingSearch})
     const [counties, setCounties] = useState([]);
     const [mappedDatasets, setMappedDatasets] = useState();
     // @ts-ignore
