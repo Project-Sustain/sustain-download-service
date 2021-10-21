@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Grid, Typography} from '@material-ui/core';
 import StatesMap from "./StatesMap";
 import DatasetSection from "../Datasets/DatasetSection";
@@ -97,19 +97,21 @@ export default function StateSection() {
     const [hoveredState, setHoveredState] = useState("");
     const [selectedState, setSelectedState] = useState("Colorado");
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    const [counties, setCounties] = useState([extractCounties()]);
+    const [counties, setCounties] = useState([]);
     // @ts-ignore
     const [visibleDatasets, setVisibleDatasets] = useState(stateCountyDatasetMapping[`${selectedState.datasets}`]);
 
-    function extractCounties() {
-        let countyList = [];
-        // @ts-ignore
-        for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${selectedState}`].counties)) {
-            countyList.push(county);
-        }
-        console.log({countyList})
-        return countyList;
-    }
+    //FIXME This is causing infinite recursion, but still works...? See console error. If commented out, counties aren't set until a state is clicked.
+
+    // useEffect(() => {
+    //     let countyList = [];
+    //     // @ts-ignore
+    //     for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${selectedState}`].counties)) {
+    //         countyList.push(county);
+    //     }
+    //     // @ts-ignore
+    //     setCounties(countyList);
+    // })
 
     function renderDatasets() {
         return <DatasetSection selectedState={selectedState} setSelectedState={setSelectedState}
