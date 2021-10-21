@@ -65,7 +65,6 @@ export default function StateSelector(props: any) {
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
-        //FIXME Do this based off of props.mappedDatasets
         const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
         props.setStatesMatchingSearch(capitalizeArray(matches));
     };
@@ -80,12 +79,12 @@ export default function StateSelector(props: any) {
 }
 
 function stateMatch(matchString: any, state: any) {
-    if(state.includes(matchString) && (state.charAt(0) == matchString.charAt(0))){
+    if(state.includes(matchString) && (state.charAt(0) === matchString.charAt(0))){
         return true;
     }
     else if(state.includes(matchString) && state.includes(" ")) {
         let indexOfSpace = state.indexOf(" ");
-        if(state.charAt(indexOfSpace + 1) == matchString.charAt(0)) {
+        if(state.charAt(indexOfSpace + 1) === matchString.charAt(0)) {
             return true;
         }
     }
