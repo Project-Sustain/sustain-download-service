@@ -73,6 +73,8 @@ const useStyles = makeStyles({
 
     svg: {
         position: 'relative',
+        width: 'auto',
+        height: '100%'
     }
 });
 
@@ -111,8 +113,7 @@ export default function StatesMap(props: any) {
     return (
         <div className={classes.map}>
             <div className={classes.svg}>
-                {/*NOTE: The height attribute here causes weird page behavior*/}
-                <svg viewBox="-60 0 1100 1100" id="statesvg" width='auto' height='85vh'  preserveAspectRatio="xMinYMin slice"/>
+                <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
             </div>
         </div>
     )
