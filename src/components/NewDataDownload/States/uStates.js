@@ -62,7 +62,8 @@ import "../rawStyles.css";
 import {uStatePaths} from "./StateInfo";
 import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
-export function Draw(id, setSelectedState, setHoveredState, setCounties, mappedDatasets, setSelectedCounty, setStateDatasets) {
+export function Draw(id, setSelectedState, setHoveredState, setCounties,
+                     mappedDatasets, setSelectedCounty, setStateDatasets, setCountyDatasets) {
     const hoverClass = document.getElementById("hovered-state-id");
 
     function updateTooltip(left, top) {
@@ -96,9 +97,12 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties, mappedD
         const stateName = state.target.attributes.stateName.nodeValue;
         setSelectedState(stateName);
         const counties = extractCounties(stateName);
+        const countyName = counties[0];
         setCounties(counties);
-        setSelectedCounty(counties[0]);
+        setSelectedCounty(countyName);
         const stateDatasets = stateCountyDatasetMapping[`${stateName}`].datasets;
+        const countyDatasets = stateCountyDatasetMapping[`${stateName}`].counties[`${countyName}`];
+        setCountyDatasets(countyDatasets)
         setStateDatasets(stateDatasets)
     }
 

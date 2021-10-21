@@ -102,6 +102,7 @@ export default function StateSection() {
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
     // @ts-ignore
     const [stateDatasets, setStateDatasets] = useState(stateCountyDatasetMapping[`${selectedState}`].datasets);
+    const [countyDatasets, setCountyDatasets] = useState([]);
 
     useEffect(() => {
         // @ts-ignore
@@ -146,12 +147,13 @@ export default function StateSection() {
 
                     <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState} mappedDatasets={mappedDatasets}
                                setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}
-                               setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty} />
+                               setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty} setCountyDatasets={setCountyDatasets} />
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
                                 counties={counties} setCounties={setCounties} selectedCounty={selectedCounty}
+                                countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}
                                 stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty}/>
             </Grid>
         </Grid>

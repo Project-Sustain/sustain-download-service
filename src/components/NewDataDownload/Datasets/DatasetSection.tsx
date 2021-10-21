@@ -75,7 +75,6 @@ const useStyles = makeStyles({
 export default function DatasetSection(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
-    const [countyDatasets, setCountyDatasets] = useState([]);
 
     return (
         <div className={classes.root}>
@@ -87,14 +86,14 @@ export default function DatasetSection(props: any) {
             >
                 <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
                                 setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
-                                setCountyDatasets={setCountyDatasets}/>
+                                setCountyDatasets={props.setCountyDatasets}/>
                 <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                               countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}
+                               countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
                                selectedState={props.selectedState} granularity={granularity} selectedCounty={props.selectedCounty} />
                 <DatasetTable selectedState={props.selectedState} selectedCounty={props.selectedCounty}
                               granularity={granularity} setGranularity={setGranularity} mappedDatasets={props.mappedDatasets}
                               stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                              countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}/>
+                              countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}/>
             </Grid>
         </div>
     )
