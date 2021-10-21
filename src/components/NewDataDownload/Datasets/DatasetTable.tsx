@@ -81,12 +81,6 @@ const useStyles = makeStyles({
 export default function DatasetTable(props: any) {
     const classes = useStyles();
     const datasets = props.granularity === "state" ? props.stateDatasets : props.countyDatasets;
-    console.log({datasets})
-
-    const stateDatasets = props.stateDatasets;
-    const countyDatasets = props.countyDatasets;
-    console.log({stateDatasets})
-    console.log({countyDatasets})
 
     function handleChange() {
         const newGranularity = props.granularity === "state" ? "county" : "state";
