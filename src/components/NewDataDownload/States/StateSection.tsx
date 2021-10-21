@@ -107,16 +107,16 @@ export default function StateSection() {
     useEffect(() => {
         // @ts-ignore
         setMappedDatasets(stateCountyDatasetMapping);
-    //FIXME This is causing infinite recursion, but still works...? See console error. If commented out, counties aren't set until a state is clicked.
-
-    //     let countyList = [];
-    //     // @ts-ignore
-    //     for (const [county, datasets] of Object.entries(stateCountyDatasetMapping[`${selectedState}`].counties)) {
-    //         countyList.push(county);
-    //     }
-    //     // @ts-ignore
-    //     setCounties(countyList);
-    }, [])
+        let countyList = [];
+        // @ts-ignore
+        for (const [county] of Object.entries(stateCountyDatasetMapping[`${selectedState}`].counties)) {
+            countyList.push(county);
+        }
+        // @ts-ignore
+        setCounties(countyList);
+        // @ts-ignore
+        setSelectedCounty(countyList[0]);
+    }, [selectedState])
 
     function renderSelector() {
         if(stateFilterType === 0) {
