@@ -96,7 +96,7 @@ const useStyles = makeStyles({
 export default function StateSection() {
     const classes = useStyles();
     const [mappedDatasets, setMappedDatasets] = useState();
-    const [selectedState, setSelectedState] = useState("Maine");
+    const [selectedState, setSelectedState] = useState("Colorado");
     const [hoveredState, setHoveredState] = useState("");
     const [selectedCounty, setSelectedCounty] = useState();
     const [counties, setCounties] = useState([]);
