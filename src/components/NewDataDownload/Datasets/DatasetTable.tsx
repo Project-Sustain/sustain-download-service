@@ -70,6 +70,9 @@ import {
 } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
+import SwitchHeader from "./SwitchHeader";
+import DatasetFilter from "./DatasetFilter";
+import CountySelector from "../Counties/CountySelector";
 
 const useStyles = makeStyles({
     root: {
@@ -85,35 +88,24 @@ export default function DatasetTable(props: any) {
     const classes = useStyles();
     const datasets = props.granularity === "state" ? props.stateDatasets : props.countyDatasets;
 
-    function handleChange() {
-        const newGranularity = props.granularity === "state" ? "county" : "state";
-        if(newGranularity === "county") {
-            const countyDatasets = props.mappedDatasets[`${props.selectedState}`].counties[`${props.selectedCounty}`];
-            props.setCountyDatasets(countyDatasets);
-        }
-        else {
-            const stateDatasets = props.mappedDatasets[`${props.selectedState}`].datasets;
-            props.setStateDatasets(stateDatasets);
-        }
-        props.setGranularity(newGranularity);
-    }
-
-    function getChecked() {
-        return props.granularity === "county";
-    }
-
     if(datasets) {
         return (
             <Paper>
-                <Grid item style={{background: "#eee"}} className={classes.header}>
+                <Grid item className={classes.header}>
                     <Table>
+                        <SwitchHeader datasets={datasets} mappedDatasets={props.mappedDatasets} selectedCounty={props.selectedCounty}
+                                      granularity={props.granularity} setGranularity={props.setGranularity} selectedState={props.selectedState}
+                                      setCountyDatasets={props.setCountyDatasets} setStateDatasets={props.setStateDatasets} />
+
                         <TableHead>
                             <TableRow>
-                                <TableCell>
-                                    State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
-                                </TableCell>
-                                <TableCell align="left">
-                                    {datasets.length} Datasets
+                                <TableCell colSpan={2}>
+                                    <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
+                                                    setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
+                                                    setCountyDatasets={props.setCountyDatasets} granularity={props.granularity} />
+                                    <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
+                                                   countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
+                                                   selectedState={props.selectedState} granularity={props.granularity} selectedCounty={props.selectedCounty} />
                                 </TableCell>
                             </TableRow>
                         </TableHead>

@@ -58,45 +58,49 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
-import {Grid, TableCell, TableHead, TableRow, TextField} from "@material-ui/core";
-import {stateToDatasetMapping} from "./DummyDatasets";
-import theme from "../../../global/GlobalTheme";
+import {
+    Grid,
+    Switch,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
 
-const useStyles = makeStyles({
-    root: {
-        width:"100%",
-        marginTop: theme.spacing(1),
-    },
-});
 
-export default function DatasetFiler(props: any) {
-    const classes = useStyles();
+export default function DatasetTable(props: any) {
 
-    //FIXME use the props.mappedDatasets object here instead
-
-    // @ts-ignore
-    const relevantDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
-
-    function createPlaceholderText() {
-        return props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
+    function handleChange() {
+        const newGranularity = props.granularity === "state" ? "county" : "state";
+        if(newGranularity === "county") {
+            const countyDatasets = props.mappedDatasets[`${props.selectedState}`].counties[`${props.selectedCounty}`];
+            props.setCountyDatasets(countyDatasets);
+        }
+        else {
+            const stateDatasets = props.mappedDatasets[`${props.selectedState}`].datasets;
+            props.setStateDatasets(stateDatasets);
+        }
+        props.setGranularity(newGranularity);
     }
 
-    const handleChange = (event: any) => {
-        if(props.selectedState) {
-            const input = event.target.value;
-            const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
-            props.granularity === "state" ? props.setStateDatasets(capitalizeArray(matches)) : props.setCountyDatasets(capitalizeArray(matches));
-        }
-    };
+    function getChecked() {
+        return props.granularity === "county";
+    }
 
-    return (
-        <TextField
-            className={classes.root}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder={createPlaceholderText()}
-        />
-    );
+    if(props.datasets) {
+        return (
+            <TableHead style={{background: "#eee"}}>
+                <TableRow>
+                    <TableCell>
+                        State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
+                    </TableCell>
+                    <TableCell align="left">
+                        {props.datasets.length} Datasets
+                    </TableCell>
+                </TableRow>
+            </TableHead>
+        )
+    }
+
+    else { return null }
+
 }

@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {Grid, TextField} from "@material-ui/core";
+import {TableCell, TableHead, TableRow, TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {Autocomplete} from "@material-ui/lab";
 
@@ -84,28 +84,26 @@ export default function CountySelector(props: any) {
     }
 
     return (
-        <Grid item>
-            <Autocomplete
-                className={classes.root}
-                disabled={getDisabled()}
-                options={props.counties}
-                value={getValue()}
-                // @ts-ignore
-                onChange={(event, newValue: String) => {
-                    if (newValue) {
-                        props.setSelectedCounty(newValue);
-                        props.setCountyDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
-                    }
-                }}
-                autoHighlight
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        placeholder={getPlaceholderText()}
-                        variant="outlined"
-                    />
-                )}
-            />
-        </Grid>
+        <Autocomplete
+            className={classes.root}
+            disabled={getDisabled()}
+            options={props.counties}
+            value={getValue()}
+            // @ts-ignore
+            onChange={(event, newValue: String) => {
+                if (newValue) {
+                    props.setSelectedCounty(newValue);
+                    props.setCountyDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
+                }
+            }}
+            autoHighlight
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    placeholder={getPlaceholderText()}
+                    variant="outlined"
+                />
+            )}
+        />
     )
 }
