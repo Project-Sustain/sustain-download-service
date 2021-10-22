@@ -79,6 +79,9 @@ export default function StateSelector(props: any) {
 }
 
 function stateMatch(matchString: any, state: any) {
+    if(matchString.charAt(matchString.length-1) === " ") {
+        matchString = matchString.substr(0, matchString.length-1);
+    }
     if(state.includes(matchString) && (state.charAt(0) === matchString.charAt(0))){
         return true;
     }
