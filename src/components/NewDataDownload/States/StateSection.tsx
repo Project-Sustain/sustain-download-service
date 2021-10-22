@@ -132,7 +132,6 @@ export default function StateSection() {
     }
 
     function findStateName(name: String) {
-        //FIXME This does work, but we should change it to get the state name directly from the API
         const words = name.split(" ");
         words.reverse().forEach((word) => {
             if(word.charAt(word.length-1) === ',') word = word.substr(0, word.length-1)
