@@ -60,15 +60,14 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
-import {Grid, TextField} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import {stateToDatasetMapping} from "./DummyDatasets";
 import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
     root: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
         width:"100%",
+        marginTop: theme.spacing(1),
     },
 });
 
@@ -93,13 +92,11 @@ export default function DatasetFiler(props: any) {
     };
 
     return (
-        <Grid item>
-            <TextField
-                className={classes.root}
-                variant="outlined"
-                onChange={handleChange}
-                placeholder={createPlaceholderText()}
-            />
-        </Grid>
+        <TextField
+            className={classes.root}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder={createPlaceholderText()}
+        />
     );
 }

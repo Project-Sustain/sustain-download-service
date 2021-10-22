@@ -58,43 +58,41 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {TextField} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-import {Autocomplete} from "@material-ui/lab";
+import {
+    Switch,
+    TableCell,
+    TableRow,
+} from '@material-ui/core';
 
-const useStyles = makeStyles({
-    root: {
-        width: "100%"
-    },
-});
 
-export default function CountySelector(props: any) {
-    const classes = useStyles();
+export default function DatasetTable(props: any) {
 
-    if(props.granularity === "county") {
-        return (
-            <Autocomplete
-                className={classes.root}
-                options={props.counties}
-                value={`${props.selectedCounty} County`}
-                // @ts-ignore
-                onChange={(event, newValue: String) => {
-                    if (newValue) {
-                        props.setSelectedCounty(newValue);
-                        props.setCountyDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
-                    }
-                }}
-                autoHighlight
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        placeholder={`${props.selectedCounty} County`}
-                        variant="outlined"
-                    />
-                )}
-            />
-        )
+    function handleChange() {
+        const newGranularity = props.granularity === "state" ? "county" : "state";
+        if(newGranularity === "county") {
+            const countyDatasets = props.mappedDatasets[`${props.selectedState}`].counties[`${props.selectedCounty}`];
+            props.setCountyDatasets(countyDatasets);
+        }
+        else {
+            const stateDatasets = props.mappedDatasets[`${props.selectedState}`].datasets;
+            props.setStateDatasets(stateDatasets);
+        }
+        props.setGranularity(newGranularity);
     }
 
-    else {return null}
+    function getChecked() {
+        return props.granularity === "county";
+    }
+
+    return (
+        <TableRow>
+            <TableCell>
+                State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
+            </TableCell>
+            <TableCell align="left">
+                {props.datasets.length} Datasets
+            </TableCell>
+        </TableRow>
+    )
+
 }

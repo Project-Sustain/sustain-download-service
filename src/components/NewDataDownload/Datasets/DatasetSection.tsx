@@ -62,8 +62,6 @@ import DatasetTable from "./DatasetTable";
 import {Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import DatasetFilter from "./DatasetFilter";
-import CountySelector from "../Counties/CountySelector";
 
 const useStyles = makeStyles({
     root: {
@@ -83,16 +81,11 @@ export default function DatasetSection(props: any) {
                 justifyContent="center"
                 alignItems="stretch"
             >
-                <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
-                                setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
-                                setCountyDatasets={props.setCountyDatasets} granularity={granularity} />
-                <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                               countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
-                               selectedState={props.selectedState} granularity={granularity} selectedCounty={props.selectedCounty} />
                 <DatasetTable selectedState={props.selectedState} selectedCounty={props.selectedCounty}
                               granularity={granularity} setGranularity={setGranularity} mappedDatasets={props.mappedDatasets}
                               stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                              countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}/>
+                              countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
+                              counties={props.counties} setCounties={props.setCounties} setSelectedCounty={props.setSelectedCounty}/>
             </Grid>
         </div>
     )
