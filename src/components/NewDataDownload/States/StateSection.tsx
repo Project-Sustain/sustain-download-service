@@ -69,6 +69,8 @@ import StateFilter from "./StateFilter";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
+import {reverseGeocode} from "../Utils/reverseGeocode";
+import {statesArray} from "./StateInfo";
 
 const useStyles = makeStyles({
     map: {
@@ -94,7 +96,7 @@ const useStyles = makeStyles({
 export default function StateSection() {
     const classes = useStyles();
     const [mappedDatasets, setMappedDatasets] = useState();
-    const [selectedState, setSelectedState] = useState("Colorado");
+    const [selectedState, setSelectedState] = useState("Washington");
     const [hoveredState, setHoveredState] = useState("");
     const [selectedCounty, setSelectedCounty] = useState();
     const [counties, setCounties] = useState([]);
@@ -116,7 +118,47 @@ export default function StateSection() {
         setCounties(countyList);
         // @ts-ignore
         setSelectedCounty(countyList[0]);
+
+        if(window.navigator.geolocation) {
+            window.navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        }
+
     }, [selectedState])
+
+    async function onSuccess({coords}: any) {
+        const latLng = {lat: coords.latitude, lng: coords.longitude};
+        const location = await reverseGeocode(latLng);
+        findStateName(location.name)
+        findCountyName(location.name)
+    }
+
+    function findStateName(name: String) {
+        const words = name.split(" ");
+        words.forEach((word) => {
+            if(word.charAt(word.length-1) === ',') word = word.substr(0, word.length-1)
+            const lowerCaseWord = word.toLowerCase();
+            if(statesArray.includes(lowerCaseWord)) {
+                setSelectedState(word);
+            };
+        })
+    }
+
+    function findCountyName(name: String) {
+        console.log({counties})
+        const words = name.split(" ");
+        words.forEach((word) => {
+            // @ts-ignore
+            if(counties.includes(word)) {
+                // @ts-ignore
+                setSelectedCounty(word);
+                console.log({word})
+            };
+        })
+    }
+
+    function onError(error: any) {
+        console.log(error.message);
+    }
 
     function renderSelector() {
         if(stateFilterType === 0) {
