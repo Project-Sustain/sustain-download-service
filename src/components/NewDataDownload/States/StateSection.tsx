@@ -96,7 +96,7 @@ const useStyles = makeStyles({
 export default function StateSection() {
     const classes = useStyles();
     const [mappedDatasets, setMappedDatasets] = useState();
-    const [selectedState, setSelectedState] = useState("Washington");
+    const [selectedState, setSelectedState] = useState("Maine");
     const [hoveredState, setHoveredState] = useState("");
     const [selectedCounty, setSelectedCounty] = useState();
     const [counties, setCounties] = useState([]);
@@ -123,38 +123,43 @@ export default function StateSection() {
             window.navigator.geolocation.getCurrentPosition(onSuccess, onError);
         }
 
-    }, [selectedState])
+    }, [selectedState]);
 
     async function onSuccess({coords}: any) {
         const latLng = {lat: coords.latitude, lng: coords.longitude};
         const location = await reverseGeocode(latLng);
+        console.log({location})
         findStateName(location.name)
-        findCountyName(location.name)
+        // findCountyName(location.name)
     }
 
     function findStateName(name: String) {
+        //FIXME This does work, but we should change it to get the state name directly from the API
         const words = name.split(" ");
-        words.forEach((word) => {
+        words.reverse().forEach((word) => {
             if(word.charAt(word.length-1) === ',') word = word.substr(0, word.length-1)
             const lowerCaseWord = word.toLowerCase();
             if(statesArray.includes(lowerCaseWord)) {
                 setSelectedState(word);
-            };
+                return;
+            }
         })
     }
 
-    function findCountyName(name: String) {
-        console.log({counties})
-        const words = name.split(" ");
-        words.forEach((word) => {
-            // @ts-ignore
-            if(counties.includes(word)) {
-                // @ts-ignore
-                setSelectedCounty(word);
-                console.log({word})
-            };
-        })
-    }
+    // function findCountyName(name: String) {
+    //     //FIXME these counties are from hard-coded state, not 'selected state'
+    //     console.log({counties})
+    //     const words = name.split(" ");
+    //     words.reverse().forEach((word) => {
+    //         if(word.charAt(word.length-1) === ',') word = word.substr(0, word.length-1)
+    //         console.log({word})
+    //         // @ts-ignore
+    //         if(counties.includes(word)) {
+    //             // @ts-ignore
+    //             setSelectedCounty(word);
+    //         };
+    //     })
+    // }
 
     function onError(error: any) {
         console.log(error.message);

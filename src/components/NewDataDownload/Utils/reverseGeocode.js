@@ -1,5 +1,3 @@
-import {statesArray} from "../States/StateInfo";
-
 const GEOCODE_URL = "https://nominatim.openstreetmap.org/reverse?format=jsonv2";
 
 async function reverseGeocode(latLng) {
