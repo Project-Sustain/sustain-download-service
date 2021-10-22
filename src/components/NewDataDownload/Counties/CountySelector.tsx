@@ -79,12 +79,17 @@ export default function CountySelector(props: any) {
         return props.granularity === "county" ? `${props.selectedCounty} County` : "Select County to view Counties";
     }
 
+    function getValue() {
+        return props.selectedCounty ? props.selectedCounty : "Select County to view Counties";
+    }
+
     return (
         <Grid item>
             <Autocomplete
                 className={classes.root}
                 disabled={getDisabled()}
                 options={props.counties}
+                value={getValue()}
                 // @ts-ignore
                 onChange={(event, newValue: String) => {
                     if (newValue) {
