@@ -88,7 +88,6 @@ export default function CountySelector(props: any) {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder={`${props.selectedCounty} County`}
                         variant="outlined"
                     />
                 )}
