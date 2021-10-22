@@ -77,7 +77,7 @@ const useStyles = makeStyles({
         overflow: "auto"
     },
     header: {
-        borderRadius: "5px 5px 0px 0px",
+        borderRadius: "3px 3px 0px 0px",
     },
 });
 
@@ -106,16 +106,18 @@ export default function DatasetTable(props: any) {
         return (
             <Paper>
                 <Grid item style={{background: "#eee"}} className={classes.header}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>
-                                State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
-                            </TableCell>
-                            <TableCell align="left">
-                                {datasets.length} Datasets
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
+                                </TableCell>
+                                <TableCell align="left">
+                                    {datasets.length} Datasets
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                    </Table>
                 </Grid>
                 <Grid item>
                     <TableContainer className={classes.root}>
