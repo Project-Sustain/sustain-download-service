@@ -128,9 +128,7 @@ export default function StateSection() {
     async function onSuccess({coords}: any) {
         const latLng = {lat: coords.latitude, lng: coords.longitude};
         const location = await reverseGeocode(latLng);
-        console.log({location})
         findStateName(location.name)
-        // findCountyName(location.name)
     }
 
     function findStateName(name: String) {
@@ -145,21 +143,6 @@ export default function StateSection() {
             }
         })
     }
-
-    // function findCountyName(name: String) {
-    //     //FIXME these counties are from hard-coded state, not 'selected state'
-    //     console.log({counties})
-    //     const words = name.split(" ");
-    //     words.reverse().forEach((word) => {
-    //         if(word.charAt(word.length-1) === ',') word = word.substr(0, word.length-1)
-    //         console.log({word})
-    //         // @ts-ignore
-    //         if(counties.includes(word)) {
-    //             // @ts-ignore
-    //             setSelectedCounty(word);
-    //         };
-    //     })
-    // }
 
     function onError(error: any) {
         console.log(error.message);
