@@ -59,10 +59,8 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {
-    Grid,
     Switch,
     TableCell,
-    TableHead,
     TableRow,
 } from '@material-ui/core';
 
@@ -86,21 +84,15 @@ export default function DatasetTable(props: any) {
         return props.granularity === "county";
     }
 
-    if(props.datasets) {
-        return (
-            <TableHead style={{background: "#eee"}}>
-                <TableRow>
-                    <TableCell>
-                        State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
-                    </TableCell>
-                    <TableCell align="left">
-                        {props.datasets.length} Datasets
-                    </TableCell>
-                </TableRow>
-            </TableHead>
-        )
-    }
-
-    else { return null }
+    return (
+        <TableRow>
+            <TableCell>
+                State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
+            </TableCell>
+            <TableCell align="left">
+                {props.datasets.length} Datasets
+            </TableCell>
+        </TableRow>
+    )
 
 }

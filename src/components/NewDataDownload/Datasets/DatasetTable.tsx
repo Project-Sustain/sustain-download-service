@@ -60,19 +60,16 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {
     Grid,
-    Paper, Switch,
+    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
-    TableHead,
     TableRow,
 } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
-import SwitchHeader from "./SwitchHeader";
-import DatasetFilter from "./DatasetFilter";
-import CountySelector from "../Counties/CountySelector";
+import TableControls from "./TableControls";
 
 const useStyles = makeStyles({
     root: {
@@ -91,26 +88,13 @@ export default function DatasetTable(props: any) {
     if(datasets) {
         return (
             <Paper>
-                <Grid item className={classes.header}>
-                    <Table>
-                        <SwitchHeader datasets={datasets} mappedDatasets={props.mappedDatasets} selectedCounty={props.selectedCounty}
-                                      granularity={props.granularity} setGranularity={props.setGranularity} selectedState={props.selectedState}
-                                      setCountyDatasets={props.setCountyDatasets} setStateDatasets={props.setStateDatasets} />
-
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan={2}>
-                                    <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
-                                                    setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
-                                                    setCountyDatasets={props.setCountyDatasets} granularity={props.granularity} />
-                                    <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                                                   countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
-                                                   selectedState={props.selectedState} granularity={props.granularity} selectedCounty={props.selectedCounty} />
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                    </Table>
-                </Grid>
+                <TableControls mappedDatasets={props.mappedDatasets} datasets={datasets}
+                               stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
+                               countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
+                               selectedState={props.selectedState} setSelectedState={props.setSelectedState}
+                               granularity={props.granularity} setGranularity={props.setGranularity}
+                               selectedCounty={props.selectedCounty} setSelectedCounty={props.setSelectedCounty}
+                               counties={props.counties} setCounties={props.setCounties} />
                 <Grid item>
                     <TableContainer className={classes.root}>
                         <Table>

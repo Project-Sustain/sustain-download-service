@@ -58,43 +58,50 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {TextField} from "@material-ui/core";
+import {
+    Grid,
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
-import {Autocomplete} from "@material-ui/lab";
+import SwitchHeader from "./SwitchHeader";
+import DatasetFilter from "./DatasetFilter";
+import CountySelector from "../Counties/CountySelector";
 
 const useStyles = makeStyles({
     root: {
-        width: "100%"
+        maxHeight: "55vh",
+        overflow: "auto"
+    },
+    header: {
+        borderRadius: "3px 3px 0px 0px",
     },
 });
 
-export default function CountySelector(props: any) {
+export default function DatasetTable(props: any) {
     const classes = useStyles();
 
-    if(props.granularity === "county") {
-        return (
-            <Autocomplete
-                className={classes.root}
-                options={props.counties}
-                value={`${props.selectedCounty} County`}
-                // @ts-ignore
-                onChange={(event, newValue: String) => {
-                    if (newValue) {
-                        props.setSelectedCounty(newValue);
-                        props.setCountyDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
-                    }
-                }}
-                autoHighlight
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        placeholder={`${props.selectedCounty} County`}
-                        variant="outlined"
-                    />
-                )}
-            />
-        )
-    }
-
-    else {return null}
+    return (
+        <Grid item className={classes.header}>
+            <Table>
+                <TableHead>
+                    <SwitchHeader datasets={props.datasets} mappedDatasets={props.mappedDatasets} selectedCounty={props.selectedCounty}
+                                  granularity={props.granularity} setGranularity={props.setGranularity} selectedState={props.selectedState}
+                                  setCountyDatasets={props.setCountyDatasets} setStateDatasets={props.setStateDatasets} />
+                    <TableRow>
+                        <TableCell colSpan={2}>
+                            <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
+                                            setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
+                                            setCountyDatasets={props.setCountyDatasets} granularity={props.granularity} />
+                            <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
+                                           countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
+                                           selectedState={props.selectedState} granularity={props.granularity} selectedCounty={props.selectedCounty} />
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+            </Table>
+        </Grid>
+    )
 }

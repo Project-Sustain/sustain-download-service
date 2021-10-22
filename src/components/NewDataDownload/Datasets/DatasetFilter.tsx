@@ -60,7 +60,7 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
-import {Grid, TableCell, TableHead, TableRow, TextField} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import {stateToDatasetMapping} from "./DummyDatasets";
 import theme from "../../../global/GlobalTheme";
 
