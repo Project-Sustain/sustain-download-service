@@ -89,6 +89,9 @@ export default function StatesMap(props: any) {
             if(props.statesMatchingSearch.length === nodeList.length) {
                 node.style.fill = unSelectedState;
             }
+            else if(props.statesMatchingSearch.length === 0 && props.selectedState === node["__data__"].stateName) {
+                node.style.fill = chosenState;
+            }
             else {
                 if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
                     node.style.fill = selectedState;
@@ -96,9 +99,6 @@ export default function StatesMap(props: any) {
                 else {
                     node.style.fill = unSelectedState;
                 }
-            }
-            if(props.selectedState === node["__data__"].stateName) {
-                node.style.fill = chosenState;
             }
         })
     }
