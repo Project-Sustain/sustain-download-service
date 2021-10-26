@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Select} from "@material-ui/core";
+import {Select,Box, MenuItem, FormControl} from "@mui/material";
 
 export default function BasicSelect(props: any) {
 
@@ -8,13 +8,18 @@ export default function BasicSelect(props: any) {
     };
 
     return (
-        <Select
-            variant="outlined"
-            value={props.stateFilterType}
-            onChange={handleChange}
-        >
-            <option value={0}>Name</option>
-            <option value={1}>Dataset</option>
-        </Select>
+        <Box sx={{ minWidth: 75 }}>
+            <FormControl fullWidth>
+                <Select
+                    value={props.stateFilterType}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label' }}
+                >
+                    <MenuItem value={0}>Name</MenuItem>
+                    <MenuItem value={1}>Dataset</MenuItem>
+                </Select>
+            </FormControl>
+        </Box>
     );
 }
