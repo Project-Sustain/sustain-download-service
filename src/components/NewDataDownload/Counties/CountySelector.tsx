@@ -76,7 +76,7 @@ export default function CountySelector(props: any) {
             <Autocomplete
                 className={classes.root}
                 options={props.counties}
-                value={`${props.selectedCounty} County`}
+                value={props.selectedCounty}
                 // @ts-ignore
                 onChange={(event, newValue: String) => {
                     if (newValue) {
@@ -88,7 +88,6 @@ export default function CountySelector(props: any) {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder={`${props.selectedCounty} County`}
                         variant="outlined"
                     />
                 )}
