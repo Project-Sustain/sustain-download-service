@@ -64,17 +64,8 @@ import {chosenState, selectedState, unSelectedState} from "./StateInfo";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-    map: {
-        position:'relative',
-        height: '1px',
-        width: '100%',
-        // paddingBottom: '92%',
-    },
-
     svg: {
         position: 'relative',
-        width: 'auto',
-        height: '100%'
     }
 });
 
@@ -111,10 +102,8 @@ export default function StatesMap(props: any) {
     });
 
     return (
-        <div className={classes.map}>
-            <div className={classes.svg}>
-                <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
-            </div>
+        <div className={classes.svg}>
+            <svg width="100%" height="600" viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
         </div>
-    )
+    );
 }
