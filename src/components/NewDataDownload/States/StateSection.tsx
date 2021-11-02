@@ -71,6 +71,7 @@ import theme from "../../../global/GlobalTheme";
 import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 import {mongoQuery} from "../../../library/Download";
 import {formatDatasetName, getStateName} from "../Utils/utils";
+import {countyMap} from "../Counties/CountyMapping";
 
 const useStyles = makeStyles({
     map: {
@@ -130,6 +131,17 @@ export default function StateSection(props: any) {
     }, [])
     // @ts-ignore
     console.log({stateDatasets})
+    console.log({stateCountyDatasetMapping})
+
+    // @ts-ignore
+    // for(const [key, value] of Object.entries(countyMap[`${selectedState}`])) {
+    //     console.log({key})
+    //     console.log({value})
+    // }
+
+    // @ts-ignore
+    const countyMapAtState = countyMap[`${selectedState}`];
+    console.log({countyMapAtState})
 
     useEffect(() => {
         // @ts-ignore
