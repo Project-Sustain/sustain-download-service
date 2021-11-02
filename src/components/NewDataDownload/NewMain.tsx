@@ -62,66 +62,27 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import StateSection from "./States/StateSection";
 // @ts-ignore
-import { mongoQuery } from "../../library/Download"
-import {gisJoinStateNames} from "./Datasets/DummyDatasets";
-
-interface stateToDatasetsType {
-    GISJOIN: string,
-    collections_supported: string[],
-    datasets: string[],
-    name: string
-}
+import { mongoQuery } from "../../library/Download";
+import { formatDatasetName, getStateName } from "./Utils/utils";
 
 export default function Main() {
-    const [stateToDatasets, setStateToDatasets] = useState([] as stateToDatasetsType[])
-    console.log(stateToDatasets);
-
-
-    function getStateName(GISJOIN: String) {
-        for(const gis of gisJoinStateNames) {
-            if(gis.GISJOIN === GISJOIN) {
-                return gis.name;
-            }
-        }
-        return "";
-    }
-
-    function formatDatasetName(datasets: string[]) {
-        let newDatasets: string[] = [];
-        datasets.forEach((dataset) =>  {
-            let newDataset = dataset.replace(/_/g, " ");
-            newDataset = capitalizeFirstLetter(newDataset);
-            newDatasets.push(newDataset);
-        });
-        return newDatasets;
-    }
-
-    function capitalizeFirstLetter(str: any) {
-        if (str == null || str.length == 0) {
-            return "";
-        }
-        str = str.split(" ");
-        for (let i = 0, x = str.length; i < x; i++) {
-            if (str[i] == null || str[i].length <= 2) {
-                continue;
-            }
-            str[i] = str[i][0].toUpperCase() + str[i].substr(1);
-        }
-        return str.join(" ");
-    }
+    const [stateToDatasets, setStateToDatasets] = useState()
+    console.log({stateToDatasets});
     
     useEffect(() => {
         (async () => {
             const sAvailability = await mongoQuery("state_gis_join_metadata", []);
-
-            setStateToDatasets(sAvailability.map((base: { gis_join: any; collections_supported: any; datasets:any; name: any;}) => {
-                return {
-                    GISJOIN: base.gis_join,
-                    collections_supported: base.collections_supported,
-                    datasets: formatDatasetName(base.collections_supported),
-                    name: getStateName(base.gis_join)
+            let masterMap = {};
+            for(const key of sAvailability) {
+                // @ts-ignore
+                masterMap[getStateName(key.gis_join)] = {
+                    GISJOIN: key.gis_join,
+                    collections_supported: key.collections_supported,
+                    datasets: formatDatasetName(key.collections_supported)
                 }
-            }))
+            }
+            // @ts-ignore
+            setStateToDatasets(masterMap);
         })()
     }, [])
 

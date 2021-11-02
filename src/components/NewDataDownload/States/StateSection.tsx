@@ -104,6 +104,9 @@ export default function StateSection(props: any) {
     const [stateDatasets, setStateDatasets] = useState(stateCountyDatasetMapping[`${selectedState}`].datasets);
     const [countyDatasets, setCountyDatasets] = useState([]);
 
+
+    console.log({stateCountyDatasetMapping})
+
     useEffect(() => {
         // @ts-ignore
         setMappedDatasets(stateCountyDatasetMapping);
