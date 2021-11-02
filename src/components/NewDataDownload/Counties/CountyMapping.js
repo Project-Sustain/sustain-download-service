@@ -624,6 +624,13 @@ export const countyMap = {
         "Wilkinson",
         "Worth",
     ],
+    "Hawaii" : [
+        "Hawaii",
+        "Honolulu",
+        "Kalawao",
+        "Kauai",
+        "Maui",
+    ],
     "Iowa" : [
         "Adair",
         "Adams",
