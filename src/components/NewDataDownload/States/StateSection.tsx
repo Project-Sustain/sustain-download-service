@@ -59,16 +59,10 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, {useEffect, useState} from "react";
-import {Grid, Typography} from '@material-ui/core';
-import StatesMap from "./StatesMap";
-import DatasetSection from "../Datasets/DatasetSection";
-import StateSelector from "./StateSelector";
-import DatasetSelector from "../Datasets/DatasetSelector";
-import FauxTooltip from "../Utils/FauxTooltip";
-import StateFilter from "./StateFilter";
+import {Button, Typography} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
+import {useStateSelection} from "../useStateSelection";
 import {mongoQuery} from "../../../library/Download";
 import {formatDatasetName, getStateName} from "../Utils/utils";
 import {countyMap} from "../Counties/CountyMapping";
@@ -96,105 +90,69 @@ const useStyles = makeStyles({
 
 export default function StateSection(props: any) {
     const classes = useStyles();
-    const [mappedDatasets, setMappedDatasets] = useState();
-    const [selectedState, setSelectedState] = useState("Colorado");
     const [hoveredState, setHoveredState] = useState("");
-    const [selectedCounty, setSelectedCounty] = useState();
-    const [counties, setCounties] = useState([]);
     const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
-    // @ts-ignore
-    const [stateDatasets, setStateDatasets] = useState([]);
-    // const [stateDatasets, setStateDatasets] = useState(stateCountyDatasetMapping[`${selectedState}`].datasets);
-    const [countyDatasets, setCountyDatasets] = useState([]);
 
-    const [stateToDatasets, setStateToDatasets] = useState()
-    console.log({stateToDatasets});
-
-    useEffect(() => {
-        (async () => {
-            const sAvailability = await mongoQuery("state_gis_join_metadata", []);
-            let masterMap = {};
-            for(const key of sAvailability) {
-                // @ts-ignore
-                masterMap[getStateName(key.gis_join)] = {
-                    GISJOIN: key.gis_join,
-                    collections_supported: key.collections_supported,
-                    datasets: formatDatasetName(key.collections_supported)
-                }
-            }
-            // @ts-ignore
-            setStateToDatasets(masterMap);
-            // @ts-ignore
-            setStateDatasets(masterMap[`${selectedState}`].datasets);
-        })()
-    }, [])
-    // @ts-ignore
-    console.log({stateDatasets})
-    console.log({stateCountyDatasetMapping})
-
-    // @ts-ignore
-    // for(const [key, value] of Object.entries(countyMap[`${selectedState}`])) {
-    //     console.log({key})
-    //     console.log({value})
+    // function renderSelector() {
+    //     if(stateFilterType === 0) {
+    //         return <StateSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
+    //     }
+    //     else {
+    //         return <DatasetSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
+    //     }
     // }
 
-    // @ts-ignore
-    const countyMapAtState = countyMap[`${selectedState}`];
-    console.log({countyMapAtState})
+    function checkStateSetting(state: string) {
+        props.dataManagement.handleStateChange(state);
+        // @ts-ignore
+        const currentDatasets = props.data.stateDatasets;
+        // @ts-ignore
+        const chosenState = props.data.selectedState;
+        // @ts-ignore
+        const stateCounties = props.data.counties;
+        // @ts-ignore
+        const chosenCounty = props.data.selectedCounty;
 
-    useEffect(() => {
-        // @ts-ignore
-        setMappedDatasets(stateCountyDatasetMapping);
-        let countyList = [];
-        // @ts-ignore
-        for (const [county] of Object.entries(stateCountyDatasetMapping[`${selectedState}`].counties)) {
-            countyList.push(county);
-        }
-        // @ts-ignore
-        setCounties(countyList);
-        // @ts-ignore
-        setSelectedCounty(countyList[0]);
-    }, [selectedState])
-
-    function renderSelector() {
-        if(stateFilterType === 0) {
-            return <StateSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-        }
-        else {
-            return <DatasetSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-        }
+        console.log({currentDatasets})
+        console.log({chosenState})
+        console.log({stateCounties})
+        console.log({chosenCounty})
     }
 
-    return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-start">
-            <Grid item className={classes.map}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-                        <Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>
-                        <Grid item>{renderSelector()}</Grid>
-                    </Grid>
-
-                    <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState} mappedDatasets={mappedDatasets}
-                               setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}
-                               setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty} setCountyDatasets={setCountyDatasets} />
-                    <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
-            </Grid>
-            <Grid item className={classes.datasetSection}>
-                <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
-                                counties={counties} setCounties={setCounties} selectedCounty={selectedCounty}
-                                countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}
-                                stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty}/>
-            </Grid>
-        </Grid>
+    return ( <>
+            <Typography>Under Construction</Typography>
+            <Button onClick={() => checkStateSetting("Georgia")}>Georgia</Button>
+            <Button onClick={() => checkStateSetting("Arizona")}>Arizona</Button>
+        </>
+        // <Grid
+        //     container
+        //     direction="row"
+        //     justifyContent="center"
+        //     alignItems="flex-start">
+        //     <Grid item className={classes.map}>
+        //             <Grid
+        //                 container
+        //                 direction="row"
+        //                 justifyContent="center"
+        //                 alignItems="center"
+        //             >
+        //                 <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
+        //                 <Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>
+        //                 <Grid item>{renderSelector()}</Grid>
+        //             </Grid>
+        //
+        //             <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState} mappedDatasets={mappedDatasets}
+        //                        setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}
+        //                        setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty} setCountyDatasets={setCountyDatasets} />
+        //             <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
+        //     </Grid>
+        //     <Grid item className={classes.datasetSection}>
+        //         <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
+        //                         counties={counties} setCounties={setCounties} selectedCounty={selectedCounty}
+        //                         countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}
+        //                         stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty}/>
+        //     </Grid>
+        // </Grid>
     )
 }
