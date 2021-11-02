@@ -58,9 +58,31 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import StateSection from "./States/StateSection";
+import { mongoQuery } from "../../library/Download"
+
+interface StateAvailabilityType {
+    GISJOIN: string,
+    collections_supported: string[]
+}
 
 export default function Main() {
+    const [stateAvailability, setStateAvailability] = useState([] as StateAvailabilityType[])
+    console.log(stateAvailability)
+    
+    useEffect(() => {
+        (async () => {
+            const sAvailability = await mongoQuery("state_gis_join_metadata", [])
+            setStateAvailability(sAvailability.map(base => {
+                return {
+                    GISJOIN: base.gis_join,
+                    collections_supported: base.collections_supported
+                }
+            }))
+        })()
+    }, [])
+
     return <StateSection />
 }

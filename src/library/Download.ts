@@ -124,7 +124,7 @@ const getRegionGeometry = async (GISJOIN: string) => {
 }
 
 
-const mongoQuery = async (collection: string, pipeline: any[]) => {
+export const mongoQuery = async (collection: string, pipeline: any[]) => {
     return new Promise<any[]>((resolve) => {
         const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
         let returnData: any[] = [];
