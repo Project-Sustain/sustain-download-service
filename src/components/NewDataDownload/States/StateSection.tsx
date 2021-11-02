@@ -69,6 +69,8 @@ import StateFilter from "./StateFilter";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
+import {mongoQuery} from "../../../library/Download";
+import {formatDatasetName, getStateName} from "../Utils/utils";
 
 const useStyles = makeStyles({
     map: {
@@ -101,11 +103,33 @@ export default function StateSection(props: any) {
     const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
     // @ts-ignore
-    const [stateDatasets, setStateDatasets] = useState(stateCountyDatasetMapping[`${selectedState}`].datasets);
+    const [stateDatasets, setStateDatasets] = useState([]);
+    // const [stateDatasets, setStateDatasets] = useState(stateCountyDatasetMapping[`${selectedState}`].datasets);
     const [countyDatasets, setCountyDatasets] = useState([]);
 
+    const [stateToDatasets, setStateToDatasets] = useState()
+    console.log({stateToDatasets});
 
-    console.log({stateCountyDatasetMapping})
+    useEffect(() => {
+        (async () => {
+            const sAvailability = await mongoQuery("state_gis_join_metadata", []);
+            let masterMap = {};
+            for(const key of sAvailability) {
+                // @ts-ignore
+                masterMap[getStateName(key.gis_join)] = {
+                    GISJOIN: key.gis_join,
+                    collections_supported: key.collections_supported,
+                    datasets: formatDatasetName(key.collections_supported)
+                }
+            }
+            // @ts-ignore
+            setStateToDatasets(masterMap);
+            // @ts-ignore
+            setStateDatasets(masterMap[`${selectedState}`].datasets);
+        })()
+    }, [])
+    // @ts-ignore
+    console.log({stateDatasets})
 
     useEffect(() => {
         // @ts-ignore

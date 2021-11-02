@@ -58,33 +58,9 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React  from "react";
 import StateSection from "./States/StateSection";
-// @ts-ignore
-import { mongoQuery } from "../../library/Download";
-import { formatDatasetName, getStateName } from "./Utils/utils";
 
 export default function Main() {
-    const [stateToDatasets, setStateToDatasets] = useState()
-    console.log({stateToDatasets});
-    
-    useEffect(() => {
-        (async () => {
-            const sAvailability = await mongoQuery("state_gis_join_metadata", []);
-            let masterMap = {};
-            for(const key of sAvailability) {
-                // @ts-ignore
-                masterMap[getStateName(key.gis_join)] = {
-                    GISJOIN: key.gis_join,
-                    collections_supported: key.collections_supported,
-                    datasets: formatDatasetName(key.collections_supported)
-                }
-            }
-            // @ts-ignore
-            setStateToDatasets(masterMap);
-        })()
-    }, [])
-
-    return <StateSection stateToDatasets={stateToDatasets} setStateToDatasets={setStateToDatasets} />
+    return <StateSection />
 }
