@@ -91,7 +91,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function StateSection() {
+export default function StateSection(props: any) {
     const classes = useStyles();
     const [mappedDatasets, setMappedDatasets] = useState();
     const [selectedState, setSelectedState] = useState("Colorado");
