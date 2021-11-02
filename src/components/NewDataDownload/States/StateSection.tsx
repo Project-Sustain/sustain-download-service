@@ -58,14 +58,10 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useEffect, useState} from "react";
-import {Button, Typography} from '@material-ui/core';
+import React, {useState} from "react";
+import {Typography} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import {useStateSelection} from "../useStateSelection";
-import {mongoQuery} from "../../../library/Download";
-import {formatDatasetName, getStateName} from "../Utils/utils";
-import {countyMap} from "../Counties/CountyMapping";
 
 const useStyles = makeStyles({
     map: {
@@ -103,27 +99,8 @@ export default function StateSection(props: any) {
     //     }
     // }
 
-    function checkStateSetting(state: string) {
-        props.dataManagement.handleStateChange(state);
-        // @ts-ignore
-        const currentDatasets = props.data.stateDatasets;
-        // @ts-ignore
-        const chosenState = props.data.selectedState;
-        // @ts-ignore
-        const stateCounties = props.data.counties;
-        // @ts-ignore
-        const chosenCounty = props.data.selectedCounty;
-
-        console.log({currentDatasets})
-        console.log({chosenState})
-        console.log({stateCounties})
-        console.log({chosenCounty})
-    }
-
     return ( <>
             <Typography>Under Construction</Typography>
-            <Button onClick={() => checkStateSetting("Georgia")}>Georgia</Button>
-            <Button onClick={() => checkStateSetting("Arizona")}>Arizona</Button>
         </>
         // <Grid
         //     container

@@ -18,9 +18,6 @@ export function useStateSelection() {
     const [selectedCounty, setSelectedCounty] = useState("" as string);
     const [stateDatasets, setStateDatasets] = useState([] as string[]);
 
-
-    console.log({stateToDatasets})
-
     const data = {selectedState, counties, selectedCounty, stateDatasets};
     const context = {setStateToDatasets, stateToDatasets, setSelectedState, setCounties, setSelectedCounty, setStateDatasets};
     const dataManagement = {
@@ -35,7 +32,6 @@ export function useStateSelection() {
 function handleStateChange(stateName: any, context: any) {
     const {stateToDatasets, setSelectedState, setCounties, setSelectedCounty, setStateDatasets} = context;
     setSelectedState(stateName);
-    console.log({stateToDatasets})
     // @ts-ignore
     setStateDatasets(stateToDatasets[`${stateName}`].datasets);
     // @ts-ignore
