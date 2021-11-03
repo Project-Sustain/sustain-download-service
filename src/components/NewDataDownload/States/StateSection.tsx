@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, {useState} from "react";
-import {Grid, Typography} from '@material-ui/core';
+import {Button, Grid, Typography} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import StatesMap from "./StatesMap";
@@ -129,6 +129,8 @@ export default function StateSection(props: any) {
                     </Grid>
 
                     <StatesMap data={props.data} dataManagement={props.dataManagement} mapState={mapState} />
+                    <Button onClick={() => props.dataManagement.handleStateChange("Georgia")}>Georgia</Button>
+                    <Button onClick={() => props.dataManagement.handleStateChange("Wyoming")}>Wyoming</Button>
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState} />
             </Grid>
             <Grid item className={classes.datasetSection}>

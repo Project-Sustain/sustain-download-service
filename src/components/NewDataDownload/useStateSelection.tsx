@@ -1,5 +1,7 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {countyMap} from "./Counties/CountyMapping";
+import {mongoQuery} from "../../library/Download";
+import {formatDatasetName, getStateName} from "./Utils/utils";
 
 interface stateDatasetType {
     name: innerObject
@@ -18,12 +20,35 @@ export function useStateSelection() {
     const [selectedCounty, setSelectedCounty] = useState("" as string);
     const [stateDatasets, setStateDatasets] = useState([] as string[]);
 
+    useEffect(() => {
+        (async () => {
+            const serverResponse = await mongoQuery("state_gis_join_metadata", []);
+            let masterMap = {};
+            for(const key of serverResponse) {
+                // @ts-ignore
+                masterMap[getStateName(key.gis_join)] = {
+                    GISJOIN: key.gis_join,
+                    collections_supported: key.collections_supported,
+                    datasets: formatDatasetName(key.collections_supported)
+                }
+            }
+            // @ts-ignore
+            setStateToDatasets(masterMap);
+            setSelectedState("Colorado");
+            // @ts-ignore
+            setStateDatasets(masterMap["Colorado"].datasets);
+            // @ts-ignore
+            setCounties(countyMap["Colorado"]);
+            // @ts-ignore
+            setSelectedCounty(countyMap["Colorado"][0]);
+        })()
+    }, []);
+
     const data = {stateToDatasets, selectedState, counties, selectedCounty, stateDatasets};
     const context = {setStateToDatasets, stateToDatasets, setSelectedState, setCounties, setSelectedCounty, setStateDatasets};
     const dataManagement = {
         handleStateChange: (stateName: any) => handleStateChange(stateName, context),
-        updateSelectedCounty: (countyName: any) => updateSelectedCounty(countyName, setSelectedCounty),
-        initialize: (masterMap: any) => initialize(masterMap, context),
+        updateSelectedCounty: (countyName: any) => updateSelectedCounty(countyName, setSelectedCounty)
     };
 
     return [data, dataManagement];
@@ -44,15 +69,4 @@ function handleStateChange(stateName: any, context: any) {
 
 function updateSelectedCounty(countyName: any, setSelectedCounty: any) {
     setSelectedCounty(countyName);
-}
-
-function initialize(masterMap: any, context:any) {
-    const {setStateToDatasets, setSelectedState, setCounties, setSelectedCounty, setStateDatasets} = context;
-    setStateToDatasets(masterMap);
-    setSelectedState("Colorado");
-    setStateDatasets(masterMap["Colorado"].datasets);
-    // @ts-ignore
-    setCounties(countyMap["Colorado"]);
-    // @ts-ignore
-    setSelectedCounty(countyMap["Colorado"][0]);
 }
