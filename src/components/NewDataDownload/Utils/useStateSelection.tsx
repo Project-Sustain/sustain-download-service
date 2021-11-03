@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {countyMap} from "./Utils/CountyMapping";
-import {mongoQuery} from "../../library/Download";
-import {formatDatasetName, getStateName} from "./Utils/utils";
+import {countyMap} from "./CountyMapping";
+import {mongoQuery} from "../../../library/Download";
+import {formatDatasetName, getStateName} from "./utils";
 
 interface stateDatasetType {
     [name: string]: {

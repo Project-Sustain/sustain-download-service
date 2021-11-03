@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, {useState} from "react";
-import {useStateSelection} from "./useStateSelection";
+import {useStateSelection} from "./Utils/useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
 import FilterByStateName from "./MapArea/Filtering/FilterByStateName";
@@ -96,7 +96,7 @@ export default function Main() {
 
     const [data, dataManagement] = useStateSelection();
     const [hoveredState, setHoveredState] = useState("");
-    const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
+    const [stateFilterType, setStateFilterType] = useState(0);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
     const filter = {stateFilterType, setStateFilterType}
