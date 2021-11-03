@@ -64,18 +64,6 @@ import {useStateSelection} from "./useStateSelection";
 
 export default function Main() {
     const [data, dataManagement] = useStateSelection();
-    // @ts-ignore
-    const selectedState = data.selectedState;
-    // @ts-ignore
-    const counties = data.counties;
-    // @ts-ignore
-    const selectedCounty = data.selectedCounty;
-    // @ts-ignore
-    const stateDatasets = data.stateDatasets;
-    console.log({selectedState})
-    console.log({counties})
-    console.log({selectedCounty})
-    console.log({stateDatasets})
 
     return <StateSection data={data} dataManagement={dataManagement} />
 }

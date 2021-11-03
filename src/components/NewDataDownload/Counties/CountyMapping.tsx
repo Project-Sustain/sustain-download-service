@@ -1,4 +1,4 @@
-export const countyMap = {
+export const countyMap: { [x: string]: string[]; } = {
     "Alaska" : [
         "Aleutians East",
         "Aleutians West",

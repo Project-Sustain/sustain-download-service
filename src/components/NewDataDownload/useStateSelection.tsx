@@ -4,7 +4,7 @@ import {mongoQuery} from "../../library/Download";
 import {formatDatasetName, getStateName} from "./Utils/utils";
 
 interface stateDatasetType {
-    name: innerObject
+    [name: string]: innerObject
 }
 
 interface innerObject {
@@ -25,7 +25,6 @@ export function useStateSelection() {
             const serverResponse = await mongoQuery("state_gis_join_metadata", []);
             let masterMap = {} as stateDatasetType;
             for(const key of serverResponse) {
-                // @ts-ignore
                 masterMap[getStateName(key.gis_join)] = {
                     GISJOIN: key.gis_join,
                     collections_supported: key.collections_supported,
@@ -34,7 +33,6 @@ export function useStateSelection() {
             }
             setStateToDatasets(masterMap);
             setSelectedState("Colorado");
-            // @ts-ignore
             setStateDatasets(masterMap["Colorado"].datasets);
             setCounties(countyMap["Colorado"]);
             setSelectedCounty(countyMap["Colorado"][0]);
@@ -56,11 +54,8 @@ function handleStateChange(stateName: any, context: any) {
     console.log({stateName})
     console.log({stateToDatasets})
     setSelectedState(stateName);
-    // @ts-ignore
     setStateDatasets(stateToDatasets[`${stateName}`].datasets);
-    // @ts-ignore
     setCounties(countyMap[`${stateName}`]);
-    // @ts-ignore
     setSelectedCounty(countyMap[`${stateName}`][0]);
 }
 
