@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import StateSection from "./States/StateSection";
 import {useStateSelection} from "./useStateSelection";
 import {mongoQuery} from "../../library/Download";

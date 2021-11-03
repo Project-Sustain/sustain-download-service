@@ -65,6 +65,9 @@ import theme from "../../../global/GlobalTheme";
 import StatesMap from "./StatesMap";
 import FauxTooltip from "../Utils/FauxTooltip";
 import DatasetSection from "../Datasets/DatasetSection";
+import StateSelector from "./StateSelector";
+import DatasetSelector from "../Datasets/DatasetSelector";
+import StateFilter from "./StateFilter";
 
 const useStyles = makeStyles({
     map: {
@@ -93,16 +96,18 @@ export default function StateSection(props: any) {
     const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
+    const filter = {stateFilterType, setStateFilterType}
+
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
 
-    // function renderSelector() {
-    //     if(stateFilterType === 0) {
-    //         return <StateSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-    //     }
-    //     else {
-    //         return <DatasetSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
-    //     }
-    // }
+    function renderSelector() {
+        if(stateFilterType === 0) {
+            // return <StateSelector class={classes.searchBox} filter={filter} />
+        }
+        else {
+            // return <DatasetSelector class={classes.searchBox} filter={filter}/>
+        }
+    }
 
     // @ts-ignore
     return (
@@ -112,26 +117,22 @@ export default function StateSection(props: any) {
             justifyContent="center"
             alignItems="flex-start">
             <Grid item className={classes.map}>
-                    {/*<Grid*/}
-                    {/*    container*/}
-                    {/*    direction="row"*/}
-                    {/*    justifyContent="center"*/}
-                    {/*    alignItems="center"*/}
-                    {/*>*/}
-                    {/*    <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>*/}
-                    {/*    <Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>*/}
-                    {/*    <Grid item>{renderSelector()}</Grid>*/}
-                    {/*</Grid>*/}
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
+                        {/*<Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>*/}
+                        {/*<Grid item>{renderSelector()}</Grid>*/}
+                    </Grid>
 
                     <StatesMap data={props.data} dataManagement={props.dataManagement} mapState={mapState} />
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState} />
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <DatasetSection data={props.data} dataManagement={props.dataManagement} />
-            {/*    <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}*/}
-            {/*                    counties={counties} setCounties={setCounties} selectedCounty={selectedCounty}*/}
-            {/*                    countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}*/}
-            {/*                    stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty}/>*/}
             </Grid>
         </Grid>
     )
