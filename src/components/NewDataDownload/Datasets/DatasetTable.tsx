@@ -84,8 +84,10 @@ const useStyles = makeStyles({
 export default function DatasetTable(props: any) {
     const classes = useStyles();
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.stateDatasets);
-    const filter = {filteredDatasets, setFilteredDatasets}
-    const datasets = filteredDatasets.length === 0 ? props.data.stateDatasets : filteredDatasets;
+    const [filtering, setFiltering] = useState(false);
+
+    const filter = {setFilteredDatasets, setFiltering}
+    const datasets = filtering ? filteredDatasets : props.data.stateDatasets;
 
     if(datasets) {
         return (

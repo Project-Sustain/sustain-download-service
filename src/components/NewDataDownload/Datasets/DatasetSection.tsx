@@ -77,12 +77,7 @@ export default function DatasetSection(props: any) {
 
     return (
         <div className={classes.root}>
-            <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="stretch"
-            >
+            <Grid container direction="column" justifyContent="center" alignItems="stretch">
                 <DatasetTable data={props.data} dataManagement={props.dataManagement} scope={scope} />
             </Grid>
         </div>

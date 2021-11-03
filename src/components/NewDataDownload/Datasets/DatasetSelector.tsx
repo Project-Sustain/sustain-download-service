@@ -70,7 +70,7 @@ export default function DatasetSelector(props: any) {
         }
         else {
             const statesWithMatchingDatasets = [];
-            for (const [state, data] of Object.entries(props.data.stateToDatasets)) {
+            for(const [state, data] of Object.entries(props.data.stateToDatasets)) {
                 // @ts-ignore
                 const datasets = data.datasets
                 let lowercaseDatasets: any = [];

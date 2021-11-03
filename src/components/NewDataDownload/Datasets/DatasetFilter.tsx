@@ -82,6 +82,7 @@ export default function DatasetFiler(props: any) {
     const handleChange = (event: any) => {
         if(props.data.selectedState) {
             const input = event.target.value;
+            props.filter.setFiltering(input !== "");
             const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
             props.filter.setFilteredDatasets(capitalizeArray(matches));
         }

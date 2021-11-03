@@ -110,28 +110,18 @@ export default function StateSection(props: any) {
         }
     }
 
-    // @ts-ignore
     return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-start">
+        <Grid container direction="row" justifyContent="center" alignItems="flex-start">
             <Grid item className={classes.map}>
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
                         <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
                         <Grid item><StateFilter filter={filter} /></Grid>
                         <Grid item>{renderSelector()}</Grid>
                     </Grid>
 
                     <StatesMap data={props.data} dataManagement={props.dataManagement} mapState={mapState} />
-                    <Button onClick={() => props.dataManagement.handleStateChange("Georgia")}>Georgia</Button>
-                    <Button onClick={() => props.dataManagement.handleStateChange("Wyoming")}>Wyoming</Button>
+                    {/*<Button onClick={() => props.dataManagement.handleStateChange("Georgia")}>Georgia</Button>*/}
+                    {/*<Button onClick={() => props.dataManagement.handleStateChange("Wyoming")}>Wyoming</Button>*/}
                     <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState} />
             </Grid>
             <Grid item className={classes.datasetSection}>
