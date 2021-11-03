@@ -60,10 +60,8 @@ END OF TERMS AND CONDITIONS
 import * as d3 from 'd3';
 import "../rawStyles.css";
 import {uStatePaths} from "./StateInfo";
-import {stateCountyDatasetMapping} from "../Datasets/DummyDatasets";
 
-export function Draw(id, setSelectedState, setHoveredState, setCounties,
-                     mappedDatasets, setSelectedCounty, setStateDatasets, setCountyDatasets) {
+export function Draw(id, mapState, dataManagement) {
     const hoverClass = document.getElementById("hovered-state-id");
 
     function updateTooltip(left, top) {
@@ -72,20 +70,9 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties,
         hoverClass.style.top = top;
     }
 
-    function extractCounties(stateName) {
-        let countyList = [];
-        //FIXME Do this based off of props.mappedDatasets. ISSUE for some reason mappedDatasets is undefined in this function
-        // though it is defined at the top of the 'class'...
-
-        // @ts-ignore
-        for (const [county] of Object.entries(stateCountyDatasetMapping[`${stateName}`].counties)) {
-            countyList.push(county);
-        }
-        return countyList;
-    }
-
     function mouseOver(event){
-        setHoveredState(event.target.getAttribute("stateName"));
+        const stateName = event.target.getAttribute("stateName");
+        mapState.setHoveredState(stateName);
         updateTooltip((event.pageX - 50) + "px", (event.pageY - 120) + "px");
     }
 
@@ -95,15 +82,7 @@ export function Draw(id, setSelectedState, setHoveredState, setCounties,
 
     function click(state) {
         const stateName = state.target.attributes.stateName.nodeValue;
-        setSelectedState(stateName);
-        const counties = extractCounties(stateName);
-        const countyName = counties[0];
-        setCounties(counties);
-        setSelectedCounty(countyName);
-        const stateDatasets = stateCountyDatasetMapping[`${stateName}`].datasets;
-        const countyDatasets = stateCountyDatasetMapping[`${stateName}`].counties[`${countyName}`];
-        setCountyDatasets(countyDatasets)
-        setStateDatasets(stateDatasets)
+        dataManagement.handleStateChange(stateName);
     }
 
     d3.select(id).selectAll(".state")

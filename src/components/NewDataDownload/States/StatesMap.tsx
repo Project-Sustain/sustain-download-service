@@ -68,7 +68,6 @@ const useStyles = makeStyles({
         position:'relative',
         height: '1px',
         width: '100%',
-        // paddingBottom: '92%',
     },
 
     svg: {
@@ -86,14 +85,14 @@ export default function StatesMap(props: any) {
 
     if(nodeList) {
         nodeList.forEach((node: any) => {
-            if(props.statesMatchingSearch.length === nodeList.length) {
+            if(props.mapState.statesMatchingSearch.length === nodeList.length) {
                 node.style.fill = unSelectedState;
             }
-            else if(props.statesMatchingSearch.length === 0 && props.selectedState === node["__data__"].stateName) {
+            else if(props.mapState.statesMatchingSearch.length === 0 && props.data.selectedState === node["__data__"].stateName) {
                 node.style.fill = chosenState;
             }
             else {
-                if (props.statesMatchingSearch.includes(node["__data__"].stateName)) {
+                if (props.mapState.statesMatchingSearch.includes(node["__data__"].stateName)) {
                     node.style.fill = selectedState;
                 }
                 else {
@@ -105,8 +104,7 @@ export default function StatesMap(props: any) {
 
     useEffect(() => {
         // @ts-ignore
-        Draw("#statesvg", props.setSelectedState, props.setHoveredState, props.setCounties,
-            props.mappedDatasets, props.setSelectedCounty, props.setStateDatasets, props.setCountyDatasets);
+        Draw("#statesvg", props.mapState, props.dataManagement);
         d3.select(window.frameElement).style("height", "600px");
     });
 

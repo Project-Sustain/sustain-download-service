@@ -62,6 +62,8 @@ import React, {useState} from "react";
 import {Typography} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
+import StatesMap from "./StatesMap";
+import FauxTooltip from "../Utils/FauxTooltip";
 
 const useStyles = makeStyles({
     map: {
@@ -90,6 +92,8 @@ export default function StateSection(props: any) {
     const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
+    const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
+
     // function renderSelector() {
     //     if(stateFilterType === 0) {
     //         return <StateSelector mappedDatasets={mappedDatasets} class={classes.searchBox} setStatesMatchingSearch={setStatesMatchingSearch}/>
@@ -100,7 +104,8 @@ export default function StateSection(props: any) {
     // }
 
     return ( <>
-            <Typography>Under Construction</Typography>
+            <StatesMap data={props.data} dataManagement={props.dataManagement} mapState={mapState} />
+            <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
         </>
         // <Grid
         //     container
