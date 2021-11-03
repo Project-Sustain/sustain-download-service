@@ -97,15 +97,16 @@ export default function StateSection(props: any) {
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
     const filter = {stateFilterType, setStateFilterType}
+    const selector = {setStatesMatchingSearch}
 
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
 
     function renderSelector() {
         if(stateFilterType === 0) {
-            // return <StateSelector class={classes.searchBox} filter={filter} />
+            return <StateSelector class={classes.searchBox} selector={selector} />
         }
         else {
-            // return <DatasetSelector class={classes.searchBox} filter={filter}/>
+            return <DatasetSelector class={classes.searchBox} selector={selector} data={props.data} />
         }
     }
 
@@ -124,8 +125,8 @@ export default function StateSection(props: any) {
                         alignItems="center"
                     >
                         <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-                        {/*<Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>*/}
-                        {/*<Grid item>{renderSelector()}</Grid>*/}
+                        <Grid item><StateFilter filter={filter} /></Grid>
+                        <Grid item>{renderSelector()}</Grid>
                     </Grid>
 
                     <StatesMap data={props.data} dataManagement={props.dataManagement} mapState={mapState} />

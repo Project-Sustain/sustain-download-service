@@ -4,14 +4,14 @@ import {Select,Box, MenuItem, FormControl} from "@mui/material";
 export default function BasicSelect(props: any) {
 
     const handleChange = (event: any) => {
-        props.setStateFilterType(event.target.value);
+        props.filter.setStateFilterType(event.target.value);
     };
 
     return (
         <Box sx={{ minWidth: 75 }}>
             <FormControl fullWidth>
                 <Select
-                    value={props.stateFilterType}
+                    value={props.filter.stateFilterType}
                     onChange={handleChange}
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}

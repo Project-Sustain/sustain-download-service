@@ -66,7 +66,7 @@ export default function StateSelector(props: any) {
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
-        props.setStatesMatchingSearch(capitalizeArray(matches));
+        props.selector.setStatesMatchingSearch(capitalizeArray(matches));
     };
     return (
         <TextField

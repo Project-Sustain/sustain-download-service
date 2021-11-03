@@ -20,12 +20,12 @@ export function formatDatasetName(datasets: string[]) {
 }
 
 export function capitalizeFirstLetter(str: any) {
-    if (str == null || str.length == 0) {
+    if (str === null || str.length === 0) {
         return "";
     }
     str = str.split(" ");
     for (let i = 0, x = str.length; i < x; i++) {
-        if (str[i] == null || str[i].length <= 2) {
+        if (str[i] === null || str[i].length <= 2) {
             continue;
         }
         str[i] = str[i][0].toUpperCase() + str[i].substr(1);

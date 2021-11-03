@@ -66,11 +66,11 @@ export default function DatasetSelector(props: any) {
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         if(searchString === "") {
-            props.setStatesMatchingSearch([]);
+            props.selector.setStatesMatchingSearch([]);
         }
         else {
             const statesWithMatchingDatasets = [];
-            for (const [state, data] of Object.entries(props.mappedDatasets)) {
+            for (const [state, data] of Object.entries(props.data.stateToDatasets)) {
                 // @ts-ignore
                 const datasets = data.datasets
                 let lowercaseDatasets: any = [];
@@ -82,7 +82,7 @@ export default function DatasetSelector(props: any) {
                     statesWithMatchingDatasets.push(state);
                 }
             }
-            props.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
+            props.selector.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
         }
     };
 

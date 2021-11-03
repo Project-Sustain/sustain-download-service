@@ -4,13 +4,11 @@ import {mongoQuery} from "../../library/Download";
 import {formatDatasetName, getStateName} from "./Utils/utils";
 
 interface stateDatasetType {
-    [name: string]: innerObject
-}
-
-interface innerObject {
-    GISJOIN: string,
-    collections_supported: string[],
-    datasets: string[]
+    [name: string]: {
+        GISJOIN: string,
+        collections_supported: string[],
+        datasets: string[]
+    }
 }
 
 export function useStateSelection() {
