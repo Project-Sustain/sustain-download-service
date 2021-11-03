@@ -23,7 +23,7 @@ export function useStateSelection() {
     useEffect(() => {
         (async () => {
             const serverResponse = await mongoQuery("state_gis_join_metadata", []);
-            let masterMap = {};
+            let masterMap = {} as stateDatasetType;
             for(const key of serverResponse) {
                 // @ts-ignore
                 masterMap[getStateName(key.gis_join)] = {
@@ -32,7 +32,6 @@ export function useStateSelection() {
                     datasets: formatDatasetName(key.collections_supported)
                 }
             }
-            // @ts-ignore
             setStateToDatasets(masterMap);
             setSelectedState("Colorado");
             // @ts-ignore
