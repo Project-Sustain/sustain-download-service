@@ -61,8 +61,7 @@ import * as d3 from 'd3';
 import "../../Utils/rawStyles.css";
 import {uStatePaths} from "../../Utils/StateInfo";
 
-export function Draw(id, mapState, dataManagement, data) {
-    console.log({data})
+export function Draw(id, mapState, dataManagement) {
     const hoverClass = document.getElementById("hovered-state-id");
 
     function updateTooltip(left, top) {
@@ -81,9 +80,7 @@ export function Draw(id, mapState, dataManagement, data) {
         hoverClass.style.display = "none";
     }
 
-    function click(event, dataInClick) {
-        const stateInClick = dataInClick.selectedState;
-        console.log({stateInClick})
+    function click(event) {
         const stateName = event.target.attributes.stateName.nodeValue;
         dataManagement.handleStateChange(stateName);
     }
@@ -91,9 +88,6 @@ export function Draw(id, mapState, dataManagement, data) {
     d3.select(id).selectAll(".state")
         .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
         .attr("stateName",function(state){ return state.stateName;})
-        .on("click", (e) => {
-            console.log({data});
-            click(e, data);
-        })
+        .on("click", (e) => click(e))
         .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }

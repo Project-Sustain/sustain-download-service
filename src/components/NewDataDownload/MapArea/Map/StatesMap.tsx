@@ -103,14 +103,12 @@ export default function StatesMap(props: any) {
     }
 
     useEffect(() => {
-        // @ts-ignore
-        Draw("#statesvg", props.mapState, props.dataManagement, props.data);
-        d3.select(window.frameElement).style("height", "600px");
-
-        return function cleanup() {
-
+        if(Object.keys(props.data.stateToDatasets).length !== 0) {
+            // @ts-ignore
+            Draw("#statesvg", props.mapState, props.dataManagement);
         }
-    }, []);
+        d3.select(window.frameElement).style("height", "600px");
+    }, [props.data.stateToDatasets]);
 
     return (
         <div className={classes.map}>

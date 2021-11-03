@@ -119,8 +119,6 @@ export default function Main() {
                     <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
                     <Grid item><FilterType filter={filter} /></Grid>
                     <Grid item>{renderSelector()}</Grid>
-                    {/*@ts-ignore*/}
-                    <Button onClick={() => dataManagement.handleStateChange("Wyoming")}>Wyoming</Button>
                 </Grid>
                 <StatesMap data={data} dataManagement={dataManagement} mapState={mapState} />
                 <FauxTooltip title={hoveredState} />

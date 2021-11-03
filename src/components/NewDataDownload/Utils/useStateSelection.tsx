@@ -48,8 +48,6 @@ export function useStateSelection() {
     };
 
     function handleStateChange(stateName: any) {
-        console.log({stateName})
-        console.log({stateToDatasets})
         setSelectedState(stateName);
         setStateDatasets(stateToDatasets[`${stateName}`].datasets);
         setCounties(countyMap[`${stateName}`]);
