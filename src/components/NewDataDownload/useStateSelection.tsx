@@ -37,9 +37,7 @@ export function useStateSelection() {
             setSelectedState("Colorado");
             // @ts-ignore
             setStateDatasets(masterMap["Colorado"].datasets);
-            // @ts-ignore
             setCounties(countyMap["Colorado"]);
-            // @ts-ignore
             setSelectedCounty(countyMap["Colorado"][0]);
         })()
     }, []);
