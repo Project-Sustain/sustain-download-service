@@ -58,44 +58,42 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {
-    Grid,
-    Table,
-    TableCell,
-    TableHead,
-    TableRow,
-} from '@material-ui/core';
-import {makeStyles} from "@material-ui/core/styles";
-import SwitchHeader from "./SwitchHeader";
-import DatasetFilter from "./DatasetFilter";
-import CountySelector from "../Counties/CountySelector";
+import {capitalizeArray, statesArray} from "../Utils/StateInfo";
+import {TextField} from "@material-ui/core";
 
-const useStyles = makeStyles({
-    root: {
-        maxHeight: "55vh",
-        overflow: "auto"
-    },
-    header: {
-        borderRadius: "3px 3px 0px 0px",
-    },
-});
+export default function StateSelector(props: any) {
 
-export default function DatasetTable(props: any) {
-    const classes = useStyles();
-
+    const handleChange = (event: any) => {
+        const searchString = event.target.value;
+        const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
+        props.selector.setStatesMatchingSearch(capitalizeArray(matches));
+    };
     return (
-        <Grid item className={classes.header}>
-            <Table>
-                <TableHead>
-                    <SwitchHeader  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
-                    <TableRow>
-                        <TableCell colSpan={2}>
-                            <CountySelector  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
-                            <DatasetFilter filter={props.filter} data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-            </Table>
-        </Grid>
-    )
+        <TextField
+            className={props.class}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder="ex: Colorado"
+        />
+    );
 }
+
+function stateMatch(matchString: any, state: any) {
+    if(matchString.charAt(matchString.length-1) === " ") {
+        matchString = matchString.substr(0, matchString.length-1);
+    }
+    if(state.includes(matchString) && (state.charAt(0) === matchString.charAt(0))){
+        return true;
+    }
+    else if(state.includes(matchString) && state.includes(" ")) {
+        let indexOfSpace = state.indexOf(" ");
+        if(state.charAt(indexOfSpace + 1) === matchString.charAt(0)) {
+            return true;
+        }
+    }
+    else{
+        return false;
+    }
+
+}
+

@@ -58,42 +58,42 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {capitalizeArray, statesArray} from "./StateInfo";
+import {makeStyles} from "@material-ui/core/styles";
+import {capitalizeArray, lowercaseArray} from "../Utils/StateInfo";
 import {TextField} from "@material-ui/core";
+import theme from "../../../global/GlobalTheme";
 
-export default function StateSelector(props: any) {
+const useStyles = makeStyles({
+    root: {
+        width:"100%",
+        marginTop: theme.spacing(1),
+    },
+});
+
+export default function DatasetFiler(props: any) {
+    const classes = useStyles();
+
+    const relevantDatasets = props.data.stateDatasets;
+
+    function createPlaceholderText() {
+        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.selectedState}` : `Filter Datasets in ${props.data.selectedCounty} County`;
+    }
 
     const handleChange = (event: any) => {
-        const searchString = event.target.value;
-        const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
-        props.selector.setStatesMatchingSearch(capitalizeArray(matches));
+        if(props.data.selectedState) {
+            const input = event.target.value;
+            props.filter.setFiltering(input !== "");
+            const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
+            props.filter.setFilteredDatasets(capitalizeArray(matches));
+        }
     };
+
     return (
         <TextField
-            className={props.class}
+            className={classes.root}
             variant="outlined"
             onChange={handleChange}
-            placeholder="ex: Colorado"
+            placeholder={createPlaceholderText()}
         />
     );
 }
-
-function stateMatch(matchString: any, state: any) {
-    if(matchString.charAt(matchString.length-1) === " ") {
-        matchString = matchString.substr(0, matchString.length-1);
-    }
-    if(state.includes(matchString) && (state.charAt(0) === matchString.charAt(0))){
-        return true;
-    }
-    else if(state.includes(matchString) && state.includes(" ")) {
-        let indexOfSpace = state.indexOf(" ");
-        if(state.charAt(indexOfSpace + 1) === matchString.charAt(0)) {
-            return true;
-        }
-    }
-    else{
-        return false;
-    }
-
-}
-

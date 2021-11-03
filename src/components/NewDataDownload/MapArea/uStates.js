@@ -58,8 +58,8 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import * as d3 from 'd3';
-import "../rawStyles.css";
-import {uStatePaths} from "./StateInfo";
+import "../Utils/rawStyles.css";
+import {uStatePaths} from "../Utils/StateInfo";
 
 export function Draw(id, mapState, dataManagement) {
     const hoverClass = document.getElementById("hovered-state-id");

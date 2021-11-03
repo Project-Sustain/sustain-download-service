@@ -60,7 +60,7 @@ END OF TERMS AND CONDITIONS
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./uStates";
-import {chosenState, selectedState, unSelectedState} from "./StateInfo";
+import {chosenState, selectedState, unSelectedState} from "../Utils/StateInfo";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({

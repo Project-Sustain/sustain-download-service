@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {countyMap} from "./Counties/CountyMapping";
+import {countyMap} from "./Utils/CountyMapping";
 import {mongoQuery} from "../../library/Download";
 import {formatDatasetName, getStateName} from "./Utils/utils";
 

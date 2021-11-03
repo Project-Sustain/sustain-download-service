@@ -58,12 +58,75 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
-import StateSection from "./States/StateSection";
+import React, {useState} from "react";
 import {useStateSelection} from "./useStateSelection";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../global/GlobalTheme";
+import StateSelector from "./MapArea/StateSelector";
+import DatasetSelector from "./MapArea/DatasetSelector";
+import {Grid, Typography} from "@material-ui/core";
+import StateFilter from "./MapArea/StateFilter";
+import StatesMap from "./MapArea/StatesMap";
+import FauxTooltip from "./MapArea/FauxTooltip";
+import DatasetSection from "./DatasetArea/DatasetSection";
+
+const useStyles = makeStyles({
+    map: {
+        position: "relative",
+        width: "75%",
+    },
+    text: {
+        margin: theme.spacing(1),
+    },
+    paper: {
+        padding: theme.spacing(1),
+        margin: theme.spacing(1),
+        height: "70vh",
+    },
+    datasetSection: {
+        width: "25%",
+    },
+    searchBox: {
+        margin: theme.spacing(1),
+    },
+});
 
 export default function Main() {
     const [data, dataManagement] = useStateSelection();
 
-    return <StateSection data={data} dataManagement={dataManagement} />
+    const classes = useStyles();
+    const [hoveredState, setHoveredState] = useState("");
+    const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
+    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
+
+    const filter = {stateFilterType, setStateFilterType}
+    const selector = {setStatesMatchingSearch}
+
+    const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
+
+    function renderSelector() {
+        if(stateFilterType === 0) {
+            return <StateSelector class={classes.searchBox} selector={selector} />
+        }
+        else {
+            return <DatasetSelector class={classes.searchBox} selector={selector} data={data} />
+        }
+    }
+
+    return (
+        <Grid container direction="row" justifyContent="center" alignItems="flex-start">
+            <Grid item className={classes.map}>
+                <Grid container direction="row" justifyContent="center" alignItems="center">
+                    <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
+                    <Grid item><StateFilter filter={filter} /></Grid>
+                    <Grid item>{renderSelector()}</Grid>
+                </Grid>
+                <StatesMap data={data} dataManagement={dataManagement} mapState={mapState} />
+                <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState} />
+            </Grid>
+            <Grid item className={classes.datasetSection}>
+                <DatasetSection data={data} dataManagement={dataManagement} />
+            </Grid>
+        </Grid>
+    )
 }

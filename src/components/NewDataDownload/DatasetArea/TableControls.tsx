@@ -58,42 +58,44 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
+import {
+    Grid,
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
-import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
-import {TextField} from "@material-ui/core";
-import theme from "../../../global/GlobalTheme";
+import SwitchHeader from "./SwitchHeader";
+import DatasetFilter from "./DatasetFilter";
+import CountySelector from "../MapArea/CountySelector";
 
 const useStyles = makeStyles({
     root: {
-        width:"100%",
-        marginTop: theme.spacing(1),
+        maxHeight: "55vh",
+        overflow: "auto"
+    },
+    header: {
+        borderRadius: "3px 3px 0px 0px",
     },
 });
 
-export default function DatasetFiler(props: any) {
+export default function DatasetTable(props: any) {
     const classes = useStyles();
 
-    const relevantDatasets = props.data.stateDatasets;
-
-    function createPlaceholderText() {
-        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.selectedState}` : `Filter Datasets in ${props.data.selectedCounty} County`;
-    }
-
-    const handleChange = (event: any) => {
-        if(props.data.selectedState) {
-            const input = event.target.value;
-            props.filter.setFiltering(input !== "");
-            const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
-            props.filter.setFilteredDatasets(capitalizeArray(matches));
-        }
-    };
-
     return (
-        <TextField
-            className={classes.root}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder={createPlaceholderText()}
-        />
-    );
+        <Grid item className={classes.header}>
+            <Table>
+                <TableHead>
+                    <SwitchHeader  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                    <TableRow>
+                        <TableCell colSpan={2}>
+                            <CountySelector  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                            <DatasetFilter filter={props.filter} data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+            </Table>
+        </Grid>
+    )
 }
