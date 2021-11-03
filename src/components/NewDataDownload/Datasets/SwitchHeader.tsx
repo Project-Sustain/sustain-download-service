@@ -68,20 +68,12 @@ import {
 export default function DatasetTable(props: any) {
 
     function handleChange() {
-        const newGranularity = props.granularity === "state" ? "county" : "state";
-        if(newGranularity === "county") {
-            const countyDatasets = props.mappedDatasets[`${props.selectedState}`].counties[`${props.selectedCounty}`];
-            props.setCountyDatasets(countyDatasets);
-        }
-        else {
-            const stateDatasets = props.mappedDatasets[`${props.selectedState}`].datasets;
-            props.setStateDatasets(stateDatasets);
-        }
-        props.setGranularity(newGranularity);
+        const newGranularity = props.scope.granularity === "state" ? "county" : "state";
+        props.scope.setGranularity(newGranularity);
     }
 
     function getChecked() {
-        return props.granularity === "county";
+        return props.scope.granularity === "county";
     }
 
     return (
@@ -90,7 +82,7 @@ export default function DatasetTable(props: any) {
                 State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
             </TableCell>
             <TableCell align="left">
-                {props.datasets.length} Datasets
+                {props.data.stateDatasets.length} Datasets
             </TableCell>
         </TableRow>
     )

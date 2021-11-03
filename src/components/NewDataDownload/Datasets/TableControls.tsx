@@ -87,17 +87,11 @@ export default function DatasetTable(props: any) {
         <Grid item className={classes.header}>
             <Table>
                 <TableHead>
-                    <SwitchHeader datasets={props.datasets} mappedDatasets={props.mappedDatasets} selectedCounty={props.selectedCounty}
-                                  granularity={props.granularity} setGranularity={props.setGranularity} selectedState={props.selectedState}
-                                  setCountyDatasets={props.setCountyDatasets} setStateDatasets={props.setStateDatasets} />
+                    <SwitchHeader  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
                     <TableRow>
                         <TableCell colSpan={2}>
-                            <CountySelector mappedDatasets={props.mappedDatasets} selectedState={props.selectedState} selectedCounty={props.selectedCounty}
-                                            setSelectedCounty={props.setSelectedCounty} counties={props.counties} setCounties={props.setCounties}
-                                            setCountyDatasets={props.setCountyDatasets} granularity={props.granularity} />
-                            <DatasetFilter mappedDatasets={props.mappedDatasets} stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                                           countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
-                                           selectedState={props.selectedState} granularity={props.granularity} selectedCounty={props.selectedCounty} />
+                            <CountySelector  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                            <DatasetFilter filter={props.filter} data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
                         </TableCell>
                     </TableRow>
                 </TableHead>

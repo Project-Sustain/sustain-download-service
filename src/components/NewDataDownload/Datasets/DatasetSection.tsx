@@ -73,6 +73,8 @@ export default function DatasetSection(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
 
+    const scope = {granularity, setGranularity}
+
     return (
         <div className={classes.root}>
             <Grid
@@ -81,11 +83,7 @@ export default function DatasetSection(props: any) {
                 justifyContent="center"
                 alignItems="stretch"
             >
-                <DatasetTable selectedState={props.selectedState} selectedCounty={props.selectedCounty}
-                              granularity={granularity} setGranularity={setGranularity} mappedDatasets={props.mappedDatasets}
-                              stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                              countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
-                              counties={props.counties} setCounties={props.setCounties} setSelectedCounty={props.setSelectedCounty}/>
+                <DatasetTable data={props.data} dataManagement={props.dataManagement} scope={scope} />
             </Grid>
         </div>
     )

@@ -61,7 +61,6 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {capitalizeArray, lowercaseArray} from "../States/StateInfo";
 import {TextField} from "@material-ui/core";
-import {stateToDatasetMapping} from "./DummyDatasets";
 import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
@@ -74,20 +73,17 @@ const useStyles = makeStyles({
 export default function DatasetFiler(props: any) {
     const classes = useStyles();
 
-    //FIXME use the props.mappedDatasets object here instead
-
-    // @ts-ignore
-    const relevantDatasets = stateToDatasetMapping[`${props.selectedState.toLowerCase()}`];
+    const relevantDatasets = props.data.stateDatasets;
 
     function createPlaceholderText() {
-        return props.granularity === "state" ? `Filter Datasets in ${props.selectedState}` : `Filter Datasets in ${props.selectedCounty} County`;
+        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.selectedState}` : `Filter Datasets in ${props.data.selectedCounty} County`;
     }
 
     const handleChange = (event: any) => {
-        if(props.selectedState) {
+        if(props.data.selectedState) {
             const input = event.target.value;
             const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
-            props.granularity === "state" ? props.setStateDatasets(capitalizeArray(matches)) : props.setCountyDatasets(capitalizeArray(matches));
+            props.filter.setFilteredDatasets(capitalizeArray(matches));
         }
     };
 

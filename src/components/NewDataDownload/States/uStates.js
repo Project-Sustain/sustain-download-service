@@ -80,8 +80,8 @@ export function Draw(id, mapState, dataManagement) {
         hoverClass.style.display = "none";
     }
 
-    function click(state) {
-        const stateName = state.target.attributes.stateName.nodeValue;
+    function click(event) {
+        const stateName = event.target.attributes.stateName.nodeValue;
         dataManagement.handleStateChange(stateName);
     }
 

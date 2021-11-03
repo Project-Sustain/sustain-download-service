@@ -59,11 +59,12 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, {useState} from "react";
-import {Typography} from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import StatesMap from "./StatesMap";
 import FauxTooltip from "../Utils/FauxTooltip";
+import DatasetSection from "../Datasets/DatasetSection";
 
 const useStyles = makeStyles({
     map: {
@@ -103,38 +104,35 @@ export default function StateSection(props: any) {
     //     }
     // }
 
-    return ( <>
-            <StatesMap data={props.data} dataManagement={props.dataManagement} mapState={mapState} />
-            <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
-        </>
-        // <Grid
-        //     container
-        //     direction="row"
-        //     justifyContent="center"
-        //     alignItems="flex-start">
-        //     <Grid item className={classes.map}>
-        //             <Grid
-        //                 container
-        //                 direction="row"
-        //                 justifyContent="center"
-        //                 alignItems="center"
-        //             >
-        //                 <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-        //                 <Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>
-        //                 <Grid item>{renderSelector()}</Grid>
-        //             </Grid>
-        //
-        //             <StatesMap statesMatchingSearch={ statesMatchingSearch} setSelectedState={setSelectedState} mappedDatasets={mappedDatasets}
-        //                        setHoveredState={ setHoveredState} selectedState={selectedState} setCounties={setCounties}
-        //                        setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty} setCountyDatasets={setCountyDatasets} />
-        //             <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState}/>
-        //     </Grid>
-        //     <Grid item className={classes.datasetSection}>
-        //         <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}
-        //                         counties={counties} setCounties={setCounties} selectedCounty={selectedCounty}
-        //                         countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}
-        //                         stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty}/>
-        //     </Grid>
-        // </Grid>
+    // @ts-ignore
+    return (
+        <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start">
+            <Grid item className={classes.map}>
+                    {/*<Grid*/}
+                    {/*    container*/}
+                    {/*    direction="row"*/}
+                    {/*    justifyContent="center"*/}
+                    {/*    alignItems="center"*/}
+                    {/*>*/}
+                    {/*    <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>*/}
+                    {/*    <Grid item><StateFilter stateFilterType={stateFilterType} setStateFilterType={setStateFilterType} /></Grid>*/}
+                    {/*    <Grid item>{renderSelector()}</Grid>*/}
+                    {/*</Grid>*/}
+
+                    <StatesMap data={props.data} dataManagement={props.dataManagement} mapState={mapState} />
+                    <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState} />
+            </Grid>
+            <Grid item className={classes.datasetSection}>
+                <DatasetSection data={props.data} dataManagement={props.dataManagement} />
+            {/*    <DatasetSection mappedDatasets={mappedDatasets} selectedState={selectedState} setSelectedState={setSelectedState}*/}
+            {/*                    counties={counties} setCounties={setCounties} selectedCounty={selectedCounty}*/}
+            {/*                    countyDatasets={countyDatasets} setCountyDatasets={setCountyDatasets}*/}
+            {/*                    stateDatasets={stateDatasets} setStateDatasets={setStateDatasets} setSelectedCounty={setSelectedCounty}/>*/}
+            </Grid>
+        </Grid>
     )
 }

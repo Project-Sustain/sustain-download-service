@@ -1,4 +1,4 @@
-import {gisJoinStateNames} from "../Datasets/DummyDatasets";
+import {gisJoinStateNames} from "../Datasets/gisInfo";
 
 export function getStateName(GISJOIN: String) {
     for(const gis of gisJoinStateNames) {

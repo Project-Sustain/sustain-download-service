@@ -71,17 +71,16 @@ const useStyles = makeStyles({
 export default function CountySelector(props: any) {
     const classes = useStyles();
 
-    if(props.granularity === "county") {
+    if(props.scope.granularity === "county") {
         return (
             <Autocomplete
                 className={classes.root}
-                options={props.counties}
-                value={props.selectedCounty}
+                options={props.data.counties}
+                value={props.data.selectedCounty}
                 // @ts-ignore
                 onChange={(event, newValue: String) => {
                     if (newValue) {
-                        props.setSelectedCounty(newValue);
-                        props.setCountyDatasets(props.mappedDatasets[`${props.selectedState}`].counties[`${newValue}`]);
+                        props.dataManagement.updateSelectedCounty(newValue);
                     }
                 }}
                 autoHighlight

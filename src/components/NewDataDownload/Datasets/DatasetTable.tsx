@@ -57,7 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
+import React, {useState} from "react";
 import {
     Grid,
     Paper,
@@ -83,18 +83,14 @@ const useStyles = makeStyles({
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
-    const datasets = props.granularity === "state" ? props.stateDatasets : props.countyDatasets;
+    const [filteredDatasets, setFilteredDatasets] = useState(props.data.stateDatasets);
+    const filter = {filteredDatasets, setFilteredDatasets}
+    const datasets = filteredDatasets.length === 0 ? props.data.stateDatasets : filteredDatasets;
 
     if(datasets) {
         return (
             <Paper>
-                <TableControls mappedDatasets={props.mappedDatasets} datasets={datasets}
-                               stateDatasets={props.stateDatasets} setStateDatasets={props.setStateDatasets}
-                               countyDatasets={props.countyDatasets} setCountyDatasets={props.setCountyDatasets}
-                               selectedState={props.selectedState} setSelectedState={props.setSelectedState}
-                               granularity={props.granularity} setGranularity={props.setGranularity}
-                               selectedCounty={props.selectedCounty} setSelectedCounty={props.setSelectedCounty}
-                               counties={props.counties} setCounties={props.setCounties} />
+                <TableControls data={props.data} dataManagement={props.dataManagement} scope={props.scope} filter={filter} />
                 <Grid item>
                     <TableContainer className={classes.root}>
                         <Table>
