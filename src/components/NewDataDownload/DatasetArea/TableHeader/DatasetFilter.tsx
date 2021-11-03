@@ -58,41 +58,42 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {capitalizeArray} from "../Utils/StateInfo";
+import {makeStyles} from "@material-ui/core/styles";
+import {capitalizeArray, lowercaseArray} from "../../Utils/StateInfo";
 import {TextField} from "@material-ui/core";
+import theme from "../../../../global/GlobalTheme";
 
-export default function DatasetSelector(props: any) {
+const useStyles = makeStyles({
+    root: {
+        width:"100%",
+        marginTop: theme.spacing(1),
+    },
+});
+
+export default function DatasetFiler(props: any) {
+    const classes = useStyles();
+
+    const relevantDatasets = props.data.stateDatasets;
+
+    function createPlaceholderText() {
+        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.selectedState}` : `Filter Datasets in ${props.data.selectedCounty} County`;
+    }
 
     const handleChange = (event: any) => {
-        const searchString = event.target.value;
-        if(searchString === "") {
-            props.selector.setStatesMatchingSearch([]);
-        }
-        else {
-            const statesWithMatchingDatasets = [];
-            for(const [state, data] of Object.entries(props.data.stateToDatasets)) {
-                // @ts-ignore
-                const datasets = data.datasets
-                let lowercaseDatasets: any = [];
-                datasets.forEach((dataset: String) => {
-                    lowercaseDatasets.push(dataset.toLowerCase());
-                })
-                const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
-                if (matches.length > 0) {
-                    statesWithMatchingDatasets.push(state);
-                }
-            }
-            props.selector.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
+        if(props.data.selectedState) {
+            const input = event.target.value;
+            props.filter.setFiltering(input !== "");
+            const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
+            props.filter.setFilteredDatasets(capitalizeArray(matches));
         }
     };
 
     return (
         <TextField
-            className={props.class}
+            className={classes.root}
             variant="outlined"
             onChange={handleChange}
-            placeholder="ex: Neon 2d Wind"
+            placeholder={createPlaceholderText()}
         />
     );
-
 }

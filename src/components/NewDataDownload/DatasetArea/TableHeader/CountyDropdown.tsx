@@ -57,43 +57,42 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import {capitalizeArray, lowercaseArray} from "../Utils/StateInfo";
 import {TextField} from "@material-ui/core";
-import theme from "../../../global/GlobalTheme";
+import {makeStyles} from "@material-ui/core/styles";
+import {Autocomplete} from "@material-ui/lab";
 
 const useStyles = makeStyles({
     root: {
-        width:"100%",
-        marginTop: theme.spacing(1),
+        width: "100%"
     },
 });
 
-export default function DatasetFiler(props: any) {
+export default function CountyDropdown(props: any) {
     const classes = useStyles();
 
-    const relevantDatasets = props.data.stateDatasets;
-
-    function createPlaceholderText() {
-        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.selectedState}` : `Filter Datasets in ${props.data.selectedCounty} County`;
+    if(props.scope.granularity === "county") {
+        return (
+            <Autocomplete
+                className={classes.root}
+                options={props.data.counties}
+                value={props.data.selectedCounty}
+                onChange={(event, newValue: String) => {
+                    if (newValue) {
+                        props.dataManagement.updateSelectedCounty(newValue);
+                    }
+                }}
+                autoHighlight
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        variant="outlined"
+                    />
+                )}
+            />
+        )
     }
 
-    const handleChange = (event: any) => {
-        if(props.data.selectedState) {
-            const input = event.target.value;
-            props.filter.setFiltering(input !== "");
-            const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
-            props.filter.setFilteredDatasets(capitalizeArray(matches));
-        }
-    };
-
-    return (
-        <TextField
-            className={classes.root}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder={createPlaceholderText()}
-        />
-    );
+    else {return null}
 }

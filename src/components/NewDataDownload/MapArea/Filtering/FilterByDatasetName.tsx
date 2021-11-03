@@ -57,37 +57,42 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import * as d3 from 'd3';
-import "../Utils/rawStyles.css";
-import {uStatePaths} from "../Utils/StateInfo";
+import React from "react";
+import {capitalizeArray} from "../../Utils/StateInfo";
+import {TextField} from "@material-ui/core";
 
-export function Draw(id, mapState, dataManagement) {
-    const hoverClass = document.getElementById("hovered-state-id");
+export default function FilterByDatasetName(props: any) {
 
-    function updateTooltip(left, top) {
-        hoverClass.style.display = "block";
-        hoverClass.style.left = left;
-        hoverClass.style.top = top;
-    }
+    const handleChange = (event: any) => {
+        const searchString = event.target.value;
+        if(searchString === "") {
+            props.selector.setStatesMatchingSearch([]);
+        }
+        else {
+            const statesWithMatchingDatasets = [];
+            for(const [state, data] of Object.entries(props.data.stateToDatasets)) {
+                // @ts-ignore
+                const datasets = data.datasets
+                let lowercaseDatasets: any = [];
+                datasets.forEach((dataset: String) => {
+                    lowercaseDatasets.push(dataset.toLowerCase());
+                })
+                const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
+                if (matches.length > 0) {
+                    statesWithMatchingDatasets.push(state);
+                }
+            }
+            props.selector.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
+        }
+    };
 
-    function mouseOver(event){
-        const stateName = event.target.getAttribute("stateName");
-        mapState.setHoveredState(stateName);
-        updateTooltip((event.pageX - 50) + "px", (event.pageY - 120) + "px");
-    }
+    return (
+        <TextField
+            className={props.class}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder="ex: Neon 2d Wind"
+        />
+    );
 
-    function mouseOut() {
-        hoverClass.style.display = "none";
-    }
-
-    function click(event) {
-        const stateName = event.target.attributes.stateName.nodeValue;
-        dataManagement.handleStateChange(stateName);
-    }
-
-    d3.select(id).selectAll(".state")
-        .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
-        .attr("stateName",function(state){ return state.stateName;})
-        .on("click", click)
-        .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }

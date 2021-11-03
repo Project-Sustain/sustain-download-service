@@ -62,13 +62,13 @@ import React, {useState} from "react";
 import {useStateSelection} from "./useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
-import StateSelector from "./MapArea/StateSelector";
-import DatasetSelector from "./MapArea/DatasetSelector";
+import FilterByStateName from "./MapArea/Filtering/FilterByStateName";
+import FilterByDatasetName from "./MapArea/Filtering/FilterByDatasetName";
 import {Grid, Typography} from "@material-ui/core";
-import StateFilter from "./MapArea/StateFilter";
-import StatesMap from "./MapArea/StatesMap";
-import FauxTooltip from "./MapArea/FauxTooltip";
-import DatasetSection from "./DatasetArea/DatasetSection";
+import FilterType from "./MapArea/Filtering/FilterType";
+import StatesMap from "./MapArea/Map/StatesMap";
+import FauxTooltip from "./MapArea/Map/FauxTooltip";
+import DatasetTable from "./DatasetArea/DatasetTable";
 
 const useStyles = makeStyles({
     map: {
@@ -92,24 +92,23 @@ const useStyles = makeStyles({
 });
 
 export default function Main() {
-    const [data, dataManagement] = useStateSelection();
-
     const classes = useStyles();
+
+    const [data, dataManagement] = useStateSelection();
     const [hoveredState, setHoveredState] = useState("");
     const [stateFilterType, setStateFilterType] = useState(0); //FIXME should probably refactor this out
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
     const filter = {stateFilterType, setStateFilterType}
     const selector = {setStatesMatchingSearch}
-
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
 
     function renderSelector() {
         if(stateFilterType === 0) {
-            return <StateSelector class={classes.searchBox} selector={selector} />
+            return <FilterByStateName class={classes.searchBox} selector={selector} />
         }
         else {
-            return <DatasetSelector class={classes.searchBox} selector={selector} data={data} />
+            return <FilterByDatasetName class={classes.searchBox} selector={selector} data={data} />
         }
     }
 
@@ -118,14 +117,14 @@ export default function Main() {
             <Grid item className={classes.map}>
                 <Grid container direction="row" justifyContent="center" alignItems="center">
                     <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-                    <Grid item><StateFilter filter={filter} /></Grid>
+                    <Grid item><FilterType filter={filter} /></Grid>
                     <Grid item>{renderSelector()}</Grid>
                 </Grid>
                 <StatesMap data={data} dataManagement={dataManagement} mapState={mapState} />
                 <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState} />
             </Grid>
             <Grid item className={classes.datasetSection}>
-                <DatasetSection data={data} dataManagement={dataManagement} />
+                <DatasetTable data={data} dataManagement={dataManagement} />
             </Grid>
         </Grid>
     )

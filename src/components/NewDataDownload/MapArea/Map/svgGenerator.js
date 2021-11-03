@@ -57,42 +57,37 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
-import {TextField} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-import {Autocomplete} from "@material-ui/lab";
+import * as d3 from 'd3';
+import "../../Utils/rawStyles.css";
+import {uStatePaths} from "../../Utils/StateInfo";
 
-const useStyles = makeStyles({
-    root: {
-        width: "100%"
-    },
-});
+export function Draw(id, mapState, dataManagement) {
+    const hoverClass = document.getElementById("hovered-state-id");
 
-export default function CountySelector(props: any) {
-    const classes = useStyles();
-
-    if(props.scope.granularity === "county") {
-        return (
-            <Autocomplete
-                className={classes.root}
-                options={props.data.counties}
-                value={props.data.selectedCounty}
-                // @ts-ignore
-                onChange={(event, newValue: String) => {
-                    if (newValue) {
-                        props.dataManagement.updateSelectedCounty(newValue);
-                    }
-                }}
-                autoHighlight
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        variant="outlined"
-                    />
-                )}
-            />
-        )
+    function updateTooltip(left, top) {
+        hoverClass.style.display = "block";
+        hoverClass.style.left = left;
+        hoverClass.style.top = top;
     }
 
-    else {return null}
+    function mouseOver(event){
+        const stateName = event.target.getAttribute("stateName");
+        mapState.setHoveredState(stateName);
+        updateTooltip((event.pageX - 50) + "px", (event.pageY - 120) + "px");
+    }
+
+    function mouseOut() {
+        hoverClass.style.display = "none";
+    }
+
+    function click(event) {
+        const stateName = event.target.attributes.stateName.nodeValue;
+        dataManagement.handleStateChange(stateName);
+    }
+
+    d3.select(id).selectAll(".state")
+        .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
+        .attr("stateName",function(state){ return state.stateName;})
+        .on("click", click)
+        .on("mouseover", mouseOver).on("mouseout", mouseOut);
 }

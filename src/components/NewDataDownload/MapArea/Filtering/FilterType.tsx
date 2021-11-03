@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Select,Box, MenuItem, FormControl} from "@mui/material";
 
-export default function BasicSelect(props: any) {
+export default function FilterType(props: any) {
 
     const handleChange = (event: any) => {
         props.filter.setStateFilterType(event.target.value);

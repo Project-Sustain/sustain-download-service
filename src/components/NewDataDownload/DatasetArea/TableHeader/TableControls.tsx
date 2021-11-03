@@ -57,62 +57,45 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, { useEffect } from "react";
-import * as d3 from 'd3';
-import { Draw } from "./uStates";
-import {chosenState, selectedState, unSelectedState} from "../Utils/StateInfo";
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import {
+    Grid,
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
+import {makeStyles} from "@material-ui/core/styles";
+import SwitchHeader from "./StateCountySwitch";
+import DatasetFilter from "./DatasetFilter";
+import CountyDropdown from "./CountyDropdown";
 
 const useStyles = makeStyles({
-    map: {
-        position:'relative',
-        height: '1px',
-        width: '100%',
+    root: {
+        maxHeight: "55vh",
+        overflow: "auto"
     },
-
-    svg: {
-        position: 'relative',
-        width: 'auto',
-        height: '100%'
-    }
+    header: {
+        borderRadius: "3px 3px 0px 0px",
+    },
 });
 
-export default function StatesMap(props: any) {
-    const allStatesHTML = d3.select("#statesvg").selectAll(".state");
-    // @ts-ignore
-    const nodeList = allStatesHTML["_groups"][0];
+export default function DatasetTable(props: any) {
     const classes = useStyles();
 
-    if(nodeList) {
-        nodeList.forEach((node: any) => {
-            if(props.mapState.statesMatchingSearch.length === nodeList.length) {
-                node.style.fill = unSelectedState;
-            }
-            else if(props.mapState.statesMatchingSearch.length === 0 && props.data.selectedState === node["__data__"].stateName) {
-                node.style.fill = chosenState;
-            }
-            else {
-                if (props.mapState.statesMatchingSearch.includes(node["__data__"].stateName)) {
-                    node.style.fill = selectedState;
-                }
-                else {
-                    node.style.fill = unSelectedState;
-                }
-            }
-        })
-    }
-
-    useEffect(() => {
-        // @ts-ignore
-        Draw("#statesvg", props.mapState, props.dataManagement);
-        d3.select(window.frameElement).style("height", "600px");
-    });
-
     return (
-        <div className={classes.map}>
-            <div className={classes.svg}>
-                <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
-            </div>
-        </div>
+        <Grid item className={classes.header}>
+            <Table>
+                <TableHead>
+                    <SwitchHeader  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                    <TableRow>
+                        <TableCell colSpan={2}>
+                            <CountyDropdown data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                            <DatasetFilter filter={props.filter} data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+            </Table>
+        </Grid>
     )
 }

@@ -57,29 +57,62 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useState} from "react";
-import DatasetTable from "./DatasetTable";
-import {Grid} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../../global/GlobalTheme";
+import React, { useEffect } from "react";
+import * as d3 from 'd3';
+import { Draw } from "./svgGenerator";
+import {chosenState, selectedState, unSelectedState} from "../../Utils/StateInfo";
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-    root: {
-        margin: theme.spacing(2),
+    map: {
+        position:'relative',
+        height: '1px',
+        width: '100%',
     },
+
+    svg: {
+        position: 'relative',
+        width: 'auto',
+        height: '100%'
+    }
 });
 
-export default function DatasetSection(props: any) {
+export default function StatesMap(props: any) {
+    const allStatesHTML = d3.select("#statesvg").selectAll(".state");
+    // @ts-ignore
+    const nodeList = allStatesHTML["_groups"][0];
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state");
 
-    const scope = {granularity, setGranularity}
+    if(nodeList) {
+        nodeList.forEach((node: any) => {
+            if(props.mapState.statesMatchingSearch.length === nodeList.length) {
+                node.style.fill = unSelectedState;
+            }
+            else if(props.mapState.statesMatchingSearch.length === 0 && props.data.selectedState === node["__data__"].stateName) {
+                node.style.fill = chosenState;
+            }
+            else {
+                if (props.mapState.statesMatchingSearch.includes(node["__data__"].stateName)) {
+                    node.style.fill = selectedState;
+                }
+                else {
+                    node.style.fill = unSelectedState;
+                }
+            }
+        })
+    }
+
+    useEffect(() => {
+        // @ts-ignore
+        Draw("#statesvg", props.mapState, props.dataManagement);
+        d3.select(window.frameElement).style("height", "600px");
+    });
 
     return (
-        <div className={classes.root}>
-            <Grid container direction="column" justifyContent="center" alignItems="stretch">
-                <DatasetTable data={props.data} dataManagement={props.dataManagement} scope={scope} />
-            </Grid>
+        <div className={classes.map}>
+            <div className={classes.svg}>
+                <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
+            </div>
         </div>
     )
 }

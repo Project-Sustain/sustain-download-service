@@ -69,12 +69,16 @@ import {
 } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
-import TableControls from "./TableControls";
+import TableControls from "./TableHeader/TableControls";
+import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
     root: {
         maxHeight: "55vh",
         overflow: "auto"
+    },
+    paper: {
+        margin: theme.spacing(2),
     },
     header: {
         borderRadius: "3px 3px 0px 0px",
@@ -83,26 +87,30 @@ const useStyles = makeStyles({
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
+    const [granularity, setGranularity] = useState("state");
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.stateDatasets);
     const [filtering, setFiltering] = useState(false);
 
+    const scope = {granularity, setGranularity}
     const filter = {setFilteredDatasets, setFiltering}
     const datasets = filtering ? filteredDatasets : props.data.stateDatasets;
 
     if(datasets) {
         return (
-            <Paper>
-                <TableControls data={props.data} dataManagement={props.dataManagement} scope={props.scope} filter={filter} />
-                <Grid item>
-                    <TableContainer className={classes.root}>
-                        <Table>
-                            <TableBody>
-                                {renderDatasetRows()}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Grid>
-            </Paper>
+            <Grid container direction="column" justifyContent="center" alignItems="stretch">
+                <Paper className={classes.paper}>
+                    <TableControls data={props.data} dataManagement={props.dataManagement} scope={scope} filter={filter} />
+                    <Grid item>
+                        <TableContainer className={classes.root}>
+                            <Table>
+                                <TableBody>
+                                    {renderDatasetRows()}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
+                </Paper>
+            </Grid>
         )
     }
 

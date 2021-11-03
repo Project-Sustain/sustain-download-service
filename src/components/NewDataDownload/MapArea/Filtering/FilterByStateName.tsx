@@ -58,10 +58,10 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {capitalizeArray, statesArray} from "../Utils/StateInfo";
+import {capitalizeArray, statesArray} from "../../Utils/StateInfo";
 import {TextField} from "@material-ui/core";
 
-export default function StateSelector(props: any) {
+export default function FilterByStateName(props: any) {
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
