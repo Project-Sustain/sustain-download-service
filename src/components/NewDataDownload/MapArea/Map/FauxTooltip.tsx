@@ -63,7 +63,7 @@ import {Paper, Typography} from '@material-ui/core';
 
 export default function FauxTooltip(props:any) {
     return (
-        <Paper elevation={3} id={props.id} className={props.class}>
+        <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
             <Typography>{props.title}</Typography>
         </Paper>
     )

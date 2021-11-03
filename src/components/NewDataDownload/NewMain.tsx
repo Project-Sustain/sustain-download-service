@@ -64,7 +64,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
 import FilterByStateName from "./MapArea/Filtering/FilterByStateName";
 import FilterByDatasetName from "./MapArea/Filtering/FilterByDatasetName";
-import {Grid, Typography} from "@material-ui/core";
+import {Button, Grid, Typography} from "@material-ui/core";
 import FilterType from "./MapArea/Filtering/FilterType";
 import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./MapArea/Map/FauxTooltip";
@@ -119,9 +119,11 @@ export default function Main() {
                     <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
                     <Grid item><FilterType filter={filter} /></Grid>
                     <Grid item>{renderSelector()}</Grid>
+                    {/*@ts-ignore*/}
+                    <Button onClick={() => dataManagement.handleStateChange("Wyoming")}>Wyoming</Button>
                 </Grid>
                 <StatesMap data={data} dataManagement={dataManagement} mapState={mapState} />
-                <FauxTooltip id="hovered-state-id" class="hovered-state-text" title={hoveredState} />
+                <FauxTooltip title={hoveredState} />
             </Grid>
             <Grid item className={classes.datasetSection}>
                 <DatasetTable data={data} dataManagement={dataManagement} />

@@ -11,6 +11,10 @@ interface stateDatasetType {
     }
 }
 
+interface dataType {
+
+}
+
 export function useStateSelection() {
     const [stateToDatasets, setStateToDatasets] = useState({} as stateDatasetType);
     const [selectedState, setSelectedState] = useState("" as string);
@@ -38,25 +42,24 @@ export function useStateSelection() {
     }, []);
 
     const data = {stateToDatasets, selectedState, counties, selectedCounty, stateDatasets};
-    const context = {setStateToDatasets, stateToDatasets, setSelectedState, setCounties, setSelectedCounty, setStateDatasets};
     const dataManagement = {
-        handleStateChange: (stateName: any) => handleStateChange(stateName, context),
-        updateSelectedCounty: (countyName: any) => updateSelectedCounty(countyName, setSelectedCounty)
+        handleStateChange: (stateName: any) => handleStateChange(stateName),
+        updateSelectedCounty: (countyName: any) => updateSelectedCounty(countyName)
     };
 
+    function handleStateChange(stateName: any) {
+        console.log({stateName})
+        console.log({stateToDatasets})
+        setSelectedState(stateName);
+        setStateDatasets(stateToDatasets[`${stateName}`].datasets);
+        setCounties(countyMap[`${stateName}`]);
+        setSelectedCounty(countyMap[`${stateName}`][0]);
+    }
+
+    function updateSelectedCounty(countyName: any) {
+        setSelectedCounty(countyName);
+    }
+
     return [data, dataManagement];
-}
 
-function handleStateChange(stateName: any, context: any) {
-    const {stateToDatasets, setSelectedState, setCounties, setSelectedCounty, setStateDatasets} = context;
-    console.log({stateName})
-    console.log({stateToDatasets})
-    setSelectedState(stateName);
-    setStateDatasets(stateToDatasets[`${stateName}`].datasets);
-    setCounties(countyMap[`${stateName}`]);
-    setSelectedCounty(countyMap[`${stateName}`][0]);
-}
-
-function updateSelectedCounty(countyName: any, setSelectedCounty: any) {
-    setSelectedCounty(countyName);
 }
