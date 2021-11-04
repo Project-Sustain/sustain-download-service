@@ -61,7 +61,6 @@ END OF TERMS AND CONDITIONS
 import React from 'react';
 import './App.css';
 import { Grid } from '@material-ui/core';
-// import Main from './components/Main';
 import NewMain from './components/NewDataDownload/NewMain';
 
 function App() {
@@ -69,7 +68,7 @@ function App() {
         <div className="App">
             <Grid container>
                 <Grid item xs={12}>
-                    <NewMain/>
+                    <NewMain />
                 </Grid>
             </Grid>
         </div>

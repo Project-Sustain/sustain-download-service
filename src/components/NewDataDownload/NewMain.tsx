@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useStateSelection} from "./Utils/useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
@@ -69,6 +69,9 @@ import FilterType from "./MapArea/Filtering/FilterType";
 import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./MapArea/Map/FauxTooltip";
 import DatasetTable from "./DatasetArea/DatasetTable";
+import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
 
 const useStyles = makeStyles({
     map: {
@@ -89,12 +92,22 @@ const useStyles = makeStyles({
     searchBox: {
         margin: theme.spacing(1),
     },
+    loading: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        minHeight: "90vh",
+    },
+    loadingItem: {
+        margin: "10px",
+    },
 });
 
 export default function Main() {
     const classes = useStyles();
-
     const [data, dataManagement] = useStateSelection();
+    const [loading, setLoading] = useState(true as boolean);
     const [hoveredState, setHoveredState] = useState("");
     const [stateFilterType, setStateFilterType] = useState(0);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
@@ -102,6 +115,11 @@ export default function Main() {
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch}
     const selector = {setStatesMatchingSearch}
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
+
+    useEffect(() => {
+        // @ts-ignore
+        setLoading(Object.keys(data.stateData).length === 0);
+    });
 
     function renderSelector() {
         if(stateFilterType === 0) {
@@ -112,20 +130,37 @@ export default function Main() {
         }
     }
 
-    return (
-        <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-            <Grid item className={classes.map}>
-                <Grid container direction="row" justifyContent="center" alignItems="center">
-                    <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-                    <Grid item><FilterType filter={filter} /></Grid>
-                    <Grid item>{renderSelector()}</Grid>
+    if(loading) {
+        return (
+            <Box className={classes.loading}>
+                <Grid container direction="column" justifyContent="center" alignItems="center">
+                    <Grid item className={classes.loadingItem}>
+                        <Typography className={classes.text}>Loading Data...</Typography>
+                    </Grid>
+                    <Grid item>
+                        <CircularProgress color="primary" />
+                    </Grid>
                 </Grid>
-                <StatesMap data={data} dataManagement={dataManagement} mapState={mapState} />
-                <FauxTooltip title={hoveredState} />
+            </Box>
+        )
+    }
+
+    else {
+        return (
+            <Grid container direction="row" justifyContent="center" alignItems="flex-start">
+                <Grid item className={classes.map}>
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                        <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
+                        <Grid item><FilterType filter={filter}/></Grid>
+                        <Grid item>{renderSelector()}</Grid>
+                    </Grid>
+                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
+                    <FauxTooltip title={hoveredState}/>
+                </Grid>
+                <Grid item className={classes.datasetSection}>
+                    <DatasetTable data={data} dataManagement={dataManagement}/>
+                </Grid>
             </Grid>
-            <Grid item className={classes.datasetSection}>
-                <DatasetTable data={data} dataManagement={dataManagement} />
-            </Grid>
-        </Grid>
-    )
+        )
+    }
 }
