@@ -14,7 +14,20 @@ export default function CustomAlert(props: any) {
     const classes = useStyles();
 
     if(props.alertState.open) {
-        return <Alert className={classes.root} severity={props.alertState.severity}>{props.alertState.text}</Alert>
+        return (
+            <Alert
+                className={classes.root} severity={props.alertState.severity}
+                onClose={() => {
+                    props.set({
+                        open: false,
+                        test: "",
+                        severity: ""
+                    });
+                }}
+            >
+                {props.alertState.text}
+            </Alert>
+        )
     }
     else return null;
 }

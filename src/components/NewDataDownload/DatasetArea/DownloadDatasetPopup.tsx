@@ -61,7 +61,7 @@ import React, {useState} from "react";
 import {Button, Grid, Modal, Paper, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import {serverNameToClientName} from "../Utils/utils";
+import {alertTimeout, serverNameToClientName} from "../Utils/utils";
 import ListItemButton from '@mui/material/ListItemButton';
 
 const useStyles = makeStyles({
@@ -94,12 +94,14 @@ export default function DownloadDatasetPopup(props: any) {
         return props.granularity === "county" ? `${props.data.currentCounty.name}, ${props.data.currentState.name}` : props.data.currentState.name;
     }
 
+
     function handleDownload() {
         props.data.setAlertState({
             open: true,
-            text: `Downloading \'${serverNameToClientName(props.dataset)}\' in ${getLocation()}`,
+            text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()}`,
             severity: "success"
         });
+        alertTimeout(props.data.setAlertState);
         handleClose();
     }
 

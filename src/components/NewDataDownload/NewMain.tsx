@@ -158,7 +158,7 @@ export default function Main() {
                     <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
                     <FauxTooltip title={hoveredState}/>
                     {/*@ts-ignore*/}
-                    <CustomAlert alertState={data.alertState} />
+                    <CustomAlert alertState={data.alertState} set={data.setAlertState} />
                 </Grid>
                 <Grid item className={classes.datasetSection}>
                     <DatasetTable data={data} dataManagement={dataManagement}/>

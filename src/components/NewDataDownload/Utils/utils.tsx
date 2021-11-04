@@ -108,6 +108,16 @@ export function buildCountyMap(serverResponse: stateType) {
     return masterMap;
 }
 
+export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string; severity: string; }) => void) {
+    setTimeout(function() {
+        setAlertState({
+            open: false,
+            text: "",
+            severity: ""
+        });
+    }, 3000);
+}
+
 export const unSelectedState = "#eee";
 export const selectedState = "#458AB9";
 export const chosenState = "#2DA661";
