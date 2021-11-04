@@ -9,10 +9,6 @@ export function useStateSelection() {
     const [currentState, setCurrentState] = useState({} as individualStateType);
     const [currentCounty, setCurrentCounty] = useState({} as countyObjType);
 
-    console.log({stateData})
-    console.log({currentState})
-    console.log({currentCounty})
-
     useEffect(() => {
         (async () => {
             const serverResponse = await mongoQuery("state_gis_join_metadata", []);
@@ -48,16 +44,11 @@ export function useStateSelection() {
     }
 
     function handleCountyCounty(countyName: any) {
-        if(currentState.counties.length > 0) {
-            currentState.counties.forEach((county) => {
-                if (county.name === countyName) {
-                    setCurrentCounty(county);
-                }
-            })
-        }
-        else {
-            console.log("No server data for counties in " + currentState.name)
-        }
+        currentState.counties.forEach((county) => {
+            if (county.name === countyName) {
+                setCurrentCounty(county);
+            }
+        })
     }
 
     return [data, dataManagement];

@@ -68,15 +68,35 @@ export function capitalizeArray(matches: string[]) {
     return capitalizedMatches;
 }
 
+function findTheComma(nameAsArray: string[]) {
+    let spot = 0;
+    nameAsArray.forEach((word: string, index) => {
+        if(word.charAt(word.length-1) === ",") {
+            spot = index+1;
+        }
+    })
+    return spot;
+}
+
+function extractStateCountyName(nameAsArray: string[]) {
+    const indexOfStateName = findTheComma(nameAsArray);
+    if(indexOfStateName !== 0) {
+        const stateName = nameAsArray.splice(indexOfStateName, nameAsArray.length-1).join(" ");
+        let tempCountyName = nameAsArray.splice(0, indexOfStateName).join(" ");
+        const countyName = tempCountyName.substr(0, tempCountyName.length-1);
+        return [stateName, countyName];
+    }
+    return ["", ""];
+}
+
 export function buildCountyMap(serverResponse: stateType) {
     let masterMap = {...serverResponse};
     gisJoinCountyNames.forEach((county: countyObjType) => {
         const nameAsArray = county.name.split(" ");
-        const stateName = nameAsArray[nameAsArray.length-1];
+        const names = extractStateCountyName(nameAsArray)
+        const stateName = names[0];
         if(Object.keys(masterMap).includes(stateName)) {
-            const countyAsArray = nameAsArray.splice(0, nameAsArray.length - 1);
-            const tempCountyName = countyAsArray.join(" ");
-            const countyName = tempCountyName.substr(0, tempCountyName.length - 1);
+            const countyName = names[1];
             const GISJOIN = county.GISJOIN;
             let countyObj = {
                 GISJOIN: GISJOIN,
