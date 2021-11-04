@@ -61,6 +61,9 @@ import React, {useState} from "react";
 import {Button, Grid, Modal, Paper, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
+import {serverNameToClientName} from "../Utils/utils";
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
 const useStyles = makeStyles({
     modal: {
@@ -92,7 +95,9 @@ export default function DownloadDatasetPopup(props: any) {
 
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleOpen}>Download</Button>
+            <ListItemButton onClick={handleOpen}>
+                {serverNameToClientName(props.dataset)}
+            </ListItemButton>
             <Modal
                 open={open}
                 onClose={handleClose}

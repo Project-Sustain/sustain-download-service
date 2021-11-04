@@ -61,17 +61,13 @@ import React, {useState} from "react";
 import {
     Grid,
     Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
+    List,
+    ListItem,
 } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
-import {serverNameToClientName} from "../Utils/utils";
 
 const useStyles = makeStyles({
     root: {
@@ -104,13 +100,9 @@ export default function DatasetTable(props: any) {
                 <Paper className={classes.paper}>
                     <TableControls filteredData={filteredData} data={props.data} dataManagement={props.dataManagement} scope={scope} filter={filter} />
                     <Grid item>
-                        <TableContainer className={classes.root}>
-                            <Table>
-                                <TableBody>
-                                    {renderDatasetRows()}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <List className={classes.root}>
+                            {renderDatasetRows()}
+                        </List>
                     </Grid>
                 </Paper>
             </Grid>
@@ -124,14 +116,9 @@ export default function DatasetTable(props: any) {
     function renderDatasetRows() {
         return datasets.map((dataset: any, index: any) => {
             return (
-                <TableRow key={index}>
-                    <TableCell>
-                        {serverNameToClientName(dataset)}
-                    </TableCell>
-                    <TableCell align="right">
-                        <DownloadDatasetPopup dataset={dataset} granularity={granularity} data={props.data} />
-                    </TableCell>
-                </TableRow>
+                <ListItem key={index}>
+                    <DownloadDatasetPopup dataset={dataset} data={props.data} />
+                </ListItem>
             )
         })
     }
