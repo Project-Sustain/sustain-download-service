@@ -71,6 +71,7 @@ import FauxTooltip from "./MapArea/Map/FauxTooltip";
 import DatasetTable from "./DatasetArea/DatasetTable";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import CustomAlert from "./Utils/CustomAlert";
 
 const useStyles = makeStyles({
     map: {
@@ -156,6 +157,8 @@ export default function Main() {
                     </Grid>
                     <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
                     <FauxTooltip title={hoveredState}/>
+                    {/*@ts-ignore*/}
+                    <CustomAlert alertState={data.alertState} />
                 </Grid>
                 <Grid item className={classes.datasetSection}>
                     <DatasetTable data={data} dataManagement={dataManagement}/>

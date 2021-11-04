@@ -8,6 +8,11 @@ export function useStateSelection() {
     const [stateData, setStateData] = useState({} as stateType);
     const [currentState, setCurrentState] = useState({} as individualStateType);
     const [currentCounty, setCurrentCounty] = useState({} as countyObjType);
+    const [alertState, setAlertState] = useState({
+        open: false,
+        text: "",
+        severity: ""
+    });
 
     useEffect(() => {
         (async () => {
@@ -27,7 +32,7 @@ export function useStateSelection() {
         })()
     }, []);
 
-    const data = {stateData, currentState, currentCounty};
+    const data = {stateData, currentState, currentCounty, alertState, setAlertState};
     const dataManagement = {
         handleStateChange: (stateName: any) => handleStateChange(stateName),
         handleCountyCounty: (countyName: any) => handleCountyCounty(countyName)

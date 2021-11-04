@@ -90,6 +90,19 @@ export default function DownloadDatasetPopup(props: any) {
         return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
     }
 
+    function getLocation() {
+        return props.granularity === "county" ? `${props.data.currentCounty.name}, ${props.data.currentState.name}` : props.data.currentState.name;
+    }
+
+    function handleDownload() {
+        props.data.setAlertState({
+            open: true,
+            text: `Downloading \'${serverNameToClientName(props.dataset)}\' in ${getLocation()}`,
+            severity: "success"
+        });
+        handleClose();
+    }
+
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
@@ -113,7 +126,7 @@ export default function DownloadDatasetPopup(props: any) {
                         justifyContent="space-evenly"
                         alignItems="center">
                         <Grid item>
-                            <Button variant="outlined" color="primary">Download this Dataset</Button>
+                            <Button variant="outlined" color="primary" onClick={handleDownload}>Download this Dataset</Button>
                         </Grid>
                         <Grid item>
                             <Button variant="outlined" onClick={handleClose}>Close</Button>
