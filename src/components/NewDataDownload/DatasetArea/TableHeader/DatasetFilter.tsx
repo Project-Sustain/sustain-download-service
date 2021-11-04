@@ -74,19 +74,14 @@ export default function DatasetFiler(props: any) {
     const classes = useStyles();
 
     function createPlaceholderText() {
-        if(props.data.currentState.counties.length !== 0) {
-            return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name} County`;
-        }
-        else {
-            return "No County Data for " + props.data.currentState.name;
-        }
+        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name}`;
     }
 
     const handleChange = (event: any) => {
         const input = event.target.value;
         props.filter.setFiltering(input !== "");
         const matches = lowercaseArray(props.data.currentState.collections_supported).filter((state: string) => state.includes(clientNameToServerName(input)));
-        props.filter.setFilteredDatasets(capitalizeArray(matches));
+        props.filter.setFilteredDatasets(matches);
     };
 
     return (

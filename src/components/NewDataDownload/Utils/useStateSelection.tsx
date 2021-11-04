@@ -12,6 +12,7 @@ export function useStateSelection() {
     useEffect(() => {
         (async () => {
             const serverResponse = await mongoQuery("state_gis_join_metadata", []);
+            console.log({serverResponse})
             let masterMap = {} as stateType;
             for(const key of serverResponse) {
                 masterMap[getStateName(key.gis_join)] = {
