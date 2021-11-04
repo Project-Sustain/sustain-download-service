@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {countyMap} from "./CountyMapping";
 import {mongoQuery} from "../../../library/Download";
 import {formatDatasetName, getStateName} from "./utils";
@@ -9,10 +9,6 @@ interface stateDatasetType {
         collections_supported: string[],
         datasets: string[]
     }
-}
-
-interface dataType {
-
 }
 
 export function useStateSelection() {
@@ -53,7 +49,8 @@ export function useStateSelection() {
             setStateDatasets(stateToDatasets[`${stateName}`].datasets);
         }
         else {
-            console.log("No server data for " + stateName)
+            console.log("No server data for " + stateName);
+            setStateDatasets([]);
         }
         setCounties(countyMap[`${stateName}`]);
         setSelectedCounty(countyMap[`${stateName}`][0]);
