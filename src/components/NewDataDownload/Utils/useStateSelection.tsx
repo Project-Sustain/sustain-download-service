@@ -49,7 +49,12 @@ export function useStateSelection() {
 
     function handleStateChange(stateName: any) {
         setSelectedState(stateName);
-        setStateDatasets(stateToDatasets[`${stateName}`].datasets);
+        if(stateToDatasets[`${stateName}`]) {
+            setStateDatasets(stateToDatasets[`${stateName}`].datasets);
+        }
+        else {
+            console.log("No server data for " + stateName)
+        }
         setCounties(countyMap[`${stateName}`]);
         setSelectedCounty(countyMap[`${stateName}`][0]);
     }

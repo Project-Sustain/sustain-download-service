@@ -64,7 +64,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
 import FilterByStateName from "./MapArea/Filtering/FilterByStateName";
 import FilterByDatasetName from "./MapArea/Filtering/FilterByDatasetName";
-import {Button, Grid, Typography} from "@material-ui/core";
+import {Grid, Typography} from "@material-ui/core";
 import FilterType from "./MapArea/Filtering/FilterType";
 import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./MapArea/Map/FauxTooltip";
