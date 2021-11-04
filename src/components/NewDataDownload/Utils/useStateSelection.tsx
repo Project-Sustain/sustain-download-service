@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
-import {formatDatasetName, getStateName} from "./utils";
+import {getStateName} from "./utils";
 import {buildCountyMap} from "./utils";
 import {countyObjType, individualStateType, stateType} from "./types";
 
@@ -8,6 +8,10 @@ export function useStateSelection() {
     const [stateData, setStateData] = useState({} as stateType);
     const [currentState, setCurrentState] = useState({} as individualStateType);
     const [currentCounty, setCurrentCounty] = useState({} as countyObjType);
+
+    console.log({stateData})
+    console.log({currentState})
+    console.log({currentCounty})
 
     useEffect(() => {
         (async () => {
@@ -18,7 +22,6 @@ export function useStateSelection() {
                     name: getStateName(key.gis_join),
                     GISJOIN: key.gis_join,
                     collections_supported: key.collections_supported,
-                    datasets: formatDatasetName(key.collections_supported),
                     counties: []
                 }
             }
@@ -45,11 +48,16 @@ export function useStateSelection() {
     }
 
     function handleCountyCounty(countyName: any) {
-        currentState.counties.forEach((county) => {
-            if(county.name === countyName) {
-                setCurrentCounty(county);
-            }
-        })
+        if(currentState.counties.length > 0) {
+            currentState.counties.forEach((county) => {
+                if (county.name === countyName) {
+                    setCurrentCounty(county);
+                }
+            })
+        }
+        else {
+            console.log("No server data for counties in " + currentState.name)
+        }
     }
 
     return [data, dataManagement];

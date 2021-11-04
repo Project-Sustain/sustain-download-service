@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {capitalizeArray} from "../../Utils/utils";
+import {capitalizeArray, clientNameToServerName} from "../../Utils/utils";
 import {TextField} from "@material-ui/core";
 
 export default function FilterByDatasetName(props: any) {
@@ -72,12 +72,12 @@ export default function FilterByDatasetName(props: any) {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
                 // @ts-ignore
-                const datasets = data.datasets
+                const datasets = data.collections_supported
                 let lowercaseDatasets: any = [];
                 datasets.forEach((dataset: String) => {
                     lowercaseDatasets.push(dataset.toLowerCase());
                 })
-                const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString.toLowerCase()));
+                const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(clientNameToServerName(searchString)));
                 if (matches.length > 0) {
                     statesWithMatchingDatasets.push(state);
                 }

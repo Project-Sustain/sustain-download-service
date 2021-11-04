@@ -71,6 +71,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
+import {serverNameToClientName} from "../Utils/utils";
 
 const useStyles = makeStyles({
     root: {
@@ -88,12 +89,12 @@ const useStyles = makeStyles({
 export default function DatasetTable(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
-    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
+    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported);
     const [filtering, setFiltering] = useState(false);
 
     const scope = {granularity, setGranularity}
     const filter = {setFilteredDatasets, setFiltering}
-    const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
+    const datasets = filtering ? filteredDatasets : props.data.currentState.collections_supported;
 
     const filteredData = {filtering, filteredDatasets}
 
@@ -125,7 +126,7 @@ export default function DatasetTable(props: any) {
             return (
                 <TableRow key={index}>
                     <TableCell>
-                        {dataset}
+                        {serverNameToClientName(dataset)}
                     </TableCell>
                     <TableCell align="right">
                         <DownloadDatasetPopup dataset={dataset} granularity={granularity} data={props.data} />
@@ -134,4 +135,5 @@ export default function DatasetTable(props: any) {
             )
         })
     }
+
 }

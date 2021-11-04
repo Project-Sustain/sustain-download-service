@@ -20,6 +20,16 @@ export function formatDatasetName(datasets: string[]) {
     return newDatasets;
 }
 
+export function serverNameToClientName(dataset: string) {
+    let newDataset = dataset.replace(/_/g, " ");
+    return capitalizeFirstLetter(newDataset);
+}
+
+export function clientNameToServerName(clientName: string) {
+    let serverName = clientName.replace(/ /g, "_");
+    return serverName.toLowerCase();
+}
+
 export function capitalizeFirstLetter(str: any) {
     if (str === null || str.length === 0) {
         return "";
