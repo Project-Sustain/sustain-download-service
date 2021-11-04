@@ -1,5 +1,5 @@
 import {gisJoinCountyNames, gisJoinStateNames} from "./gisInfo";
-import {stateDatasetType, stateCountyDatasetMapType, countyObjType} from "./types";
+import {stateDatasetType, stateCountyDatasetMapType, countyObjType, stateType} from "./types";
 
 export function getStateName(GISJOIN: String) {
     for(const gis of gisJoinStateNames) {
@@ -58,7 +58,7 @@ export function capitalizeArray(matches: string[]) {
     return capitalizedMatches;
 }
 
-export function buildCountyMap(serverResponse: stateDatasetType) {
+export function buildCountyMap(serverResponse: stateType) {
     let masterMap = {...serverResponse};
     gisJoinCountyNames.forEach((county: countyObjType) => {
         const nameAsArray = county.name.split(" ");

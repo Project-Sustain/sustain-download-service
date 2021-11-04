@@ -73,17 +73,17 @@ const useStyles = makeStyles({
 export default function DatasetFiler(props: any) {
     const classes = useStyles();
 
-    const relevantDatasets = props.data.stateDatasets;
+    // const relevantDatasets = props.data.stateDatasets; //FIXME old, was in call to lowercaseArray()
 
     function createPlaceholderText() {
-        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.selectedState}` : `Filter Datasets in ${props.data.selectedCounty} County`;
+        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name} County`;
     }
 
     const handleChange = (event: any) => {
-        if(props.data.selectedState) {
+        if(props.data.currentState) {
             const input = event.target.value;
             props.filter.setFiltering(input !== "");
-            const matches = lowercaseArray(relevantDatasets).filter((state: any) => state.includes(input.toLowerCase()));
+            const matches = lowercaseArray(props.data.currentState.datasets).filter((state: any) => state.includes(input.toLowerCase()));
             props.filter.setFilteredDatasets(capitalizeArray(matches));
         }
     };

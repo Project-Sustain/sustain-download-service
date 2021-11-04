@@ -87,13 +87,14 @@ const useStyles = makeStyles({
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state");
-    const [filteredDatasets, setFilteredDatasets] = useState(props.data.stateDatasets);
-    const [filtering, setFiltering] = useState(false);
+    const [granularity, setGranularity] = useState("state" as string);
+    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
+    const [filtering, setFiltering] = useState(false as boolean);
 
     const scope = {granularity, setGranularity}
     const filter = {setFilteredDatasets, setFiltering}
-    const datasets = filtering ? filteredDatasets : props.data.stateDatasets;
+    const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
+    // const datasets = filtering ? filteredDatasets : props.data.stateDatasets; //FIXME old
 
     if(datasets) {
         return (
@@ -126,7 +127,7 @@ export default function DatasetTable(props: any) {
                         {dataset}
                     </TableCell>
                     <TableCell align="right">
-                        <DownloadDatasetPopup dataset={dataset} />
+                        <DownloadDatasetPopup dataset={dataset} granularity={granularity} data={props.data} />
                     </TableCell>
                 </TableRow>
             )

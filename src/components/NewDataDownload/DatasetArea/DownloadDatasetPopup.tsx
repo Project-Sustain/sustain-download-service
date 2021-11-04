@@ -84,6 +84,10 @@ export default function DownloadDatasetPopup(props: any) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    function getGISJOIN() {
+        return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
+    }
+
     return (
         <div>
             <Button variant="outlined" color="primary" onClick={handleOpen}>Download</Button>
@@ -96,7 +100,7 @@ export default function DownloadDatasetPopup(props: any) {
                         {props.dataset}
                     </Typography>
                     <Typography className={classes.modalSection}>
-                        Here is some more info about this dataset. We should include an example of the data.
+                        GISJOIN: {getGISJOIN()}
                     </Typography>
                     <Grid
                         className={classes.modalSection}

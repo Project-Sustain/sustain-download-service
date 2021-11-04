@@ -62,6 +62,7 @@ import React from "react";
 import {TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {Autocomplete} from "@material-ui/lab";
+import {countyObjType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     root: {
@@ -73,14 +74,19 @@ export default function CountyDropdown(props: any) {
     const classes = useStyles();
 
     if(props.scope.granularity === "county") {
+        let counties = [] as string[];
+        props.data.currentState.counties.forEach((county: countyObjType) => {
+            counties.push(county.name)
+        })
+
         return (
             <Autocomplete
                 className={classes.root}
-                options={props.data.counties}
-                value={props.data.selectedCounty}
+                options={counties}
+                value={props.data.currentCounty.name}
                 onChange={(event, newValue: String) => {
                     if (newValue) {
-                        props.dataManagement.updateSelectedCounty(newValue);
+                        props.dataManagement.handleCountyCounty(newValue);
                     }
                 }}
                 autoHighlight
