@@ -5,6 +5,7 @@ export default function FilterType(props: any) {
 
     const handleChange = (event: any) => {
         props.filter.setStateFilterType(event.target.value);
+        props.filter.setStatesMatchingSearch([]);
     };
 
     return (

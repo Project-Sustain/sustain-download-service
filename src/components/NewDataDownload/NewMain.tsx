@@ -99,7 +99,7 @@ export default function Main() {
     const [stateFilterType, setStateFilterType] = useState(0);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
-    const filter = {stateFilterType, setStateFilterType}
+    const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch}
     const selector = {setStatesMatchingSearch}
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
 
