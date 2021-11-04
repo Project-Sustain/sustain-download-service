@@ -73,8 +73,6 @@ const useStyles = makeStyles({
 export default function DatasetFiler(props: any) {
     const classes = useStyles();
 
-    // const relevantDatasets = props.data.stateDatasets; //FIXME old, was in call to lowercaseArray()
-
     function createPlaceholderText() {
         return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name} County`;
     }

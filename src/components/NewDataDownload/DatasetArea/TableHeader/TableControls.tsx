@@ -66,9 +66,9 @@ import {
     TableRow,
 } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
-import SwitchHeader from "./StateCountySwitch";
 import DatasetFilter from "./DatasetFilter";
 import CountyDropdown from "./CountyDropdown";
+import StateCountySwitch from "./StateCountySwitch";
 
 const useStyles = makeStyles({
     root: {
@@ -87,7 +87,7 @@ export default function DatasetTable(props: any) {
         <Grid item className={classes.header}>
             <Table>
                 <TableHead>
-                    <SwitchHeader  data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                    <StateCountySwitch filteredData={props.filteredData} data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
                     <TableRow>
                         <TableCell colSpan={2}>
                             <CountyDropdown data={props.data} dataManagement={props.dataManagement} scope={props.scope} />

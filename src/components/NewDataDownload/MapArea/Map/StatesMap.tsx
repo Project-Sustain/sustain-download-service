@@ -103,7 +103,7 @@ export default function StatesMap(props: any) {
     }
 
     useEffect(() => {
-        if(Object.keys(props.data.stateDatasets).length !== 0) {
+        if(Object.keys(props.data.stateData).length !== 0) {
             Draw("#statesvg", props.mapState, props.dataManagement);
         }
         d3.select(window.frameElement).style("height", "600px");

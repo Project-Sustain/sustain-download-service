@@ -1,5 +1,5 @@
 import {gisJoinCountyNames, gisJoinStateNames} from "./gisInfo";
-import {stateDatasetType, stateCountyDatasetMapType, countyObjType, stateType} from "./types";
+import {countyObjType, stateType} from "./types";
 
 export function getStateName(GISJOIN: String) {
     for(const gis of gisJoinStateNames) {

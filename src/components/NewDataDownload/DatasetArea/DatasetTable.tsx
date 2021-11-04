@@ -87,20 +87,21 @@ const useStyles = makeStyles({
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state" as string);
+    const [granularity, setGranularity] = useState("state");
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
-    const [filtering, setFiltering] = useState(false as boolean);
+    const [filtering, setFiltering] = useState(false);
 
     const scope = {granularity, setGranularity}
     const filter = {setFilteredDatasets, setFiltering}
     const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
-    // const datasets = filtering ? filteredDatasets : props.data.stateDatasets; //FIXME old
+
+    const filteredData = {filtering, filteredDatasets}
 
     if(datasets) {
         return (
             <Grid container direction="column" justifyContent="center" alignItems="stretch">
                 <Paper className={classes.paper}>
-                    <TableControls data={props.data} dataManagement={props.dataManagement} scope={scope} filter={filter} />
+                    <TableControls filteredData={filteredData} data={props.data} dataManagement={props.dataManagement} scope={scope} filter={filter} />
                     <Grid item>
                         <TableContainer className={classes.root}>
                             <Table>

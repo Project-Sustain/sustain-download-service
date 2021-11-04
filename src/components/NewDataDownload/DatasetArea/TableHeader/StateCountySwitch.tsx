@@ -65,7 +65,7 @@ import {
 } from '@material-ui/core';
 
 
-export default function DatasetTable(props: any) {
+export default function StateCountySwitch(props: any) {
 
     function handleChange() {
         const newGranularity = props.scope.granularity === "state" ? "county" : "state";
@@ -76,13 +76,18 @@ export default function DatasetTable(props: any) {
         return props.scope.granularity === "county";
     }
 
+    function getNumberOfDatasets() {
+        const releventDatasets = props.filteredData.filtering ? props.filteredData.filteredDatasets : props.data.currentState.datasets
+        return releventDatasets.length;
+    }
+
     return (
         <TableRow>
             <TableCell>
                 State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
             </TableCell>
             <TableCell align="left">
-                {props.data.stateDatasets.length} Datasets
+                {getNumberOfDatasets()} Datasets
             </TableCell>
         </TableRow>
     )
