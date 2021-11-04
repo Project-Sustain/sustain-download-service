@@ -93,11 +93,10 @@ const useStyles = makeStyles({
         margin: theme.spacing(1),
     },
     loading: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        minHeight: "90vh",
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
     },
     loadingItem: {
         margin: "10px",

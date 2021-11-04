@@ -58,11 +58,25 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
-import {Button, Grid, Modal, Paper, Typography} from "@material-ui/core";
+import {
+    Button,
+    Divider,
+    Grid,
+    IconButton,
+    Modal,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import {alertTimeout, serverNameToClientName} from "../Utils/utils";
 import ListItemButton from '@mui/material/ListItemButton';
+import CloseIcon from '@mui/icons-material/Close';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const useStyles = makeStyles({
     modal: {
@@ -71,9 +85,6 @@ const useStyles = makeStyles({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: "400px",
-        bgcolor: 'background.paper',
-        p: "4",
     },
     modalSection: {
         margin: theme.spacing(1),
@@ -93,7 +104,6 @@ export default function DownloadDatasetPopup(props: any) {
     function getLocation() {
         return props.granularity === "county" ? `${props.data.currentCounty.name}, ${props.data.currentState.name}` : props.data.currentState.name;
     }
-
 
     function handleDownload() {
         props.data.setAlertState({
@@ -115,25 +125,30 @@ export default function DownloadDatasetPopup(props: any) {
                 onClose={handleClose}
             >
                 <Paper elevation={3} className={classes.modal}>
-                    <Typography className={classes.modalSection} variant="h6" component="h2">
-                        {props.dataset}
-                    </Typography>
-                    <Typography className={classes.modalSection}>
-                        GISJOIN: {getGISJOIN()}
-                    </Typography>
-                    <Grid
-                        className={classes.modalSection}
-                        container
-                        direction="row"
-                        justifyContent="space-evenly"
-                        alignItems="center">
-                        <Grid item>
-                            <Button variant="outlined" color="primary" onClick={handleDownload}>Download this Dataset</Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="outlined" onClick={handleClose}>Close</Button>
-                        </Grid>
+
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Dataset</TableCell>
+                                <TableCell>Location</TableCell>
+                                <TableCell>GISJOIN</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>{serverNameToClientName(props.dataset)}</TableCell>
+                                <TableCell>{getLocation()}</TableCell>
+                                <TableCell>{getGISJOIN()}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+
+                    {/*FIXME Button spacing is weird for some reason*/}
+                    <Grid className={classes.modalSection} container direction="row" justifyContent="space-evenly" alignItems="center">
+                        <Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>
+                        <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>
                     </Grid>
+
                     </Paper>
             </Modal>
         </div>
