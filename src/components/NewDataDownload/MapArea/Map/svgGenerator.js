@@ -61,7 +61,7 @@ import * as d3 from 'd3';
 import "../../Utils/rawStyles.css";
 import {uStatePaths} from "../../Utils/StateInfo";
 
-export function Draw(id, mapState, dataManagement, data) {
+export function Draw(id, mapState, dataManagement) {
     const hoverClass = document.getElementById("hovered-state-id");
 
     function updateTooltip(left, top) {

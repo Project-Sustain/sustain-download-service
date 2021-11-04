@@ -88,7 +88,7 @@ export default function StatesMap(props: any) {
             if(props.mapState.statesMatchingSearch.length === nodeList.length) {
                 node.style.fill = unSelectedState;
             }
-            else if(props.mapState.statesMatchingSearch.length === 0 && props.data.selectedState === node["__data__"].stateName) {
+            else if(props.mapState.statesMatchingSearch.length === 0 && props.data.currentState.name === node["__data__"].stateName) {
                 node.style.fill = chosenState;
             }
             else {
@@ -103,8 +103,8 @@ export default function StatesMap(props: any) {
     }
 
     useEffect(() => {
-        if(Object.keys(props.data.stateToDatasets).length !== 0) {
-            Draw("#statesvg", props.mapState, props.dataManagement, props.data);
+        if(Object.keys(props.data.stateDatasets).length !== 0) {
+            Draw("#statesvg", props.mapState, props.dataManagement);
         }
         d3.select(window.frameElement).style("height", "600px");
     });
