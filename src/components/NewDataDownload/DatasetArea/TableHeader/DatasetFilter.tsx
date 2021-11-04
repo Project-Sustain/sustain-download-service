@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {capitalizeArray, clientNameToServerName, lowercaseArray} from "../../Utils/utils";
+import {clientNameToServerName, lowercaseArray} from "../../Utils/utils";
 import {TextField} from "@material-ui/core";
 import theme from "../../../../global/GlobalTheme";
 

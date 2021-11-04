@@ -70,7 +70,6 @@ import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./MapArea/Map/FauxTooltip";
 import DatasetTable from "./DatasetArea/DatasetTable";
 import CircularProgress from '@mui/material/CircularProgress';
-import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 
 const useStyles = makeStyles({
@@ -119,7 +118,8 @@ export default function Main() {
     useEffect(() => {
         // @ts-ignore
         setLoading(Object.keys(data.stateData).length === 0);
-    });
+        // @ts-ignore
+    }, [data.stateData]);
 
     function renderSelector() {
         if(stateFilterType === 0) {
