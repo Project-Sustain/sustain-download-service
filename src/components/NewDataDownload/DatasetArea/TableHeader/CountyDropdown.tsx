@@ -73,15 +73,11 @@ const useStyles = makeStyles({
 export default function CountyDropdown(props: any) {
     const classes = useStyles();
 
-    if(props.scope.granularity === "county") {
+    if(props.scope.granularity === "county" && props.data.currentState.counties.length !== 0) {
         let counties = [] as string[];
         props.data.currentState.counties.forEach((county: countyObjType) => {
             counties.push(county.name)
         })
-
-        function getCountyName() {
-            return props.data.currentCounty ? props.data.currentCounty.name : "No County Data";
-        }
 
         //FIXME if no county data, this bugs out
         return (

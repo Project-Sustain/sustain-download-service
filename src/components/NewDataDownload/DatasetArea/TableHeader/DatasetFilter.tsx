@@ -74,7 +74,12 @@ export default function DatasetFiler(props: any) {
     const classes = useStyles();
 
     function createPlaceholderText() {
-        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name} County`;
+        if(props.data.currentState.counties.length !== 0) {
+            return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name} County`;
+        }
+        else {
+            return "No County Data for " + props.data.currentState.name;
+        }
     }
 
     const handleChange = (event: any) => {

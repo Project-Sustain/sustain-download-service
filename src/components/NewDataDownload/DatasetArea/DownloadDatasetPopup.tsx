@@ -85,7 +85,9 @@ export default function DownloadDatasetPopup(props: any) {
     const handleClose = () => setOpen(false);
 
     function getGISJOIN() {
-        return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
+        if(props.data.currentState.counties.length !== 0) {
+            return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
+        }
     }
 
     return (
