@@ -58,7 +58,8 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React from "react";
-import {capitalizeArray, statesArray} from "../../Utils/StateInfo";
+import {capitalizeArray} from "../../Utils/utils";
+import {statesArray} from "../../Utils/StateInfo";
 import {TextField} from "@material-ui/core";
 
 export default function FilterByStateName(props: any) {

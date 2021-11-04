@@ -2,21 +2,20 @@ import {useEffect, useState} from "react";
 import {countyMap} from "./CountyMapping";
 import {mongoQuery} from "../../../library/Download";
 import {formatDatasetName, getStateName} from "./utils";
-
-interface stateDatasetType {
-    [name: string]: {
-        GISJOIN: string,
-        collections_supported: string[],
-        datasets: string[]
-    }
-}
+import {buildCountyMap} from "./utils";
+import {stateCountyDatasetMapType, stateDatasetType} from "./types";
 
 export function useStateSelection() {
+    const [stateData, setStateData] = useState({} as stateCountyDatasetMapType);
+    console.log({stateData});
+
+
     const [stateToDatasets, setStateToDatasets] = useState({} as stateDatasetType);
     const [selectedState, setSelectedState] = useState("" as string);
     const [counties, setCounties] = useState([] as string[]);
     const [selectedCounty, setSelectedCounty] = useState("" as string);
     const [stateDatasets, setStateDatasets] = useState([] as string[]);
+
 
     useEffect(() => {
         (async () => {
@@ -26,9 +25,14 @@ export function useStateSelection() {
                 masterMap[getStateName(key.gis_join)] = {
                     GISJOIN: key.gis_join,
                     collections_supported: key.collections_supported,
-                    datasets: formatDatasetName(key.collections_supported)
+                    datasets: formatDatasetName(key.collections_supported),
+                    counties: []
                 }
             }
+            console.log({masterMap})
+            // @ts-ignore FIXME remove after typing
+            setStateData(buildCountyMap(masterMap));
+
             setStateToDatasets(masterMap);
             setSelectedState("Colorado");
             setStateDatasets(masterMap["Colorado"].datasets);

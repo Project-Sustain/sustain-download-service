@@ -119,32 +119,4 @@ function buildStateArray() {
     return statesArray;
 }
 
-export function lowercaseArray(array) {
-    let lowercaseMatches = [];
-    for (let i = 0; i < array.length; i++) {
-        const words = array[i].split(" ");
-        for(let j = 0; j < words.length; j++) {
-            words[j] = words[j][0].toLowerCase() + words[j].substr(1);
-        }
-        lowercaseMatches.push(words.join(" "));
-    }
-    return lowercaseMatches;
-}
-
-export function capitalizeArray(matches) {
-    let capitalizedMatches = [];
-    for (let i = 0; i < matches.length; i++) {
-        const words = matches[i].split(" ");
-        for(let j = 0; j < words.length; j++) {
-            words[j] = words[j][0].toUpperCase() + words[j].substr(1);
-        }
-        capitalizedMatches.push(words.join(" "));
-    }
-    return capitalizedMatches;
-}
-
 export const statesArray = buildStateArray();
-
-export const unSelectedState = "#eee";
-export const selectedState = "#458AB9";
-export const chosenState = "#2DA661";
