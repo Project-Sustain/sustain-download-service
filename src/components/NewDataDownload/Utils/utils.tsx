@@ -115,7 +115,7 @@ export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string
             text: "",
             severity: ""
         });
-    }, 3000);
+    }, 4500);
 }
 
 export const unSelectedState = "#eee";

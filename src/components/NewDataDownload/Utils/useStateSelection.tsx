@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
-import {getStateName} from "./utils";
+import {alertTimeout, getStateName} from "./utils";
 import {buildCountyMap} from "./utils";
 import {countyObjType, individualStateType, stateType} from "./types";
 
@@ -44,7 +44,12 @@ export function useStateSelection() {
             setCurrentCounty(stateData[`${stateName}`].counties[0]);
         }
         else {
-            console.log("No server data for " + stateName)
+            setAlertState({
+                open: true,
+                text: "We are still working on server data for " + stateName + " State",
+                severity: "error"
+            });
+            alertTimeout(setAlertState);
         }
     }
 
