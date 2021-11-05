@@ -83,6 +83,7 @@ import {isLinked} from "../../../library/DatasetUtil";
 import ExploreOffIcon from "@material-ui/icons/ExploreOff";
 import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
+import Download from "../../../library/Download";
 
 const useStyles = makeStyles({
     modal: {
@@ -101,9 +102,6 @@ const useStyles = makeStyles({
     iconSpacing: {
         margin: "0px 5px"
     },
-    nsfPic: {
-        width: "3.5em",
-    },
     headerText: {
         fontSize: "1em"
     },
@@ -120,9 +118,31 @@ export default function DownloadDatasetPopup(props: any) {
         return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
     }
 
+    function formatDatasetForDownload() {
+        return {
+            collection: props.dataset,
+            color: {},
+            fieldMetadata: [],
+            label: serverNameToClientName(props.dataset),
+            level: props.granularity,
+            subGroup: ""
+        }
+    }
+
+    function formatRegionForDownload() {
+        return {
+            GISJOIN: getGISJOIN(),
+            name: getName(),
+        }
+    }
+
+    function getName() {
+        return props.granularity === "county" ? `${props.data.currentCounty.name}, ${props.data.currentState.name}` : `${props.data.currentState.name}`;
+    }
+
     function getTags() {
         let tags = []
-        //FIXME Don't think I have access to a .temporal field in the server data
+        //FIXME Needs server support for a .temporal, .level, .linked field
         if (props.dataset.temporal) {
             tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon />))
         }
@@ -152,13 +172,15 @@ export default function DownloadDatasetPopup(props: any) {
         return geospatialData ? "with" : "without";
     }
 
-    function handleDownload() {
+    async function handleDownload() {
         props.data.setAlertState({
             open: true,
             text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
             severity: "success"
         });
         alertTimeout(props.data.setAlertState);
+        // const downloadResult = await Download(formatDatasetForDownload(), formatRegionForDownload(), geospatialData);
+        // console.log({downloadResult})
         handleClose();
     }
 
@@ -203,6 +225,7 @@ export default function DownloadDatasetPopup(props: any) {
                             </TableRow>
                             <TableRow>
                                 <TableCell>
+                                    {/*<DownloadButton conductDownload={} selectedDataset={props.dataset} selectedRegion={formatRegionForDownload()} includeGeospatialData={geospatialData} />*/}
                                     <Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>
                                 </TableCell>
                                 <TableCell align="right">

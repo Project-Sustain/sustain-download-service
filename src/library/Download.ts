@@ -66,6 +66,7 @@ import region from "../types/region";
 const querier = sustain_querier();
 
 export default async function Download(currentDataset: any, regionSelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
+    console.log({currentDataset})
     const { GISJOIN, name } = regionSelected;
     console.log(regionSelected)
     let pipeline: any[] = [];
@@ -100,7 +101,7 @@ export default async function Download(currentDataset: any, regionSelected: regi
     const regionGeometry = await getRegionGeometry(GISJOIN)
     let collection: string = currentDataset.collection;
     if (isLinked(currentDataset)) {
-        collection = currentDataset.linked.collection;
+        // collection = currentDataset.linked.collection;
     }
     let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }])
     if (!isLinked(currentDataset)) {

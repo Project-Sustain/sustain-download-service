@@ -72,6 +72,8 @@ import DatasetTable from "./DatasetArea/DatasetTable";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
+import {CustomTooltip} from "../DownloadSetup";
+import nsfLogo from "../../images/nsfLogo.png";
 
 const useStyles = makeStyles({
     map: {
@@ -99,8 +101,17 @@ const useStyles = makeStyles({
         transform: 'translate(-50%, -50%)',
     },
     loadingItem: {
-        margin: "10px",
+        margin: theme.spacing(1),
+        fontSize: "2em",
     },
+    nsfPic: {
+        width: "5em",
+    },
+    nsfTooltip: {
+        position: "fixed",
+        bottom: "10px",
+        left: "10px",
+    }
 });
 
 export default function Main() {
@@ -111,9 +122,21 @@ export default function Main() {
     const [stateFilterType, setStateFilterType] = useState(0);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
-    const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch}
-    const selector = {setStatesMatchingSearch}
-    const mapState = {hoveredState, setHoveredState, statesMatchingSearch}
+    const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
+    const selector = {setStatesMatchingSearch};
+    const mapState = {hoveredState, setHoveredState, statesMatchingSearch};
+
+    const renderNSF = () => {
+        const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
+            "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
+            "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
+            "Baltimore County.";
+        return <>
+            <CustomTooltip title={nsfText} className={classes.nsfTooltip}>
+                <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
+            </CustomTooltip>
+        </>
+    }
 
     useEffect(() => {
         // @ts-ignore
@@ -133,36 +156,32 @@ export default function Main() {
     if(loading) {
         return (
             <Box className={classes.loading}>
-                <Grid container direction="column" justifyContent="center" alignItems="center">
-                    <Grid item className={classes.loadingItem}>
-                        <Typography className={classes.text}>Loading Data...</Typography>
-                    </Grid>
-                    <Grid item>
-                        <CircularProgress color="primary" />
-                    </Grid>
-                </Grid>
+                <Typography className={classes.loadingItem}>Loading Data...</Typography>
+                <CircularProgress color="primary" />
             </Box>
         )
     }
 
     else {
-        return (
-            <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-                <Grid item className={classes.map}>
-                    <Grid container direction="row" justifyContent="center" alignItems="center">
-                        <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-                        <Grid item><FilterType filter={filter}/></Grid>
-                        <Grid item>{renderSelector()}</Grid>
+        return (<>
+            {renderNSF()}
+                <Grid container direction="row" justifyContent="center" alignItems="flex-start">
+                    <Grid item className={classes.map}>
+                        <Grid container direction="row" justifyContent="center" alignItems="center">
+                            <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
+                            <Grid item><FilterType filter={filter}/></Grid>
+                            <Grid item>{renderSelector()}</Grid>
+                        </Grid>
+                        <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
+                        <FauxTooltip title={hoveredState}/>
+                        {/*@ts-ignore*/}
+                        <CustomAlert alertState={data.alertState} set={data.setAlertState} />
                     </Grid>
-                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
-                    <FauxTooltip title={hoveredState}/>
-                    {/*@ts-ignore*/}
-                    <CustomAlert alertState={data.alertState} set={data.setAlertState} />
+                    <Grid item className={classes.datasetSection}>
+                        <DatasetTable data={data} dataManagement={dataManagement}/>
+                    </Grid>
                 </Grid>
-                <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data} dataManagement={dataManagement}/>
-                </Grid>
-            </Grid>
+            </>
         )
     }
 }

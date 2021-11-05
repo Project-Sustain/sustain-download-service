@@ -96,7 +96,11 @@ export default function DownloadButton({ conductDownload, selectedDataset, selec
     const apiKey = getApiKey();
     const [timeLeft, setTimeLeft] = useState(-1);
 
-    return <Button variant="outlined" onClick={async () => {
+    console.log({conductDownload})
+    console.log({selectedDataset})
+    console.log({selectedRegion})
+
+    return <Button onClick={async () => {
         const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", selectedRegion.GISJOIN, selectedDataset);
         console.log({ downloadAbilityStatus })
         if (downloadAbilityStatus.canDownload) {
