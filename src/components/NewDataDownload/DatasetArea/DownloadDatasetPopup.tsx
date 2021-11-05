@@ -123,8 +123,7 @@ export default function DownloadDatasetPopup(props: any) {
             collection: props.dataset,
             color: {},
             fieldMetadata: [],
-            label: props.dataset,
-            // label: serverNameToClientName(props.dataset),
+            label: serverNameToClientName(props.dataset),
             level: props.granularity,
             subGroup: ""
         }
@@ -176,13 +175,12 @@ export default function DownloadDatasetPopup(props: any) {
     async function handleDownload() {
         props.data.setAlertState({
             open: true,
-            text: `Downloading '${props.dataset}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
-            // text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
+            text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
             severity: "success"
         });
         alertTimeout(props.data.setAlertState);
-        // const downloadResult = await Download(formatDatasetForDownload(), formatRegionForDownload(), geospatialData);
-        // console.log({downloadResult})
+        const downloadResult = await Download(props.dataset, formatRegionForDownload(), geospatialData);
+        console.log({downloadResult})
         handleClose();
     }
 
@@ -193,8 +191,7 @@ export default function DownloadDatasetPopup(props: any) {
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
-                {props.dataset}
-                {/*{serverNameToClientName(props.dataset)}*/}
+                {serverNameToClientName(props.currentState.datasets[props.index])}
             </ListItemButton>
             <Modal
                 open={open}
@@ -205,8 +202,7 @@ export default function DownloadDatasetPopup(props: any) {
                         <TableHead>
                             <TableRow>
                                 <TableCell className={classes.headerText}>
-                                    {props.dataset}
-                                    {/*{serverNameToClientName(props.dataset)}*/}
+                                    {serverNameToClientName(props.currentState.datasets[props.index])}
                                 </TableCell>
                                 <TableCell className={classes.headerText} align="right">
                                     {getLocation()}
