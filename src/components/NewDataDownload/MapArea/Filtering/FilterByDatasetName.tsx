@@ -72,7 +72,8 @@ export default function FilterByDatasetName(props: any) {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
                 // @ts-ignore
-                const datasets = data.collections_supported
+                const datasets = data.datasets;
+                // const datasets = data.collections_supported;
                 let lowercaseDatasets: any = [];
                 datasets.forEach((dataset: String) => {
                     lowercaseDatasets.push(dataset.toLowerCase());

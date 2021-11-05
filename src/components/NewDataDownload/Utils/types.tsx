@@ -7,7 +7,8 @@ export interface stateType {
     [name: string]: {
         name: string,
         GISJOIN: string,
-        collections_supported: string[],
+        collections_supported: any,
+        datasets: string[],
         counties: countyObjType[]
     }
 }
@@ -16,5 +17,6 @@ export interface individualStateType {
     name: string,
     GISJOIN: string,
     collections_supported: string[],
+    datasets: string[],
     counties: countyObjType[]
 }

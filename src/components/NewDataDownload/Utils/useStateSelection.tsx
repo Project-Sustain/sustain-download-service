@@ -23,31 +23,31 @@ export function useStateSelection() {
         return Object.keys(apertureData).length !== 0 && Object.keys(stateData).length !== 0;
     }
 
-    useEffect(() => {
-        if(dataHasLoaded()) {
-            let newMasterData = Object.assign({}, stateData);
-            for(const [key, value] of Object.entries(newMasterData)) {
-                // @ts-ignore
-                const serverCollections = value.collections_supported;
-                let newServerCollectionArray = [] as any;
-                // @ts-ignore
-                value.collections_supported = [];
-                serverCollections.forEach((serverCollection: any) => {
-                    apertureData.forEach((apertureCollection: any) => {
-                        if(serverCollection === apertureCollection.collection) {
-                            newServerCollectionArray.push(apertureCollection);
-                        }
-                    });
-                });
-                if(newServerCollectionArray.length !== 0) {
-                    // @ts-ignore
-                    value.collections_supported = newServerCollectionArray;
-                }
-
-            }
-            console.log({newMasterData})
-        }
-    })
+    // useEffect(() => {
+    //     if(dataHasLoaded()) {
+    //         let newMasterData = Object.assign({}, stateData);
+    //         for(const [key, value] of Object.entries(newMasterData)) {
+    //             // @ts-ignore
+    //             const serverCollections = value.collections_supported;
+    //             let newServerCollectionArray = [] as any;
+    //             // @ts-ignore
+    //             value.collections_supported = [];
+    //             serverCollections.forEach((serverCollection: any) => {
+    //                 apertureData.forEach((apertureCollection: any) => {
+    //                     if(serverCollection === apertureCollection.collection) {
+    //                         newServerCollectionArray.push(apertureCollection);
+    //                     }
+    //                 });
+    //             });
+    //             if(newServerCollectionArray.length !== 0) {
+    //                 // @ts-ignore
+    //                 value.collections_supported = newServerCollectionArray;
+    //             }
+    //
+    //         }
+    //         console.log({newMasterData})
+    //     }
+    // }, [stateData, apertureData])
 
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
@@ -67,6 +67,35 @@ export function useStateSelection() {
                     counties: []
                 }
             }
+
+
+
+            for(const [key, value] of Object.entries(masterMap)) {
+                let datasets = [] as string[];
+                // @ts-ignore
+                const serverCollections = value.collections_supported;
+                let newServerCollectionArray = [] as any;
+                // @ts-ignore
+                value.collections_supported = [];
+                serverCollections.forEach((serverCollection: any) => {
+                    apertureData.forEach((apertureCollection: any) => {
+                        if(serverCollection === apertureCollection.collection) {
+                            datasets.push(serverCollection);
+                            newServerCollectionArray.push(apertureCollection);
+                        }
+                    });
+                });
+                if(newServerCollectionArray.length !== 0) {
+                    // @ts-ignore
+                    value.collections_supported = newServerCollectionArray;
+                    // @ts-ignore
+                    value.datasets = datasets;
+                }
+
+            }
+
+
+
             setStateData(buildCountyMap(masterMap));
             setCurrentState(masterMap["Colorado"]);
             setCurrentCounty(masterMap["Colorado"].counties[0]);

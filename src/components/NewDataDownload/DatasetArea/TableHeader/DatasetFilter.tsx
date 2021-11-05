@@ -80,7 +80,8 @@ export default function DatasetFiler(props: any) {
     const handleChange = (event: any) => {
         const input = event.target.value;
         props.filter.setFiltering(input !== "");
-        const matches = lowercaseArray(props.data.currentState.collections_supported).filter((state: string) => state.includes(clientNameToServerName(input)));
+        const matches = lowercaseArray(props.data.currentState.datasets).filter((state: string) => state.includes(clientNameToServerName(input)));
+        // const matches = lowercaseArray(props.data.currentState.collections_supported).filter((state: string) => state.includes(clientNameToServerName(input)));
         props.filter.setFilteredDatasets(matches);
     };
 
