@@ -123,7 +123,8 @@ export default function DownloadDatasetPopup(props: any) {
             collection: props.dataset,
             color: {},
             fieldMetadata: [],
-            label: serverNameToClientName(props.dataset),
+            label: props.dataset,
+            // label: serverNameToClientName(props.dataset),
             level: props.granularity,
             subGroup: ""
         }
@@ -175,7 +176,8 @@ export default function DownloadDatasetPopup(props: any) {
     async function handleDownload() {
         props.data.setAlertState({
             open: true,
-            text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
+            text: `Downloading '${props.dataset}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
+            // text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
             severity: "success"
         });
         alertTimeout(props.data.setAlertState);
@@ -191,7 +193,8 @@ export default function DownloadDatasetPopup(props: any) {
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
-                {serverNameToClientName(props.dataset)}
+                {props.dataset}
+                {/*{serverNameToClientName(props.dataset)}*/}
             </ListItemButton>
             <Modal
                 open={open}
@@ -202,7 +205,8 @@ export default function DownloadDatasetPopup(props: any) {
                         <TableHead>
                             <TableRow>
                                 <TableCell className={classes.headerText}>
-                                    {serverNameToClientName(props.dataset)}
+                                    {props.dataset}
+                                    {/*{serverNameToClientName(props.dataset)}*/}
                                 </TableCell>
                                 <TableCell className={classes.headerText} align="right">
                                     {getLocation()}

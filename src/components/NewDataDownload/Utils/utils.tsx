@@ -20,8 +20,9 @@ export function formatDatasetName(datasets: string[]) {
     return newDatasets;
 }
 
-export function serverNameToClientName(dataset: string) {
-    let newDataset = dataset.replace(/_/g, " ");
+export function serverNameToClientName(dataset: any) {
+    const name = dataset.collection;
+    let newDataset = name.replace(/_/g, " ");
     return capitalizeFirstLetter(newDataset);
 }
 
@@ -89,9 +90,9 @@ function extractStateCountyName(nameAsArray: string[]) {
     return ["", ""];
 }
 
-export function buildCountyMap(serverResponse: stateType) {
+export function buildCountyMap(serverResponse: any) {
     let masterMap = {...serverResponse};
-    gisJoinCountyNames.forEach((county: countyObjType) => {
+    gisJoinCountyNames.forEach((county: any) => {
         const nameAsArray = county.name.split(" ");
         const names = extractStateCountyName(nameAsArray)
         const stateName = names[0];

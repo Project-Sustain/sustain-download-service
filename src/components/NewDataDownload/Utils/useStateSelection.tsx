@@ -5,10 +5,11 @@ import {buildCountyMap} from "./utils";
 import {countyObjType, individualStateType, stateType} from "./types";
 
 export function useStateSelection() {
-    const [stateData, setStateData] = useState({} as stateType);
-    const [currentState, setCurrentState] = useState({} as individualStateType);
-    const [currentCounty, setCurrentCounty] = useState({} as countyObjType);
+    const [stateData, setStateData] = useState({} as any);
+    const [currentState, setCurrentState] = useState({} as any);
+    const [currentCounty, setCurrentCounty] = useState({} as any);
     const [apertureData, setApertureData] = useState({} as any);
+    const [currentDatasets, setCurrentDatasets] = useState([] as any);
     const [alertState, setAlertState] = useState({
         open: false,
         text: "",
@@ -17,6 +18,36 @@ export function useStateSelection() {
 
     console.log({apertureData})
     console.log({stateData})
+
+    function dataHasLoaded() {
+        return Object.keys(apertureData).length !== 0 && Object.keys(stateData).length !== 0;
+    }
+
+    useEffect(() => {
+        if(dataHasLoaded()) {
+            let newMasterData = Object.assign({}, stateData);
+            for(const [key, value] of Object.entries(newMasterData)) {
+                // @ts-ignore
+                const serverCollections = value.collections_supported;
+                let newServerCollectionArray = [] as any;
+                // @ts-ignore
+                value.collections_supported = [];
+                serverCollections.forEach((serverCollection: any) => {
+                    apertureData.forEach((apertureCollection: any) => {
+                        if(serverCollection === apertureCollection.collection) {
+                            newServerCollectionArray.push(apertureCollection);
+                        }
+                    });
+                });
+                if(newServerCollectionArray.length !== 0) {
+                    // @ts-ignore
+                    value.collections_supported = newServerCollectionArray;
+                }
+
+            }
+            console.log({newMasterData})
+        }
+    })
 
     useEffect(() => {
         fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json())
@@ -27,7 +58,7 @@ export function useStateSelection() {
     useEffect(() => {
         (async () => {
             const serverResponse = await mongoQuery("state_gis_join_metadata", []);
-            let masterMap = {} as stateType;
+            let masterMap = {} as any;
             for(const key of serverResponse) {
                 masterMap[getStateName(key.gis_join)] = {
                     name: getStateName(key.gis_join),
@@ -64,7 +95,7 @@ export function useStateSelection() {
     }
 
     function handleCountyCounty(countyName: any) {
-        currentState.counties.forEach((county) => {
+        currentState.counties.forEach((county: any) => {
             if (county.name === countyName) {
                 setCurrentCounty(county);
             }
