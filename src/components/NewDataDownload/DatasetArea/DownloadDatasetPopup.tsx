@@ -58,13 +58,31 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
-import {Button, Grid, Modal, Paper, Table, TableBody, TableCell, TableHead, TableRow,} from "@material-ui/core";
+import {
+    Button,
+    Modal,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Checkbox,
+    FormGroup,
+    Tooltip, Typography
+} from "@material-ui/core";
+import FormControlLabel from '@mui/material/FormControlLabel';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import {alertTimeout, serverNameToClientName} from "../Utils/utils";
 import ListItemButton from '@mui/material/ListItemButton';
 import CloseIcon from '@mui/icons-material/Close';
 import DownloadIcon from '@mui/icons-material/Download';
+import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
+import {isLinked} from "../../../library/DatasetUtil";
+import ExploreOffIcon from "@material-ui/icons/ExploreOff";
+import ExploreIcon from "@material-ui/icons/Explore";
+import LinkIcon from "@material-ui/icons/Link";
 
 const useStyles = makeStyles({
     modal: {
@@ -76,12 +94,25 @@ const useStyles = makeStyles({
     },
     modalSection: {
         margin: theme.spacing(1),
-    }
+    },
+    tagsContainer: {
+        margin: "10px"
+    },
+    iconSpacing: {
+        margin: "0px 5px"
+    },
+    nsfPic: {
+        width: "3.5em",
+    },
+    headerText: {
+        fontSize: "1em"
+    },
 });
 
 export default function DownloadDatasetPopup(props: any) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [geospatialData, setGeospatialData] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -89,18 +120,50 @@ export default function DownloadDatasetPopup(props: any) {
         return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
     }
 
+    function getTags() {
+        let tags = []
+        //FIXME Don't think I have access to a .temporal field in the server data
+        if (props.dataset.temporal) {
+            tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon />))
+        }
+        if (isLinked(props.dataset)) {
+            tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
+        }
+        else {
+            tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
+        }
+        if (isLinked(props.dataset) && geospatialData) {
+            tags.push(makeTag("A separate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
+        }
+        return tags;
+    }
+
+    function makeTag(tooltipContent: string, icon: JSX.Element) {
+        return <Tooltip className={classes.iconSpacing} title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
+            {icon}
+        </Tooltip>
+    }
+
     function getLocation() {
         return props.granularity === "county" ? `${props.data.currentCounty.name}, ${props.data.currentState.name}` : props.data.currentState.name;
+    }
+
+    function addGeospatialText() {
+        return geospatialData ? "with" : "without";
     }
 
     function handleDownload() {
         props.data.setAlertState({
             open: true,
-            text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()}`,
+            text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
             severity: "success"
         });
         alertTimeout(props.data.setAlertState);
         handleClose();
+    }
+
+    function handleCheck() {
+        setGeospatialData(!geospatialData);
     }
 
     return (
@@ -113,31 +176,42 @@ export default function DownloadDatasetPopup(props: any) {
                 onClose={handleClose}
             >
                 <Paper elevation={3} className={classes.modal}>
-
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Dataset</TableCell>
-                                <TableCell>Location</TableCell>
-                                <TableCell>GISJOIN</TableCell>
+                                <TableCell className={classes.headerText}>
+                                    {serverNameToClientName(props.dataset)}
+                                </TableCell>
+                                <TableCell className={classes.headerText} align="right">
+                                    {getLocation()}
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell>{serverNameToClientName(props.dataset)}</TableCell>
-                                <TableCell>{getLocation()}</TableCell>
-                                <TableCell>{getGISJOIN()}</TableCell>
+                                <TableCell>
+                                    <FormGroup>
+                                        <FormControlLabel
+                                            control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck} />}
+                                            label="Include Geospatial Data"
+                                        />
+                                    </FormGroup>
+                                </TableCell>
+                                <TableCell align="right">
+                                    {getTags()}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    <Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
-
-                    {/*FIXME Button spacing is weird for some reason*/}
-                    <Grid className={classes.modalSection} container direction="row" justifyContent="space-evenly" alignItems="center">
-                        <Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>
-                        <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>
-                    </Grid>
-
-                    </Paper>
+                </Paper>
             </Modal>
         </div>
     );
