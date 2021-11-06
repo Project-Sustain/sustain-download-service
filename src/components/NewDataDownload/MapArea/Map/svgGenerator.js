@@ -82,6 +82,7 @@ export function Draw(id, mapState, dataManagement) {
 
     const click = (event) => {
         const stateName = event.target.attributes.stateName.nodeValue;
+        mapState.setStatesMatchingSearch([]);
         dataManagement.handleStateChange(stateName);
     }
 

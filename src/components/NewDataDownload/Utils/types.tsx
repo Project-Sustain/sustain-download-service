@@ -1,22 +1,24 @@
-export interface countyObjType {
+export interface countyType {
     GISJOIN: string,
     name: string
 }
 
-export interface stateType {
-    [name: string]: {
-        name: string,
-        GISJOIN: string,
-        collections_supported: any,
-        datasets: string[],
-        counties: countyObjType[]
-    }
+export interface dataEntryType {
+    [name: string]: stateType
 }
 
-export interface individualStateType {
+export interface collection {
+    collection: string,
+    color: any,
+    fieldMetadata: any[],
+    label: string,
+    level: string
+}
+
+export interface stateType {
     name: string,
     GISJOIN: string,
-    collections_supported: string[],
+    collections_supported: collection[],
     datasets: string[],
-    counties: countyObjType[]
+    counties: countyType[]
 }

@@ -169,7 +169,8 @@ export default function DownloadDatasetPopup(props: any) {
             severity: "success"
         });
         alertTimeout(props.data.setAlertState);
-        const downloadResult = await Download(props.dataset, formatRegionForDownload(), geospatialData);
+        const datasetToDownload = props.data.currentState.collections_supported[props.index];
+        const downloadResult = await Download(datasetToDownload, formatRegionForDownload(), geospatialData);
         console.log({downloadResult})
         handleClose();
     }

@@ -2,31 +2,17 @@ import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
 import {alertTimeout, serverNameToClientName, getStateName} from "./utils";
 import {buildCountyMap} from "./utils";
-import {countyObjType, individualStateType, stateType} from "./types";
+import {countyType, stateType, dataEntryType} from "./types";
 
 export function useStateSelection() {
-    const [stateData, setStateData] = useState({} as any);
-    const [currentState, setCurrentState] = useState({} as any);
-    const [currentCounty, setCurrentCounty] = useState({} as any);
+    const [stateData, setStateData] = useState({} as dataEntryType);
+    const [currentState, setCurrentState] = useState({} as stateType);
+    const [currentCounty, setCurrentCounty] = useState({} as countyType);
     const [alertState, setAlertState] = useState({
         open: false,
         text: "",
         severity: ""
     });
-
-    function buildStateCollections(mongoCollections: any, apertureData: any) {
-        let collections = [] as any;
-        let datasets = [] as string[];
-        mongoCollections.forEach((mongoCollection: string) => {
-            apertureData.forEach((apertureCollection: any) => {
-                if(mongoCollection === apertureCollection.collection) {
-                    collections.push(apertureCollection);
-                    datasets.push(serverNameToClientName(mongoCollection));
-                }
-            });
-        });
-        return [collections, datasets];
-    }
 
     useEffect(() => {
         (async () => {
@@ -57,13 +43,27 @@ export function useStateSelection() {
         })()
     }, []);
 
+    function buildStateCollections(mongoCollections: any, apertureData: any) {
+        let collections = [] as any;
+        let datasets = [] as string[];
+        mongoCollections.forEach((mongoCollection: string) => {
+            apertureData.forEach((apertureCollection: any) => {
+                if(mongoCollection === apertureCollection.collection) {
+                    collections.push(apertureCollection);
+                    datasets.push(serverNameToClientName(mongoCollection));
+                }
+            });
+        });
+        return [collections, datasets];
+    }
+
     const data = {stateData, currentState, currentCounty, alertState, setAlertState};
     const dataManagement = {
         handleStateChange: (stateName: any) => handleStateChange(stateName),
         handleCountyCounty: (countyName: any) => handleCountyCounty(countyName)
     };
 
-    function handleStateChange(stateName: any) {
+    function handleStateChange(stateName: string) {
         if(stateData[`${stateName}`]) {
             setCurrentState(stateData[`${stateName}`]);
             setCurrentCounty(stateData[`${stateName}`].counties[0]);
@@ -78,8 +78,8 @@ export function useStateSelection() {
         }
     }
 
-    function handleCountyCounty(countyName: any) {
-        currentState.counties.forEach((county: any) => {
+    function handleCountyCounty(countyName: string) {
+        currentState.counties.forEach((county: countyType) => {
             if (county.name === countyName) {
                 setCurrentCounty(county);
             }

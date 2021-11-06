@@ -124,7 +124,7 @@ export default function Main() {
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const selector = {setStatesMatchingSearch};
-    const mapState = {hoveredState, setHoveredState, statesMatchingSearch};
+    const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
     const renderNSF = () => {
         const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
@@ -140,9 +140,9 @@ export default function Main() {
 
     useEffect(() => {
         // @ts-ignore
-        setLoading(Object.keys(data.stateData).length === 0 && Object.keys(data.currentState) === 0);
+        setLoading(Object.keys(data.stateData).length === 0);
         // @ts-ignore
-    }, [data.stateData, data.currentState]);
+    }, [data.stateData]);
 
     function renderSelector() {
         if(stateFilterType === 0) {
