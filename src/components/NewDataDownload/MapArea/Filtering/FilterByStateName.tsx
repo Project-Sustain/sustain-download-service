@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {capitalizeArray} from "../../Utils/utils";
-import {statesArray} from "../../Utils/StateInfo";
+import {statesArray} from "../../../../library/StateInfo";
 import {TextField} from "@material-ui/core";
 
 export default function FilterByStateName(props: any) {

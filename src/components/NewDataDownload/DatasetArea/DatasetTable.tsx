@@ -70,8 +70,8 @@ import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
-    root: {
-        maxHeight: "55vh",
+    list: {
+        maxHeight: "60vh",
         overflow: "auto"
     },
     paper: {
@@ -85,13 +85,11 @@ const useStyles = makeStyles({
 export default function DatasetTable(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
-    // const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported);
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
     const [filtering, setFiltering] = useState(false);
 
     const scope = {granularity, setGranularity};
     const filter = {setFilteredDatasets, setFiltering};
-    // const datasets = filtering ? filteredDatasets : props.data.currentState.collections_supported;
     const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
     const filteredData = {filtering, filteredDatasets};
 
@@ -101,7 +99,7 @@ export default function DatasetTable(props: any) {
                 <Paper className={classes.paper}>
                     <TableControls filteredData={filteredData} data={props.data} dataManagement={props.dataManagement} scope={scope} filter={filter} />
                     <Grid item>
-                        <List className={classes.root}>
+                        <List className={classes.list}>
                             {renderDatasetRows()}
                         </List>
                     </Grid>

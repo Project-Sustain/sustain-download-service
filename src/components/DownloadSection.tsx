@@ -108,6 +108,7 @@ export default React.memo(function DownloadSection() {
         setDownloadState("downloading")
         try {
             const d = await Download(selectedDataset, selectedRegion, includeGeospatialData);
+            console.log({d})
             if (d.data.length) {
                 setDownloadState("doneSuccess")
                 setDownloadResult(d);

@@ -67,7 +67,7 @@ import FilterByDatasetName from "./MapArea/Filtering/FilterByDatasetName";
 import {Grid, Typography} from "@material-ui/core";
 import FilterType from "./MapArea/Filtering/FilterType";
 import StatesMap from "./MapArea/Map/StatesMap";
-import FauxTooltip from "./MapArea/Map/FauxTooltip";
+import FauxTooltip from "./Utils/FauxTooltip";
 import DatasetTable from "./DatasetArea/DatasetTable";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';

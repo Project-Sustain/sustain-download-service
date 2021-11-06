@@ -74,7 +74,7 @@ import {
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import {alertTimeout} from "../Utils/utils";
+import {alertTimeout, exportAndDownloadData} from "../Utils/utils";
 import ListItemButton from '@mui/material/ListItemButton';
 import CloseIcon from '@mui/icons-material/Close';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -171,7 +171,7 @@ export default function DownloadDatasetPopup(props: any) {
         alertTimeout(props.data.setAlertState);
         const datasetToDownload = props.data.currentState.collections_supported[props.index];
         const downloadResult = await Download(datasetToDownload, formatRegionForDownload(), geospatialData);
-        console.log({downloadResult})
+        exportAndDownloadData(downloadResult);
         handleClose();
     }
 
