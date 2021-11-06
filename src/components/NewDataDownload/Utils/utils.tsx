@@ -26,11 +26,6 @@ export function serverNameToClientName(dataset: any) {
     return capitalizeFirstLetter(newDataset);
 }
 
-export function clientNameToServerName(clientName: string) {
-    let serverName = clientName.replace(/ /g, "_");
-    return serverName.toLowerCase();
-}
-
 export function capitalizeFirstLetter(str: any) {
     if (str === null || str.length === 0) {
         return "";

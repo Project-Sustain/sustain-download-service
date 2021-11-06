@@ -116,7 +116,7 @@ export default function DatasetTable(props: any) {
         return datasets.map((dataset: any, index: any) => {
             return (
                 <ListItem key={index}>
-                    <DownloadDatasetPopup index={index} granularity={granularity} dataset={dataset} data={props.data} />
+                    <DownloadDatasetPopup index={index} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />
                 </ListItem>
             )
         })

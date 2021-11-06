@@ -164,12 +164,12 @@ export default function DownloadDatasetPopup(props: any) {
     }
 
     async function handleDownload() {
-        props.data.setAlertState({
+        props.alert.setAlertState({
             open: true,
             text: `Downloading '${readableDatasetName}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
             severity: "success"
         });
-        alertTimeout(props.data.setAlertState);
+        alertTimeout(props.alert.setAlertState);
         const downloadResult = await Download(downloadableObject, formatRegionForDownload(), geospatialData);
         exportAndDownloadData(downloadResult);
         handleClose();

@@ -57,11 +57,12 @@ export function useStateSelection() {
         return [collections, datasets];
     }
 
-    const data = {stateData, currentState, currentCounty, alertState, setAlertState};
+    const data = {stateData, currentState, currentCounty};
     const dataManagement = {
         handleStateChange: (stateName: any) => handleStateChange(stateName),
         handleCountyCounty: (countyName: any) => handleCountyCounty(countyName)
     };
+    const alert = {alertState, setAlertState};
 
     function handleStateChange(stateName: string) {
         if(stateData[`${stateName}`]) {
@@ -86,5 +87,5 @@ export function useStateSelection() {
         })
     }
 
-    return [data, dataManagement];
+    return [data, dataManagement, alert];
 }
