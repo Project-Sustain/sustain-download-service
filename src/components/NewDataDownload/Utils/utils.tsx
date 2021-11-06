@@ -97,11 +97,9 @@ export function buildCountyMap(serverResponse: any) {
         const names = extractStateCountyName(nameAsArray)
         const stateName = names[0];
         if(Object.keys(masterMap).includes(stateName)) {
-            const countyName = names[1];
-            const GISJOIN = county.GISJOIN;
             let countyObj = {
-                GISJOIN: GISJOIN,
-                name: countyName
+                GISJOIN: county.GISJOIN,
+                name: names[1]
             };
             masterMap[stateName].counties.push(countyObj);
         }
