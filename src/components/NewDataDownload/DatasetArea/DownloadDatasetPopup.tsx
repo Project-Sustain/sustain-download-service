@@ -114,7 +114,8 @@ export default function DownloadDatasetPopup(props: any) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const readableDatasetName = props.data.currentState.datasets[props.index];
+    const readableDatasetName = props.dataset;
+    const downloadableObject = props.data.currentState.collections_supported[props.index];
 
     function getGISJOIN() {
         return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
@@ -133,16 +134,16 @@ export default function DownloadDatasetPopup(props: any) {
 
     function getTags() {
         let tags = []
-        if (props.dataset.temporal) {
+        if (downloadableObject.temporal) {
             tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon />))
         }
-        if (isLinked(props.dataset)) {
+        if (isLinked(downloadableObject)) {
             tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
         }
         else {
             tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
         }
-        if (isLinked(props.dataset) && geospatialData) {
+        if (isLinked(downloadableObject) && geospatialData) {
             tags.push(makeTag("A separate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
         }
         return tags;
@@ -169,8 +170,7 @@ export default function DownloadDatasetPopup(props: any) {
             severity: "success"
         });
         alertTimeout(props.data.setAlertState);
-        const datasetToDownload = props.data.currentState.collections_supported[props.index];
-        const downloadResult = await Download(datasetToDownload, formatRegionForDownload(), geospatialData);
+        const downloadResult = await Download(downloadableObject, formatRegionForDownload(), geospatialData);
         exportAndDownloadData(downloadResult);
         handleClose();
     }
@@ -191,41 +191,24 @@ export default function DownloadDatasetPopup(props: any) {
                 <Paper elevation={3} className={classes.modal}>
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCell className={classes.headerText}>
-                                    {readableDatasetName}
-                                </TableCell>
-                                <TableCell className={classes.headerText} align="right">
-                                    {getLocation()}
-                                </TableCell>
-                            </TableRow>
+                            {generateTableRow(readableDatasetName, getLocation(), true)}
                         </TableHead>
                         <TableBody>
-                            <TableRow>
-                                <TableCell>
-                                    <FormGroup>
-                                        <FormControlLabel
-                                            control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck} />}
-                                            label="Include Geospatial Data"
-                                        />
-                                    </FormGroup>
-                                </TableCell>
-                                <TableCell align="right">
-                                    {getTags()}
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>
-                                    <Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>
-                                </TableCell>
-                            </TableRow>
+                            {generateTableRow(<FormGroup><FormControlLabel control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck} />} label="Include Geospatial Data"/></FormGroup>, getTags())}
+                            {generateTableRow(<Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>, <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>)}
                         </TableBody>
                     </Table>
                 </Paper>
             </Modal>
         </div>
     );
+
+    function generateTableRow(cell1: any, cell2: any, header: any = false) {
+        return (
+            <TableRow>
+                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell1}</TableCell>
+                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell2}</TableCell>
+            </TableRow>
+        )
+    }
 }
