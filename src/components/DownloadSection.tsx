@@ -60,16 +60,10 @@ END OF TERMS AND CONDITIONS
 
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper, TextField, Typography, Tooltip, Button, Switch } from '@material-ui/core';
+import { Typography, Tooltip, Button } from '@material-ui/core';
 import counties from '../json/counties.json'
 import states from '../json/states.json'
 import { useEffect } from "react";
-import Util from '../library/apertureUtil'
-import ExploreOffIcon from '@material-ui/icons/ExploreOff';
-import ExploreIcon from '@material-ui/icons/Explore';
-import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import LinkIcon from '@material-ui/icons/Link';
-import { isLinked } from "../library/DatasetUtil";
 import Download from "../library/Download";
 import DownloadSetup from "./DownloadSetup"
 import DownloadLoading from "./DownloadLoading"

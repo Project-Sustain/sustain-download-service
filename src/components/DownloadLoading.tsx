@@ -58,11 +58,11 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgress, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     progress: {
         height: "75px !important",
         width: "75px !important"

@@ -1,5 +1,5 @@
 import {gisJoinCountyNames, gisJoinStateNames} from "../../../library/gisInfo";
-import {countyType, dataEntryType} from "./types";
+import {countyType} from "./types";
 import JSZip from "jszip";
 
 export function getStateName(GISJOIN: String) {

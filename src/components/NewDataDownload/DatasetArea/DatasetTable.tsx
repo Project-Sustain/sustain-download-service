@@ -113,7 +113,7 @@ export default function DatasetTable(props: any) {
     }
 
     function renderDatasetRows() {
-        return datasets.map((dataset: any, index: any) => {
+        return datasets.map((dataset: string, index: number) => {
             return (
                 <ListItem key={index}>
                     <DownloadDatasetPopup index={index} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />

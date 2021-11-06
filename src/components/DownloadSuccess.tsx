@@ -58,9 +58,9 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Typography, IconButton, Tooltip } from '@material-ui/core';
+import { Typography, IconButton, Tooltip } from '@material-ui/core';
 import DownloadResult from "../types/DownloadResult";
 import GetAppIcon from '@material-ui/icons/GetApp';
 import JSZip from "jszip";

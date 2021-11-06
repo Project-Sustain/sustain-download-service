@@ -60,27 +60,8 @@ END OF TERMS AND CONDITIONS
 
 import React, { useState, useEffect } from "react";
 import {
-    Container,
-    Grid,
-    Paper,
-    TextField,
     Typography,
-    Tooltip,
-    Button,
-    Switch,
-    Divider,
-    Checkbox
 } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
-import Util from '../library/apertureUtil'
-import ExploreOffIcon from '@material-ui/icons/ExploreOff';
-import ExploreIcon from '@material-ui/icons/Explore';
-import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import LinkIcon from '@material-ui/icons/Link';
-import { isLinked } from "../library/DatasetUtil";
-import { makeStyles } from '@material-ui/core/styles';
-import region from "../types/region"
-import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
 
 
 interface downloadButtonTextProps {
