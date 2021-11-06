@@ -140,9 +140,9 @@ export default function Main() {
 
     useEffect(() => {
         // @ts-ignore
-        setLoading(Object.keys(data.stateData).length === 0);
+        setLoading(Object.keys(data.stateData).length === 0 && Object.keys(data.currentState) === 0);
         // @ts-ignore
-    }, [data.stateData]);
+    }, [data.stateData, data.currentState]);
 
     function renderSelector() {
         if(stateFilterType === 0) {

@@ -21,8 +21,7 @@ export function formatDatasetName(datasets: string[]) {
 }
 
 export function serverNameToClientName(dataset: any) {
-    const name = dataset.collection;
-    let newDataset = name.replace(/_/g, " ");
+    let newDataset = dataset.replace(/_/g, " ");
     return capitalizeFirstLetter(newDataset);
 }
 

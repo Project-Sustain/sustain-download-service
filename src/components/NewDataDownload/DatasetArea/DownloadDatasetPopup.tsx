@@ -114,7 +114,7 @@ export default function DownloadDatasetPopup(props: any) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const readableDatasetName = props.currentState.datasets[props.index];
+    const readableDatasetName = props.data.currentState.datasets[props.index];
 
     function getGISJOIN() {
         return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
@@ -133,7 +133,6 @@ export default function DownloadDatasetPopup(props: any) {
 
     function getTags() {
         let tags = []
-        //FIXME Needs server support for a .temporal, .level, .linked field
         if (props.dataset.temporal) {
             tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon />))
         }
@@ -182,7 +181,7 @@ export default function DownloadDatasetPopup(props: any) {
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
-                {props.currentState.datasets[props.index]}
+                {readableDatasetName}
             </ListItemButton>
             <Modal
                 open={open}
