@@ -81,9 +81,10 @@ export function useStateSelection() {
                     }
                 }
 
-                setStateData(buildCountyMap(masterMap));
-                setCurrentState(masterMap["Colorado"]);
-                setCurrentCounty(masterMap["Colorado"].counties[0]);
+                const finalMapping = buildCountyMap(masterMap);
+                setStateData(finalMapping);
+                setCurrentState(finalMapping["Colorado"]);
+                setCurrentCounty(finalMapping["Colorado"].counties[0]);
             }
 
             else {
