@@ -74,7 +74,7 @@ import {
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import {alertTimeout, serverNameToClientName} from "../Utils/utils";
+import {alertTimeout} from "../Utils/utils";
 import ListItemButton from '@mui/material/ListItemButton';
 import CloseIcon from '@mui/icons-material/Close';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -114,19 +114,10 @@ export default function DownloadDatasetPopup(props: any) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const readableDatasetName = props.currentState.datasets[props.index];
+
     function getGISJOIN() {
         return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
-    }
-
-    function formatDatasetForDownload() {
-        return {
-            collection: props.dataset,
-            color: {},
-            fieldMetadata: [],
-            label: serverNameToClientName(props.dataset),
-            level: props.granularity,
-            subGroup: ""
-        }
     }
 
     function formatRegionForDownload() {
@@ -175,7 +166,7 @@ export default function DownloadDatasetPopup(props: any) {
     async function handleDownload() {
         props.data.setAlertState({
             open: true,
-            text: `Downloading '${serverNameToClientName(props.dataset)}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
+            text: `Downloading '${readableDatasetName}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
             severity: "success"
         });
         alertTimeout(props.data.setAlertState);
@@ -191,7 +182,7 @@ export default function DownloadDatasetPopup(props: any) {
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
-                {serverNameToClientName(props.currentState.datasets[props.index])}
+                {props.currentState.datasets[props.index]}
             </ListItemButton>
             <Modal
                 open={open}
@@ -202,7 +193,7 @@ export default function DownloadDatasetPopup(props: any) {
                         <TableHead>
                             <TableRow>
                                 <TableCell className={classes.headerText}>
-                                    {serverNameToClientName(props.currentState.datasets[props.index])}
+                                    {readableDatasetName}
                                 </TableCell>
                                 <TableCell className={classes.headerText} align="right">
                                     {getLocation()}
@@ -225,7 +216,6 @@ export default function DownloadDatasetPopup(props: any) {
                             </TableRow>
                             <TableRow>
                                 <TableCell>
-                                    {/*<DownloadButton conductDownload={} selectedDataset={props.dataset} selectedRegion={formatRegionForDownload()} includeGeospatialData={geospatialData} />*/}
                                     <Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>
                                 </TableCell>
                                 <TableCell align="right">

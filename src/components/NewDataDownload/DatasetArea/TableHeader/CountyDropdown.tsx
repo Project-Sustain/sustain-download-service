@@ -79,7 +79,6 @@ export default function CountyDropdown(props: any) {
             counties.push(county.name)
         })
 
-        //FIXME if no county data, this bugs out
         return (
             <Autocomplete
                 className={classes.root}
