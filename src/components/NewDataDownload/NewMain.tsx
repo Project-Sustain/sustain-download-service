@@ -126,6 +126,12 @@ export default function Main() {
     const selector = {setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
+    useEffect(() => {
+        // @ts-ignore
+        setLoading(Object.keys(data.stateData).length === 0);
+        // @ts-ignore
+    }, [data.stateData]);
+
     const renderNSF = () => {
         const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
             "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
@@ -137,12 +143,6 @@ export default function Main() {
             </CustomTooltip>
         </>
     }
-
-    useEffect(() => {
-        // @ts-ignore
-        setLoading(Object.keys(data.stateData).length === 0);
-        // @ts-ignore
-    }, [data.stateData]);
 
     function renderSelector() {
         if(stateFilterType === 0) {
@@ -163,8 +163,9 @@ export default function Main() {
     }
 
     else {
-        return (<>
-            {renderNSF()}
+        return (
+            <>
+                {renderNSF()}
                 <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                     <Grid item className={classes.map}>
                         <Grid container direction="row" justifyContent="center" alignItems="center">
