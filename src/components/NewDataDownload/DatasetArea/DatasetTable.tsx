@@ -114,9 +114,10 @@ export default function DatasetTable(props: any) {
 
     function renderDatasetRows() {
         return datasets.map((dataset: string, index: number) => {
+            const collection = props.data.currentState.collections_supported[index];
             return (
                 <ListItem key={index}>
-                    <DownloadDatasetPopup index={index} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />
+                    <DownloadDatasetPopup collection={collection} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />
                 </ListItem>
             )
         })
