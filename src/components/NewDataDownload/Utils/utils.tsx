@@ -112,6 +112,20 @@ export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string
     }, 4500);
 }
 
+export function buildStateCollections(mongoCollections: any, apertureData: any) {
+    let collections = [] as any;
+    let datasets = [] as string[];
+    mongoCollections.forEach((mongoCollection: string) => {
+        apertureData.forEach((apertureCollection: any) => {
+            if(mongoCollection === apertureCollection.collection) {
+                collections.push(apertureCollection);
+                datasets.push(serverNameToClientName(mongoCollection));
+            }
+        });
+    });
+    return [collections, datasets];
+}
+
 export const exportAndDownloadData = (downloadResult: any) => {
     var zip = new JSZip();
     zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
-import {alertTimeout, serverNameToClientName, getStateName} from "./utils";
+import {alertTimeout, buildStateCollections, getStateName} from "./utils";
 import {buildCountyMap} from "./utils";
 import {countyType, stateType, dataEntryType} from "./types";
 
@@ -42,20 +42,6 @@ export function useStateSelection() {
             }
         })()
     }, []);
-
-    function buildStateCollections(mongoCollections: any, apertureData: any) {
-        let collections = [] as any;
-        let datasets = [] as string[];
-        mongoCollections.forEach((mongoCollection: string) => {
-            apertureData.forEach((apertureCollection: any) => {
-                if(mongoCollection === apertureCollection.collection) {
-                    collections.push(apertureCollection);
-                    datasets.push(serverNameToClientName(mongoCollection));
-                }
-            });
-        });
-        return [collections, datasets];
-    }
 
     const data = {stateData, currentState, currentCounty};
     const dataManagement = {
