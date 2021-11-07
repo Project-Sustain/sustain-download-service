@@ -102,6 +102,20 @@ export function buildCountyMap(serverResponse: any) {
     return masterMap;
 }
 
+export function buildStateCollections(mongoCollections: string[], apertureData: any) {
+    let collections = [] as any;
+    let datasets = [] as string[];
+    mongoCollections.forEach((mongoCollection: string) => {
+        apertureData.forEach((apertureCollection: any) => {
+            if(mongoCollection === apertureCollection.collection) {
+                collections.push(apertureCollection);
+                datasets.push(serverNameToClientName(mongoCollection));
+            }
+        });
+    });
+    return [collections, datasets];
+}
+
 export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string; severity: string; }) => void) {
     setTimeout(function() {
         setAlertState({

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
-import {alertTimeout, serverNameToClientName, getStateName} from "./utils";
+import {alertTimeout, buildStateCollections, getStateName} from "./utils";
 import {buildCountyMap} from "./utils";
 import {countyType, stateType, dataEntryType} from "./types";
 
@@ -20,8 +20,8 @@ export function useStateSelection() {
             const mongoData = await mongoQuery("state_gis_join_metadata", []);
 
             if(apertureData && mongoData) {
-                let masterMap = {} as any;
-                for (const key of mongoData) {
+                let masterMap = {} as dataEntryType;
+                for(const key of mongoData) {
                     const collectionsAndDatasets = buildStateCollections(key.collections_supported, apertureData);
                     masterMap[getStateName(key.gis_join)] = {
                         name: getStateName(key.gis_join),
@@ -38,24 +38,11 @@ export function useStateSelection() {
             }
 
             else {
-                console.log("API call failure, data unavailable")
+                console.log("mongoDB unavailable")
             }
-        })()
-    }, []);
 
-    function buildStateCollections(mongoCollections: any, apertureData: any) {
-        let collections = [] as any;
-        let datasets = [] as string[];
-        mongoCollections.forEach((mongoCollection: string) => {
-            apertureData.forEach((apertureCollection: any) => {
-                if(mongoCollection === apertureCollection.collection) {
-                    collections.push(apertureCollection);
-                    datasets.push(serverNameToClientName(mongoCollection));
-                }
-            });
-        });
-        return [collections, datasets];
-    }
+        })()
+    });
 
     const data = {stateData, currentState, currentCounty};
     const dataManagement = {
