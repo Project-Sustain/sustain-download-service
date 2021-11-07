@@ -85,23 +85,13 @@ const useStyles = makeStyles({
 export default function DatasetTable(props: any) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state");
-    const [filteredDatasets, setFilteredDatasets] = useState(getDatasetArray());
-    // const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
+    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
     const [filtering, setFiltering] = useState(false);
 
     const scope = {granularity, setGranularity};
     const filter = {setFilteredDatasets, setFiltering};
-    const datasets = filtering ? filteredDatasets : getDatasetArray();
-    // const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
+    const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
     const filteredData = {filtering, filteredDatasets};
-
-    function getDatasetArray() {
-        let allStateDatasets = [] as string[];
-        props.data.currentState.collections_supported.forEach((collection: any) => {
-            allStateDatasets.push(collection.label);
-        });
-        return allStateDatasets;
-    }
 
     if(datasets) {
         return (
@@ -124,10 +114,9 @@ export default function DatasetTable(props: any) {
 
     function renderDatasetRows() {
         return datasets.map((dataset: string, index: number) => {
-            const collection = props.data.currentState.collections_supported[index];
             return (
                 <ListItem key={index}>
-                    <DownloadDatasetPopup granularity={granularity} collection={collection} datasetName={dataset} data={props.data} alert={props.alert} />
+                    <DownloadDatasetPopup index={index} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />
                 </ListItem>
             )
         })
