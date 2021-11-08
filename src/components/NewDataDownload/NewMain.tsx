@@ -115,7 +115,6 @@ export default function Main() {
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
-    const selector = {setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
     const renderNSF = () => {
@@ -150,7 +149,7 @@ export default function Main() {
             {renderNSF()}
                 <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                     <Grid item className={classes.map}>
-                        <StateFilter data={data} selector={selector} stateFilterType={stateFilterType} filter={filter}/>
+                        <StateFilter data={data} filter={filter}/>
                         <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
                         <FauxTooltip title={hoveredState}/>
                         {/*@ts-ignore*/}

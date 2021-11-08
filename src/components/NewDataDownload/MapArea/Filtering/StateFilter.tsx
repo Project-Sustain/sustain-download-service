@@ -79,10 +79,10 @@ export default function StateFilter(props: any) {
     const classes = useStyles();
 
     function renderSelector() {
-        if (props.stateFilterType === 0) {
-            return <FilterByStateName class={classes.searchBox} selector={props.selector}/>
+        if (props.filter.stateFilterType === 0) {
+            return <FilterByStateName class={classes.searchBox} filter={props.filter}/>
         } else {
-            return <FilterByDatasetName class={classes.searchBox} selector={props.selector} data={props.data}/>
+            return <FilterByDatasetName class={classes.searchBox} filter={props.filter} data={props.data}/>
         }
     }
 

@@ -67,8 +67,9 @@ export default function FilterByStateName(props: any) {
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
-        props.selector.setStatesMatchingSearch(capitalizeArray(matches));
+        props.filter.setStatesMatchingSearch(capitalizeArray(matches));
     };
+
     return (
         <TextField
             className={props.class}

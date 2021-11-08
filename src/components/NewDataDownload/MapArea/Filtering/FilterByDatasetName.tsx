@@ -66,14 +66,13 @@ export default function FilterByDatasetName(props: any) {
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         if(searchString === "") {
-            props.selector.setStatesMatchingSearch([]);
+            props.filter.setStatesMatchingSearch([]);
         }
         else {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
                 // @ts-ignore
                 const datasets = data.datasets;
-                // const datasets = data.collections_supported;
                 let lowercaseDatasets: any = [];
                 datasets.forEach((dataset: String) => {
                     lowercaseDatasets.push(dataset.toLowerCase());
@@ -83,7 +82,7 @@ export default function FilterByDatasetName(props: any) {
                     statesWithMatchingDatasets.push(state);
                 }
             }
-            props.selector.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
+            props.filter.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
         }
     };
 
