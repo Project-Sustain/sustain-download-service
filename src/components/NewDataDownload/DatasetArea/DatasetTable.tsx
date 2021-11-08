@@ -88,16 +88,15 @@ export default function DatasetTable(props: any) {
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
     const [filtering, setFiltering] = useState(false);
 
-    const scope = {granularity, setGranularity};
-    const filter = {setFilteredDatasets, setFiltering};
-    const filteredData = {filtering, filteredDatasets};
+    const datasetState = {granularity, setGranularity, filteredDatasets, setFilteredDatasets, filtering, setFiltering}
+
     const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
 
     if(datasets) {
         return (
             <Grid container direction="column" justifyContent="center" alignItems="stretch">
                 <Paper className={classes.paper}>
-                    <TableControls filteredData={filteredData} data={props.data} dataManagement={props.dataManagement} scope={scope} filter={filter} />
+                    <TableControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
                     <Grid item>
                         <List className={classes.list}>
                             {renderDatasetRows()}
