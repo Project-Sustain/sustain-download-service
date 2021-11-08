@@ -58,43 +58,12 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useEffect, useState} from "react";
-import {useStateSelection} from "./Utils/useStateSelection";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../global/GlobalTheme";
-import {Grid, Typography} from "@material-ui/core";
-import StatesMap from "./MapArea/Map/StatesMap";
-import FauxTooltip from "./Utils/FauxTooltip";
-import DatasetTable from "./DatasetArea/DatasetTable";
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import CustomAlert from "./Utils/CustomAlert";
-import NSF from "./Utils/NSF";
-import StateFilter from "./MapArea/Filtering/StateFilter";
+import nsfLogo from "../../../images/nsfLogo.png";
+import {Tooltip, withStyles} from "@material-ui/core";
 
 const useStyles = makeStyles({
-    map: {
-        position: "relative",
-        width: "75%",
-    },
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-    loading: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-    },
-    loadingItem: {
-        margin: theme.spacing(1),
-        fontSize: "2em",
-    },
     nsfPic: {
         width: "5em",
     },
@@ -107,45 +76,22 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
-    const [data, dataManagement, alert] = useStateSelection();
-    const [loading, setLoading] = useState(true as boolean);
-    const [hoveredState, setHoveredState] = useState("");
-    const [stateFilterType, setStateFilterType] = useState(0);
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
-    const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
-    const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
+    const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
+        "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
+        "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
+        "Baltimore County.";
 
-    useEffect(() => {
-        // @ts-ignore
-        setLoading(Object.keys(data.stateData).length === 0);
-        // @ts-ignore
-    }, [data.stateData]);
+    const CustomTooltip = withStyles(() => ({
+        tooltip: {
+            fontSize: 14,
+        },
+    }))(Tooltip);
 
-    if(loading) {
-        return (
-            <Box className={classes.loading}>
-                <Typography className={classes.loadingItem}>Loading Data...</Typography>
-                <CircularProgress color="primary" />
-            </Box>
-        )
-    }
+    return (
+        <CustomTooltip title={nsfText} className={classes.nsfTooltip}>
+            <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
+        </CustomTooltip>
+    )
 
-    else {
-        return (<>
-            <NSF />
-            <CustomAlert alert={alert} />
-            <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-                <Grid item className={classes.map}>
-                    <StateFilter data={data} filter={filter}/>
-                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
-                    <FauxTooltip title={hoveredState}/>
-                </Grid>
-                <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data} dataManagement={dataManagement} alert={alert} />
-                </Grid>
-            </Grid>
-            </>
-        )
-    }
 }
