@@ -90,8 +90,8 @@ export default function DatasetTable(props: any) {
 
     const scope = {granularity, setGranularity};
     const filter = {setFilteredDatasets, setFiltering};
-    const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
     const filteredData = {filtering, filteredDatasets};
+    const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
 
     if(datasets) {
         return (

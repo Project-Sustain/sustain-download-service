@@ -61,27 +61,11 @@ import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./svgGenerator";
 import {chosenState, selectedState, unSelectedState} from "../../Utils/utils";
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-    map: {
-        position:'relative',
-        height: '1px',
-        width: '100%',
-    },
-
-    svg: {
-        position: 'relative',
-        width: 'auto',
-        height: '100%'
-    }
-});
 
 export default function StatesMap(props: any) {
     const allStatesHTML = d3.select("#statesvg").selectAll(".state");
     // @ts-ignore
     const nodeList = allStatesHTML["_groups"][0];
-    const classes = useStyles();
 
     if(nodeList) {
         nodeList.forEach((node: any) => {
@@ -107,11 +91,6 @@ export default function StatesMap(props: any) {
         d3.select(window.frameElement).style("height", "600px");
     });
 
-    return (
-        <div className={classes.map}>
-            <div className={classes.svg}>
-                <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
-            </div>
-        </div>
-    )
+    return <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
+
 }
