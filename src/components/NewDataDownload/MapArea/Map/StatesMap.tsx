@@ -60,28 +60,12 @@ END OF TERMS AND CONDITIONS
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./svgGenerator";
-import { makeStyles } from '@material-ui/core/styles';
 import {colors} from "../../Utils/colorDeclarations";
-
-const useStyles = makeStyles({
-    map: {
-        position:'relative',
-        height: '1px',
-        width: '100%',
-    },
-
-    svg: {
-        position: 'relative',
-        width: 'auto',
-        height: '100%'
-    }
-});
 
 export default function StatesMap(props: any) {
     const allStatesHTML = d3.select("#statesvg").selectAll(".state");
     // @ts-ignore
     const nodeList = allStatesHTML["_groups"][0];
-    const classes = useStyles();
 
     if(nodeList) {
         nodeList.forEach((node: any) => {
