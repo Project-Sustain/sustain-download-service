@@ -60,8 +60,8 @@ END OF TERMS AND CONDITIONS
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./svgGenerator";
-import {chosenState, selectedState, unSelectedState} from "../../Utils/utils";
 import { makeStyles } from '@material-ui/core/styles';
+import {colors} from "../../Utils/colorDeclarations";
 
 const useStyles = makeStyles({
     map: {
@@ -86,17 +86,17 @@ export default function StatesMap(props: any) {
     if(nodeList) {
         nodeList.forEach((node: any) => {
             if(props.mapState.statesMatchingSearch.length === nodeList.length) {
-                node.style.fill = unSelectedState;
+                node.style.fill = colors.unSelected;
             }
             else if(props.mapState.statesMatchingSearch.length === 0 && props.data.currentState.name === node["__data__"].stateName) {
-                node.style.fill = chosenState;
+                node.style.fill = colors.primary;
             }
             else {
                 if (props.mapState.statesMatchingSearch.includes(node["__data__"].stateName)) {
-                    node.style.fill = selectedState;
+                    node.style.fill = colors.secondary;
                 }
                 else {
-                    node.style.fill = unSelectedState;
+                    node.style.fill = colors.unSelected;
                 }
             }
         })

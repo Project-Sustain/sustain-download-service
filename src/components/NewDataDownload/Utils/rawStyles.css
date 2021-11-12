@@ -57,14 +57,18 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
+@value colors: "./colorDeclarations.tsx";
+@value primary, unSelected from colors;
+
 .state{
-    fill: #eee;
+    fill: unSelected;
     stroke: #333;
     stroke-width: 1;
 }
 
 .state:hover{
-    fill: #651fff !important;
+    fill: primary !important;
 }
 
 .hovered-state-text{

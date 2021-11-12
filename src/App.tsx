@@ -64,14 +64,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Grid } from '@material-ui/core';
 // import Main from './components/Main';
 import NewMain from './components/NewDataDownload/NewMain';
+import { colors } from "./components/NewDataDownload/Utils/colorDeclarations";
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#651fff',
+            main: colors.primary,
         },
         secondary: {
-            main: '#e91e63',
+            main: colors.secondary,
         },
     },
 });
