@@ -18,9 +18,9 @@ export default function CustomAlert(props: any) {
             <Alert
                 className={classes.root} severity={props.alert.alertState.severity}
                 onClose={() => {
-                    props.alert.set({
+                    props.alert.setAlertState({
                         open: false,
-                        test: "",
+                        text: "",
                         severity: ""
                     });
                 }}

@@ -129,18 +129,6 @@ export default function Main() {
     const selector = {setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
-    const renderNSF = () => {
-        const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
-            "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
-            "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
-            "Baltimore County.";
-        return <>
-            <CustomTooltip title={nsfText} className={classes.nsfTooltip}>
-                <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
-            </CustomTooltip>
-        </>
-    }
-
     useEffect(() => {
         // @ts-ignore
         setLoading(Object.keys(data.stateData).length === 0);

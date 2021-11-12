@@ -12,6 +12,7 @@ export default function FilterType(props: any) {
         <Box sx={{ minWidth: 75 }}>
             <FormControl fullWidth>
                 <Select
+                    color="primary"
                     value={props.filter.stateFilterType}
                     onChange={handleChange}
                     displayEmpty
