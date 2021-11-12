@@ -1,5 +1,5 @@
-const primary = '#3C51C3';
-const secondary = '#E5DA1D';
+const primary = '#E1341E';
+const secondary = '#1ECBE1';
 const unSelected = '#eee'
 
 export const colors = {primary, secondary, unSelected};
