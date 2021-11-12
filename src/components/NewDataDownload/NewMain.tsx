@@ -111,7 +111,10 @@ const useStyles = makeStyles({
         position: "fixed",
         bottom: "10px",
         left: "10px",
-    }
+    },
+    filterArea: {
+        marginTop: "10px",
+    },
 });
 
 export default function Main() {
@@ -167,15 +170,14 @@ export default function Main() {
             {renderNSF()}
                 <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                     <Grid item className={classes.map}>
-                        <Grid container direction="row" justifyContent="center" alignItems="center">
+                        <Grid className={classes.filterArea} container direction="row" justifyContent="center" alignItems="center">
                             <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
                             <Grid item><FilterType filter={filter}/></Grid>
                             <Grid item>{renderSelector()}</Grid>
                         </Grid>
                         <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
                         <FauxTooltip title={hoveredState}/>
-                        {/*@ts-ignore*/}
-                        <CustomAlert alertState={alert.alertState} set={alert.setAlertState} />
+                        <CustomAlert alert={alert} />
                     </Grid>
                     <Grid item className={classes.datasetSection}>
                         <DatasetTable data={data} dataManagement={dataManagement} alert={alert} />

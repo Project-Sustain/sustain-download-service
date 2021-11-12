@@ -160,5 +160,6 @@ export const exportAndDownloadData = (downloadResult: any) => {
 }
 
 export const unSelectedState = "#eee";
-export const selectedState = "#458AB9";
-export const chosenState = "#2DA661";
+export const selectedState = "#e91e63";
+export const chosenState = "#651fff";
+

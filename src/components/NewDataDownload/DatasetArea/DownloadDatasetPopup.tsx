@@ -67,7 +67,6 @@ import {
     TableCell,
     TableHead,
     TableRow,
-    Checkbox,
     FormGroup,
     Tooltip, Typography
 } from "@material-ui/core";
@@ -84,6 +83,7 @@ import ExploreOffIcon from "@material-ui/icons/ExploreOff";
 import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
 import Download from "../../../library/Download";
+import {Checkbox} from "@mui/material";
 
 const useStyles = makeStyles({
     modal: {

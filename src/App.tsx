@@ -60,19 +60,33 @@ END OF TERMS AND CONDITIONS
 
 import React from 'react';
 import './App.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Grid } from '@material-ui/core';
 // import Main from './components/Main';
 import NewMain from './components/NewDataDownload/NewMain';
 
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#651fff',
+        },
+        secondary: {
+            main: '#e91e63',
+        },
+    },
+});
+
 function App() {
     return (
-        <div className="App">
-            <Grid container>
-                <Grid item xs={12}>
-                    <NewMain />
+        <ThemeProvider theme={theme}>
+            <div className="App">
+                <Grid container>
+                    <Grid item xs={12}>
+                        <NewMain />
+                    </Grid>
                 </Grid>
-            </Grid>
-        </div>
+            </div>
+        </ThemeProvider>
     );
 }
 

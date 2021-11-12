@@ -59,11 +59,10 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {
-    Switch,
     TableCell,
     TableRow,
 } from '@material-ui/core';
-
+import {Switch} from "@mui/material";
 
 export default function StateCountySwitch(props: any) {
 
@@ -78,7 +77,6 @@ export default function StateCountySwitch(props: any) {
 
     function getNumberOfDatasets() {
         const releventDatasets = props.filteredData.filtering ? props.filteredData.filteredDatasets : props.data.currentState.datasets;
-        // const releventDatasets = props.filteredData.filtering ? props.filteredData.filteredDatasets : props.data.currentState.collections_supported;
         return releventDatasets.length;
     }
 

@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {capitalizeArray} from "../../Utils/utils";
-import {TextField} from "@material-ui/core";
+import {TextField} from "@mui/material";
 
 export default function FilterByDatasetName(props: any) {
 

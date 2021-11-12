@@ -13,19 +13,19 @@ const useStyles = makeStyles({
 export default function CustomAlert(props: any) {
     const classes = useStyles();
 
-    if(props.alertState.open) {
+    if(props.alert.alertState.open) {
         return (
             <Alert
-                className={classes.root} severity={props.alertState.severity}
+                className={classes.root} severity={props.alert.alertState.severity}
                 onClose={() => {
-                    props.set({
+                    props.alert.set({
                         open: false,
                         test: "",
                         severity: ""
                     });
                 }}
             >
-                {props.alertState.text}
+                {props.alert.alertState.text}
             </Alert>
         )
     }
