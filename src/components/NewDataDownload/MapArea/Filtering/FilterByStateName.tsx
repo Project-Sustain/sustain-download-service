@@ -57,20 +57,28 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
+import React, {useState} from "react";
 import {capitalizeArray} from "../../Utils/utils";
 import {statesArray} from "../../../../library/StateInfo";
 import {TextField} from "@mui/material";
 
 export default function FilterByStateName(props: any) {
+    const [searchText, setSearchText] = useState("");
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
+        setSearchText(searchString);
         const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
         props.selector.setStatesMatchingSearch(capitalizeArray(matches));
     };
+
+    function getColor() {
+        return searchText === "" ? "primary" : "secondary";
+    }
+
     return (
         <TextField
+            color={getColor()}
             className={props.class}
             variant="outlined"
             onChange={handleChange}

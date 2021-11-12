@@ -57,14 +57,16 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React from "react";
+import React, {useState} from "react";
 import {capitalizeArray} from "../../Utils/utils";
 import {TextField} from "@mui/material";
 
 export default function FilterByDatasetName(props: any) {
+    const [searchText, setSearchText] = useState("");
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
+        setSearchText(searchString)
         if(searchString === "") {
             props.selector.setStatesMatchingSearch([]);
         }
@@ -87,8 +89,13 @@ export default function FilterByDatasetName(props: any) {
         }
     };
 
+    function getColor() {
+        return searchText === "" ? "primary" : "secondary";
+    }
+
     return (
         <TextField
+            color={getColor()}
             className={props.class}
             variant="outlined"
             onChange={handleChange}
