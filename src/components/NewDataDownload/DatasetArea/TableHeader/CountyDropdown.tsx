@@ -73,7 +73,7 @@ const useStyles = makeStyles({
 export default function CountyDropdown(props: any) {
     const classes = useStyles();
 
-    if(props.scope.granularity === "county" && props.data.currentState.counties.length !== 0) {
+    if(props.datasetState.granularity === "county" && props.data.currentState.counties.length !== 0) {
         let counties = [] as string[];
         props.data.currentState.counties.forEach((county: countyType) => {
             counties.push(county.name)

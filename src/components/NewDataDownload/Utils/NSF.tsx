@@ -57,52 +57,41 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useState} from "react";
-import {capitalizeArray} from "../../Utils/utils";
-import {statesArray} from "../../../../library/StateInfo";
-import {TextField} from "@mui/material";
 
-export default function FilterByStateName(props: any) {
-    const [searchText, setSearchText] = useState("");
+import React from "react";
+import {makeStyles} from "@material-ui/core/styles";
+import nsfLogo from "../../../images/nsfLogo.png";
+import {Tooltip, withStyles} from "@material-ui/core";
 
-    const handleChange = (event: any) => {
-        const searchString = event.target.value;
-        setSearchText(searchString);
-        const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
-        props.filter.setStatesMatchingSearch(capitalizeArray(matches));
-    };
-
-    function getColor() {
-        return searchText === "" ? "primary" : "secondary";
+const useStyles = makeStyles({
+    nsfPic: {
+        width: "5em",
+    },
+    nsfTooltip: {
+        position: "fixed",
+        bottom: "10px",
+        left: "10px",
     }
+});
+
+export default function Main() {
+    const classes = useStyles();
+
+    const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
+        "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
+        "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
+        "Baltimore County.";
+
+    const CustomTooltip = withStyles(() => ({
+        tooltip: {
+            fontSize: 14,
+        },
+    }))(Tooltip);
 
     return (
-        <TextField
-            color={getColor()}
-            className={props.class}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder="ex: Colorado"
-        />
-    );
-}
-
-function stateMatch(matchString: any, state: any) {
-    if(matchString.charAt(matchString.length-1) === " ") {
-        matchString = matchString.substr(0, matchString.length-1);
-    }
-    if(state.includes(matchString) && (state.charAt(0) === matchString.charAt(0))){
-        return true;
-    }
-    else if(state.includes(matchString) && state.includes(" ")) {
-        let indexOfSpace = state.indexOf(" ");
-        if(state.charAt(indexOfSpace + 1) === matchString.charAt(0)) {
-            return true;
-        }
-    }
-    else{
-        return false;
-    }
+        <CustomTooltip title={nsfText} className={classes.nsfTooltip}>
+            <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
+        </CustomTooltip>
+    )
 
 }
-

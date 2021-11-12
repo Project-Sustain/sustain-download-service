@@ -72,8 +72,8 @@ import DatasetTable from "./DatasetArea/DatasetTable";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
-import {CustomTooltip} from "../DownloadSetup";
-import nsfLogo from "../../images/nsfLogo.png";
+import NSF from "./Utils/NSF";
+import StateFilter from "./MapArea/Filtering/StateFilter";
 
 const useStyles = makeStyles({
     map: {
@@ -167,22 +167,18 @@ export default function Main() {
 
     else {
         return (<>
-            {renderNSF()}
-                <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-                    <Grid item className={classes.map}>
-                        <Grid className={classes.filterArea} container direction="row" justifyContent="center" alignItems="center">
-                            <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-                            <Grid item><FilterType filter={filter}/></Grid>
-                            <Grid item>{renderSelector()}</Grid>
-                        </Grid>
-                        <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
-                        <FauxTooltip title={hoveredState}/>
-                        <CustomAlert alert={alert} />
-                    </Grid>
-                    <Grid item className={classes.datasetSection}>
-                        <DatasetTable data={data} dataManagement={dataManagement} alert={alert} />
-                    </Grid>
+            <NSF />
+            <CustomAlert alert={alert} />
+            <Grid container direction="row" justifyContent="center" alignItems="flex-start">
+                <Grid item className={classes.map}>
+                    <StateFilter data={data} filter={filter}/>
+                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
+                    <FauxTooltip title={hoveredState}/>
                 </Grid>
+                <Grid item className={classes.datasetSection}>
+                    <DatasetTable data={data} dataManagement={dataManagement} alert={alert} />
+                </Grid>
+            </Grid>
             </>
         )
     }

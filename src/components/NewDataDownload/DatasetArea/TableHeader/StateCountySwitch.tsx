@@ -67,16 +67,16 @@ import {Switch} from "@mui/material";
 export default function StateCountySwitch(props: any) {
 
     function handleChange() {
-        const newGranularity = props.scope.granularity === "state" ? "county" : "state";
-        props.scope.setGranularity(newGranularity);
+        const newGranularity = props.datasetState.granularity === "state" ? "county" : "state";
+        props.datasetState.setGranularity(newGranularity);
     }
 
     function getChecked() {
-        return props.scope.granularity === "county";
+        return props.datasetState.granularity === "county";
     }
 
     function getNumberOfDatasets() {
-        const releventDatasets = props.filteredData.filtering ? props.filteredData.filteredDatasets : props.data.currentState.datasets;
+        const releventDatasets = props.datasetState.filtering ? props.datasetState.filteredDatasets : props.data.currentState.datasets;
         return releventDatasets.length;
     }
 

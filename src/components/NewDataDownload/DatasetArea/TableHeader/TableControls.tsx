@@ -87,11 +87,11 @@ export default function DatasetTable(props: any) {
         <Grid item className={classes.header}>
             <Table>
                 <TableHead>
-                    <StateCountySwitch filteredData={props.filteredData} data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                    <StateCountySwitch datasetState={props.datasetState} data={props.data} dataManagement={props.dataManagement} />
                     <TableRow>
                         <TableCell colSpan={2}>
-                            <CountyDropdown data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
-                            <DatasetFilter filter={props.filter} data={props.data} dataManagement={props.dataManagement} scope={props.scope} />
+                            <CountyDropdown data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+                            <DatasetFilter data={props.data} dataManagement={props.dataManagement}  datasetState={props.datasetState} />
                         </TableCell>
                     </TableRow>
                 </TableHead>

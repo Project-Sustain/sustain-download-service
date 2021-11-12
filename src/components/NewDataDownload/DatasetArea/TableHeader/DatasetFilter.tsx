@@ -74,14 +74,14 @@ export default function DatasetFiler(props: any) {
     const classes = useStyles();
 
     function createPlaceholderText() {
-        return props.scope.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name}`;
+        return props.datasetState.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name}`;
     }
 
     const handleChange = (event: any) => {
         const input = event.target.value;
-        props.filter.setFiltering(input !== "");
+        props.datasetState.setFiltering(input !== "");
         const matches = lowercaseArray(props.data.currentState.datasets).filter((state: string) => state.includes(input));
-        props.filter.setFilteredDatasets(capitalizeArray(matches));
+        props.datasetState.setFilteredDatasets(capitalizeArray(matches));
     };
 
     return (

@@ -57,52 +57,42 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useState} from "react";
-import {capitalizeArray} from "../../Utils/utils";
-import {statesArray} from "../../../../library/StateInfo";
-import {TextField} from "@mui/material";
 
-export default function FilterByStateName(props: any) {
-    const [searchText, setSearchText] = useState("");
+import React from "react";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../../../global/GlobalTheme";
+import FilterByStateName from "./FilterByStateName";
+import FilterByDatasetName from "./FilterByDatasetName";
+import {Grid, Typography} from "@material-ui/core";
+import FilterType from "./FilterType";
 
-    const handleChange = (event: any) => {
-        const searchString = event.target.value;
-        setSearchText(searchString);
-        const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
-        props.filter.setStatesMatchingSearch(capitalizeArray(matches));
-    };
+const useStyles = makeStyles({
+    text: {
+        margin: theme.spacing(1),
+    },
+    searchBox: {
+        margin: theme.spacing(1),
+    },
+});
 
-    function getColor() {
-        return searchText === "" ? "primary" : "secondary";
+export default function StateFilter(props: any) {
+    const classes = useStyles();
+
+    function renderSelector() {
+        if (props.filter.stateFilterType === 0) {
+            return <FilterByStateName class={classes.searchBox} filter={props.filter}/>
+        } else {
+            return <FilterByDatasetName class={classes.searchBox} filter={props.filter} data={props.data}/>
+        }
     }
 
     return (
-        <TextField
-            color={getColor()}
-            className={props.class}
-            variant="outlined"
-            onChange={handleChange}
-            placeholder="ex: Colorado"
-        />
-    );
-}
+        <Grid container direction="row" justifyContent="center" alignItems="center">
+            <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
+            <Grid item><FilterType filter={props.filter}/></Grid>
+            <Grid item>{renderSelector()}</Grid>
+        </Grid>
 
-function stateMatch(matchString: any, state: any) {
-    if(matchString.charAt(matchString.length-1) === " ") {
-        matchString = matchString.substr(0, matchString.length-1);
-    }
-    if(state.includes(matchString) && (state.charAt(0) === matchString.charAt(0))){
-        return true;
-    }
-    else if(state.includes(matchString) && state.includes(" ")) {
-        let indexOfSpace = state.indexOf(" ");
-        if(state.charAt(indexOfSpace + 1) === matchString.charAt(0)) {
-            return true;
-        }
-    }
-    else{
-        return false;
-    }
+    )
 
 }
-
