@@ -91,6 +91,7 @@ export default function StatesMap(props: any) {
         d3.select(window.frameElement).style("height", "600px");
     });
 
-    return <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
+    return <svg viewBox="0 0 1000 600" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
+    // return <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
 
 }

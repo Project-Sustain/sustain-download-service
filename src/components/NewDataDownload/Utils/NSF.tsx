@@ -68,6 +68,7 @@ const useStyles = makeStyles({
         width: "5em",
     },
     nsfTooltip: {
+        zIndex: 1000,
         position: "fixed",
         bottom: "10px",
         left: "10px",
