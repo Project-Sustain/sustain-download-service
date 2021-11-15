@@ -65,8 +65,12 @@ import FilterByStateName from "./FilterByStateName";
 import FilterByDatasetName from "./FilterByDatasetName";
 import {Grid, Typography} from "@material-ui/core";
 import FilterType from "./FilterType";
+import {Stack} from "@mui/material";
 
 const useStyles = makeStyles({
+    root: {
+        margin: theme.spacing(1),
+    },
     text: {
         margin: theme.spacing(1),
     },
@@ -87,12 +91,11 @@ export default function StateFilter(props: any) {
     }
 
     return (
-        <Grid container direction="row" justifyContent="center" alignItems="center">
-            <Grid item><Typography className={classes.text}>Filter States by</Typography></Grid>
-            <Grid item><FilterType filter={props.filter}/></Grid>
-            <Grid item>{renderSelector()}</Grid>
-        </Grid>
-
+        <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
+            <Typography className={classes.text}>Filter States by</Typography>
+            <FilterType filter={props.filter}/>
+            {renderSelector()}
+        </Stack>
     )
 
 }

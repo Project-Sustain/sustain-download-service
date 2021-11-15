@@ -72,10 +72,6 @@ import StateCountySwitch from "./StateCountySwitch";
 
 const useStyles = makeStyles({
     root: {
-        maxHeight: "55vh",
-        overflow: "auto"
-    },
-    header: {
         borderRadius: "3px 3px 0px 0px",
     },
 });
@@ -84,7 +80,7 @@ export default function DatasetTable(props: any) {
     const classes = useStyles();
 
     return (
-        <Grid item className={classes.header}>
+        <Grid item className={classes.root}>
             <Table>
                 <TableHead>
                     <StateCountySwitch datasetState={props.datasetState} data={props.data} dataManagement={props.dataManagement} />

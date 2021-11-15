@@ -65,7 +65,6 @@ import theme from "../../global/GlobalTheme";
 import FilterByStateName from "./MapArea/Filtering/FilterByStateName";
 import FilterByDatasetName from "./MapArea/Filtering/FilterByDatasetName";
 import {Grid, Typography} from "@material-ui/core";
-import FilterType from "./MapArea/Filtering/FilterType";
 import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./Utils/FauxTooltip";
 import DatasetTable from "./DatasetArea/DatasetTable";
@@ -134,15 +133,6 @@ export default function Main() {
         setLoading(Object.keys(data.stateData).length === 0);
         // @ts-ignore
     }, [data.stateData]);
-
-    function renderSelector() {
-        if(stateFilterType === 0) {
-            return <FilterByStateName class={classes.searchBox} selector={selector} />
-        }
-        else {
-            return <FilterByDatasetName class={classes.searchBox} selector={selector} data={data} />
-        }
-    }
 
     if(loading) {
         return (

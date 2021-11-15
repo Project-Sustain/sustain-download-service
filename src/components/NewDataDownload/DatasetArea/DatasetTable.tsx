@@ -77,13 +77,11 @@ const useStyles = makeStyles({
     paper: {
         margin: theme.spacing(2),
     },
-    header: {
-        borderRadius: "3px 3px 0px 0px",
-    },
 });
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
+
     const [granularity, setGranularity] = useState("state");
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
     const [filtering, setFiltering] = useState(false);
