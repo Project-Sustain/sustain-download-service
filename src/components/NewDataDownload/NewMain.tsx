@@ -62,8 +62,6 @@ import React, {useEffect, useState} from "react";
 import {useStateSelection} from "./Utils/useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../global/GlobalTheme";
-import FilterByStateName from "./MapArea/Filtering/FilterByStateName";
-import FilterByDatasetName from "./MapArea/Filtering/FilterByDatasetName";
 import {Grid, Typography} from "@material-ui/core";
 import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./Utils/FauxTooltip";
@@ -125,7 +123,6 @@ export default function Main() {
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
-    const selector = {setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
     useEffect(() => {

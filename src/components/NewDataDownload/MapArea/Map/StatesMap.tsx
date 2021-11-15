@@ -63,28 +63,28 @@ import { Draw } from "./svgGenerator";
 import {colors} from "../../Utils/colorDeclarations";
 
 export default function StatesMap(props: any) {
-    const allStatesHTML = d3.select("#statesvg").selectAll(".state");
-    // @ts-ignore
-    const nodeList = allStatesHTML["_groups"][0];
 
-    if(nodeList) {
-        nodeList.forEach((node: any) => {
-            if(props.mapState.statesMatchingSearch.length === nodeList.length) {
-                node.style.fill = colors.unSelected;
-            }
-            else if(props.mapState.statesMatchingSearch.length === 0 && props.data.currentState.name === node["__data__"].stateName) {
-                node.style.fill = colors.primary;
-            }
-            else {
-                if (props.mapState.statesMatchingSearch.includes(node["__data__"].stateName)) {
-                    node.style.fill = colors.secondary;
+    useEffect(() => {
+        const allStatesHTML = d3.select("#statesvg").selectAll(".state");
+        // @ts-ignore
+        const nodeList = allStatesHTML["_groups"][0];
+
+        if(nodeList) {
+            nodeList.forEach((node: any) => {
+                if(props.mapState.statesMatchingSearch.length === 0 && props.data.currentState.name === node["__data__"].stateName) {
+                    node.style.fill = colors.primary;
                 }
                 else {
-                    node.style.fill = colors.unSelected;
+                    if (props.mapState.statesMatchingSearch.includes(node["__data__"].stateName)) {
+                        node.style.fill = colors.secondary;
+                    }
+                    else {
+                        node.style.fill = colors.unSelected;
+                    }
                 }
-            }
-        })
-    }
+            });
+        }
+    }, [props.mapState.statesMatchingSearch, props.data]);
 
     useEffect(() => {
         Draw("#statesvg", props.mapState, props.dataManagement);

@@ -63,7 +63,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../../global/GlobalTheme";
 import FilterByStateName from "./FilterByStateName";
 import FilterByDatasetName from "./FilterByDatasetName";
-import {Grid, Typography} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import FilterType from "./FilterType";
 import {Stack} from "@mui/material";
 

@@ -66,7 +66,7 @@ export default function FilterByDatasetName(props: any) {
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
-        setSearchText(searchString)
+        setSearchText(searchString);
         if(searchString === "") {
             props.filter.setStatesMatchingSearch([]);
         }
@@ -74,19 +74,18 @@ export default function FilterByDatasetName(props: any) {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
                 // @ts-ignore
-                const datasets = data.datasets;
-                let lowercaseDatasets: any = [];
-                datasets.forEach((dataset: String) => {
-                    lowercaseDatasets.push(dataset.toLowerCase());
-                })
-                const matches = lowercaseDatasets.filter((dataset: string | any[]) => dataset.includes(searchString));
-                if (matches.length > 0) {
+                const matches = data.datasets.filter((dataset: string) => searchForMatches(dataset.toLowerCase(), searchString));
+                if (matches.length !== 0) {
                     statesWithMatchingDatasets.push(state);
                 }
             }
             props.filter.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
         }
     };
+
+    function searchForMatches(dataset: any, searchString: string) {
+        return dataset.includes(searchString.toLowerCase());
+    }
 
     function getColor() {
         return searchText === "" ? "primary" : "secondary";
