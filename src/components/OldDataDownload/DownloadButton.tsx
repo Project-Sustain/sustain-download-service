@@ -58,64 +58,43 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography, IconButton, Tooltip } from '@material-ui/core';
-import DownloadResult from "../types/DownloadResult";
-import GetAppIcon from '@material-ui/icons/GetApp';
-import JSZip from "jszip";
+import React, { useState } from "react";
+import {
+    Button,
+} from '@material-ui/core';
+import region from "../../types/region"
+import { getApiKey, checkIfCanDownload } from "../../library/DownloadUtil"
+import DownloadButtonText from "./DownloadButtonText"
 
-const useStyles = makeStyles((theme) => ({
-    progress: {
-        height: "75px !important",
-        width: "75px !important"
-    },
-}));
 
-interface downloadSuccessProps {
-    downloadResult: DownloadResult
+interface downloadButtonProps {
+    conductDownload: (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean) => Promise<void>,
+    selectedDataset: string,
+    selectedRegion: region,
+    includeGeospatialData: boolean
 }
 
-export default function DownloadSuccess({ downloadResult }: downloadSuccessProps) {
-    const classes = useStyles();
 
-    const exportAndDownloadData = () => {
-        var zip = new JSZip();
-        zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))
-        downloadResult.geometry && zip.file('linkedGeometry.json', JSON.stringify(downloadResult.geometry, null, 4))
-        downloadResult.meta.fieldLabels && zip.file('fieldLabels.json', JSON.stringify(downloadResult.meta.fieldLabels, null, 4))
-        zip.file('README.txt', `
-        This package, which includes data for the collection "${downloadResult.meta.collectionName}" for the region "${downloadResult.meta.regionName}" contains the following files:
+export default function DownloadButton({ conductDownload, selectedDataset, selectedRegion, includeGeospatialData }: downloadButtonProps) {
+    const apiKey = getApiKey();
+    const [timeLeft, setTimeLeft] = useState(-1);
 
+    console.log({conductDownload})
+    console.log({selectedDataset})
+    console.log({selectedRegion})
 
-        README -- This file
-
-        data.json -- JSON file including the data requested
-
-        ${downloadResult.geometry ? `linkedGeometry.json -- GeoJSON feature file which includes geospatial information about data within data.json.
-        Data between the files can be linked using the "${downloadResult.meta.joinField}" field, which exists at the top level of each entry in both files.` : ''}
-
-        ${downloadResult.meta.fieldLabels ? `fieldLabels.json -- JSON array including field name label data.` : ''}
-        `)
-
-        zip.generateAsync({
-            type: "blob"
-        }).then(function (contentBlob) {
-            const uriContent = URL.createObjectURL(contentBlob);
-            const a = document.createElement('a');
-            a.setAttribute('href', uriContent)
-            a.setAttribute('download', `${downloadResult.meta.collectionName}.${downloadResult.meta.regionName}.zip`.replaceAll(' ', '_').replaceAll(',', ''));
-            a.style.display = 'none'
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        });
+    return <Button onClick={async () => {
+        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", selectedRegion.GISJOIN, selectedDataset);
+        console.log({ downloadAbilityStatus })
+        if (downloadAbilityStatus.canDownload) {
+            conductDownload(selectedDataset, selectedRegion, includeGeospatialData);
+        }
+        else if (downloadAbilityStatus.timeLeft) {
+            console.log(`Setting time left @${downloadAbilityStatus.timeLeft}`)
+            setTimeLeft(downloadAbilityStatus.timeLeft)
+        }
     }
-
-    return <div>
-        <Typography variant="h5" gutterBottom>Download Successful</Typography>
-        <Tooltip title={<Typography>Download your data to your computer.</Typography>}><IconButton onClick={exportAndDownloadData}>
-            <GetAppIcon />
-        </IconButton></Tooltip>
-    </div>
+    }>
+        <DownloadButtonText timeLeft={timeLeft}/>
+    </Button>;
 }

@@ -61,16 +61,16 @@ END OF TERMS AND CONDITIONS
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Tooltip, Button } from '@material-ui/core';
-import counties from '../json/counties.json'
-import states from '../json/states.json'
+import counties from '../../json/counties.json'
+import states from '../../json/states.json'
 import { useEffect } from "react";
-import Download from "../library/Download";
+import Download from "../../library/Download";
 import DownloadSetup from "./DownloadSetup"
 import DownloadLoading from "./DownloadLoading"
 import DownloadSuccess from "./DownloadSuccess";
-import DownloadResult from "../types/DownloadResult"
-import region from "../types/region"
-import { regionGranularityType } from "../types/Granularity"
+import DownloadResult from "../../types/DownloadResult"
+import region from "../../types/region"
+import { regionGranularityType } from "../../types/Granularity"
 type downloadStateType = "setup" | "downloading" | "doneSuccess" | "doneFail" | "doneEmpty"
 
 const useStyles = makeStyles({

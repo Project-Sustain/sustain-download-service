@@ -59,42 +59,240 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, { useState } from "react";
-import {
-    Button,
-} from '@material-ui/core';
-import region from "../types/region"
-import { getApiKey, checkIfCanDownload } from "../library/DownloadUtil"
-import DownloadButtonText from "./DownloadButtonText"
+import {Grid, TextField, Typography, Tooltip, Divider, Checkbox, withStyles} from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
+import Util from '../../library/apertureUtil'
+import ExploreOffIcon from '@material-ui/icons/ExploreOff';
+import ExploreIcon from '@material-ui/icons/Explore';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import LinkIcon from '@material-ui/icons/Link';
+import { isLinked } from "../../library/DatasetUtil";
+import { makeStyles } from '@material-ui/core/styles';
+import region from "../../types/region";
+import DownloadButton from "./DownloadButton";
+import { regionGranularityType } from "../../types/Granularity";
+import { useEffect } from "react";
+import nsfLogo from "../../images/nsfLogo.png";
 
 
-interface downloadButtonProps {
+interface downloadSetupProps {
+    regionsSorted: region[],
+    menumetadata: any[],
     conductDownload: (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean) => Promise<void>,
-    selectedDataset: string,
-    selectedRegion: region,
-    includeGeospatialData: boolean
+    regionGranularity: string,
+    setRegionGranularity: React.Dispatch<React.SetStateAction<regionGranularityType>>
 }
 
+const useStyles = makeStyles({
+    tagsContainer: {
+        margin: "10px"
+    },
+    iconSpacing: {
+        margin: "0px 5px"
+    },
+    nsfPic: {
+        width: "3.5em",
+    },
+});
 
-export default function DownloadButton({ conductDownload, selectedDataset, selectedRegion, includeGeospatialData }: downloadButtonProps) {
-    const apiKey = getApiKey();
-    const [timeLeft, setTimeLeft] = useState(-1);
+export const CustomTooltip = withStyles(() => ({
+    tooltip: {
+        fontSize: 14,
+    },
+}))(Tooltip);
 
-    console.log({conductDownload})
-    console.log({selectedDataset})
-    console.log({selectedRegion})
+export default function DownloadSetup({ regionsSorted, menumetadata, conductDownload, regionGranularity, setRegionGranularity }: downloadSetupProps) {
+    const classes = useStyles();
+    const [includeGeospatialData, setIncludeGeospatialData] = useState(false)
+    const [selectedRegion, setSelectedRegion] = useState(regionsSorted[0] as region);
+    const [selectedDataset, setSelectedDataset] = useState(menumetadata[0]);
 
-    return <Button onClick={async () => {
-        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", selectedRegion.GISJOIN, selectedDataset);
-        console.log({ downloadAbilityStatus })
-        if (downloadAbilityStatus.canDownload) {
-            conductDownload(selectedDataset, selectedRegion, includeGeospatialData);
+    useEffect(() => {
+        setSelectedRegion(regionsSorted[0])
+    }, [regionsSorted]);
+
+    const getTags = () => {
+        let tags = []
+        if (selectedDataset.temporal) {
+            tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon />))
         }
-        else if (downloadAbilityStatus.timeLeft) {
-            console.log(`Setting time left @${downloadAbilityStatus.timeLeft}`)
-            setTimeLeft(downloadAbilityStatus.timeLeft)
+        if (isLinked(selectedDataset)) {
+            tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
         }
+        else {
+            tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
+        }
+        if (isLinked(selectedDataset) && includeGeospatialData) {
+            tags.push(makeTag("A seperate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
+        }
+        return tags;
     }
-    }>
-        <DownloadButtonText timeLeft={timeLeft}/>
-    </Button>;
+
+    const makeTag = (tooltipContent: string, icon: JSX.Element) => {
+        return <Tooltip className={classes.iconSpacing} title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
+            {icon}
+        </Tooltip>
+    }
+
+    const renderLinkOption = () => {
+        if (!isLinked(selectedDataset)) {
+            return null;
+        }
+        return <>
+            <Grid item>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                >
+                    <Grid item>
+                        <Typography align="left">Include Geospatial Data</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Checkbox
+                            color="primary"
+                            checked={includeGeospatialData}
+                            onChange={e => setIncludeGeospatialData(e.target.checked)}
+                        />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Divider orientation="vertical" flexItem />
+        </>
+    }
+
+    const renderTags = () => {
+        return <>
+            <Grid item>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                >
+                    {/*<Grid item>*/}
+                    {/*    <Typography align="left">Tags</Typography>*/}
+                    {/*</Grid>*/}
+                    <Grid item>
+                        <div className={classes.tagsContainer}>
+                            {getTags()}
+                        </div>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Divider orientation="vertical" flexItem />
+        </>
+    }
+
+    const renderDownloadButton = () => {
+        return <>
+            <Grid item>
+                <DownloadButton conductDownload={conductDownload} selectedRegion={selectedRegion} selectedDataset={selectedDataset} includeGeospatialData={includeGeospatialData}/>
+            </Grid>
+            <Divider orientation="vertical" flexItem />
+        </>
+    }
+
+    const renderNSF = () => {
+        const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
+            "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
+            "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
+            "Baltimore County.";
+        return <>
+            <CustomTooltip title={nsfText}>
+                <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
+            </CustomTooltip>
+        </>
+    }
+
+    return <>
+        <Autocomplete
+            options={["County","State"] as regionGranularityType[]}
+            value={regionGranularity}
+            onChange={(event, newValue) => {
+                if (newValue) {
+                    console.log(newValue)
+                    setRegionGranularity(newValue as regionGranularityType)
+                }
+            }}
+            autoHighlight
+            getOptionLabel={(option) => option}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Choose a granularity"
+                    variant="outlined"
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                />
+            )}
+        />
+        
+        <br/>
+
+        <Autocomplete
+            options={regionsSorted}
+            value={selectedRegion}
+            onChange={(event, newValue) => {
+                if (newValue) {
+                    setSelectedRegion(newValue)
+                }
+            }}
+            autoHighlight
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Choose a region"
+                    variant="outlined"
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                />
+            )}
+        />
+
+        <br />
+
+        <Autocomplete
+            options={menumetadata}
+            value={selectedDataset}
+            onChange={(event, newValue) => {
+                if (newValue) {
+                    setSelectedDataset(newValue)
+                }
+            }}
+            autoHighlight
+            getOptionLabel={(option) => option.label ?? Util.cleanUpString(option.collection)}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Choose a dataset"
+                    variant="outlined"
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                />
+            )}
+        />
+
+        <br />
+
+        <Grid
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+        >
+            {renderLinkOption()}
+            {renderTags()}
+            {renderDownloadButton()}
+            {renderNSF()}
+        </Grid>
+    </>
 }
