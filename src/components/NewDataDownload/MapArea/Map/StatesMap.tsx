@@ -61,8 +61,20 @@ import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./svgGenerator";
 import {colors} from "../../Utils/colorDeclarations";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../../../global/GlobalTheme";
+
+const useStyles = makeStyles({
+    root:{
+        margin: theme.spacing(1),
+    },
+    svg: {
+        maxHeight: "40vw",
+    },
+});
 
 export default function StatesMap(props: any) {
+    const classes = useStyles();
 
     useEffect(() => {
         const allStatesHTML = d3.select("#statesvg").selectAll(".state");
@@ -91,7 +103,6 @@ export default function StatesMap(props: any) {
         d3.select(window.frameElement).style("height", "600px");
     });
 
-    return <svg viewBox="0 0 1000 600" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
-    // return <svg viewBox="-60 0 1100 1100" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
+    return <svg className={classes.svg} viewBox="0 0 1000 600" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
 
 }
