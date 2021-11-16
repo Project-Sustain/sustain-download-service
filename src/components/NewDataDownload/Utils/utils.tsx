@@ -112,4 +112,3 @@ export const exportAndDownloadData = (downloadResult: any) => {
         document.body.removeChild(a);
     });
 }
-
