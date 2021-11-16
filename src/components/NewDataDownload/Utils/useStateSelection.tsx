@@ -24,7 +24,7 @@ export function useStateSelection() {
                     const stateName = getStateName(key.gis_join);
                     const collections = buildCollections(key.collections_supported, apertureData);
                     const counties = getCounties(stateName);
-                    const datasets = collections.map((collection: { collection: any; }) => serverNameToClientName(collection.collection));
+                    const datasets = collections.map((collection: any) => serverNameToClientName(collection.collection));
                     masterMap[stateName] = {
                         name: stateName,
                         GISJOIN: key.gis_join,
