@@ -85,6 +85,7 @@ function extractStateCountyName(nameAsArray: string[]) {
     return ["", ""];
 }
 
+//FIXME rewrite this based off of Caleb's new json file
 export function buildCountyMap(serverResponse: any) {
     let masterMap = {...serverResponse};
     gisJoinCountyNames.forEach((county: countyType) => {
