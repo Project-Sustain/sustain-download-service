@@ -73,7 +73,7 @@ export function Draw(id, mapState, dataManagement) {
     function mouseOver(event){
         const stateName = event.target.getAttribute("stateName");
         mapState.setHoveredState(stateName);
-        updateTooltip((event.pageX - 50) + "px", (event.pageY - 120) + "px");
+        updateTooltip((event.pageX - 50) + "px", (event.pageY - 60) + "px");
     }
 
     function mouseOut() {
