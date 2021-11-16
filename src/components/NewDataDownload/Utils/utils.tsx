@@ -1,25 +1,5 @@
-import {gisJoinCountyNames, gisJoinStateNames} from "../../../library/gisInfo";
-import {countyType} from "./types";
+import {gisStateCounty} from "../../../library/gisInfo";
 import JSZip from "jszip";
-
-export function getStateName(GISJOIN: String) {
-    for(const gis of gisJoinStateNames) {
-        if(gis.GISJOIN === GISJOIN) {
-            return gis.name;
-        }
-    }
-    return "";
-}
-
-export function formatDatasetName(datasets: string[]) {
-    let newDatasets: string[] = [];
-    datasets.forEach((dataset) =>  {
-        let newDataset = dataset.replace(/_/g, " ");
-        newDataset = capitalizeFirstLetter(newDataset);
-        newDatasets.push(newDataset);
-    });
-    return newDatasets;
-}
 
 export function serverNameToClientName(dataset: any) {
     let newDataset = dataset.replace(/_/g, " ");
@@ -64,55 +44,6 @@ export function capitalizeArray(matches: string[]) {
     return capitalizedMatches;
 }
 
-function findTheComma(nameAsArray: string[]) {
-    let spot = 0;
-    nameAsArray.forEach((word: string, index) => {
-        if(word.charAt(word.length-1) === ",") {
-            spot = index+1;
-        }
-    })
-    return spot;
-}
-
-function extractStateCountyName(nameAsArray: string[]) {
-    const indexOfStateName = findTheComma(nameAsArray);
-    if(indexOfStateName !== 0) {
-        const stateName = nameAsArray.splice(indexOfStateName, nameAsArray.length-1).join(" ");
-        let tempCountyName = nameAsArray.splice(0, indexOfStateName).join(" ");
-        const countyName = tempCountyName.substr(0, tempCountyName.length-1);
-        return [stateName, countyName];
-    }
-    return ["", ""];
-}
-
-//FIXME rewrite this based off of Caleb's new json file
-export function buildCountyMap(serverResponse: any) {
-    let masterMap = {...serverResponse};
-    gisJoinCountyNames.forEach((county: countyType) => {
-        const nameAsArray = county.name.split(" ");
-        const names = extractStateCountyName(nameAsArray)
-        const stateName = names[0];
-        if(Object.keys(masterMap).includes(stateName)) {
-            let countyObj = {
-                GISJOIN: county.GISJOIN,
-                name: names[1]
-            };
-            masterMap[stateName].counties.push(countyObj);
-        }
-    });
-    return masterMap;
-}
-
-export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string; severity: string; }) => void) {
-    setTimeout(function() {
-        setAlertState({
-            open: false,
-            text: "",
-            severity: ""
-        });
-    }, 4500);
-}
-
 export function buildStateCollections(mongoCollections: any, apertureData: any) {
     let collections = [] as any;
     let datasets = [] as string[];
@@ -125,6 +56,28 @@ export function buildStateCollections(mongoCollections: any, apertureData: any) 
         });
     });
     return [collections, datasets];
+}
+
+export function getStateName(GISJOIN: string) {
+    const state = gisStateCounty.states.find(state => state.GISJOIN === GISJOIN);
+    if(state) return state.name;
+    else return "";
+}
+
+export function getCounties(stateName: string) {
+    const state = gisStateCounty.states.find(state => state.name === stateName);
+    if(state) return state.counties;
+    else return [];
+}
+
+export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string; severity: string; }) => void) {
+    setTimeout(function() {
+        setAlertState({
+            open: false,
+            text: "",
+            severity: ""
+        });
+    }, 4500);
 }
 
 export const exportAndDownloadData = (downloadResult: any) => {

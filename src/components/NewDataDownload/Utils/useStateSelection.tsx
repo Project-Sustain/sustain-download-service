@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
-import {alertTimeout, buildStateCollections, getStateName} from "./utils";
-import {buildCountyMap} from "./utils";
+import {alertTimeout, buildStateCollections, getCounties, getStateName} from "./utils";
 import {countyType, stateType, dataEntryType} from "./types";
 
 export function useStateSelection() {
@@ -23,18 +22,18 @@ export function useStateSelection() {
                 let masterMap = {} as any;
                 for (const key of mongoData) {
                     const collectionsAndDatasets = buildStateCollections(key.collections_supported, apertureData);
-                    masterMap[getStateName(key.gis_join)] = {
-                        name: getStateName(key.gis_join),
+                    const stateName = getStateName(key.gis_join);
+                    masterMap[stateName] = {
+                        name: stateName,
                         GISJOIN: key.gis_join,
                         collections_supported: collectionsAndDatasets[0],
                         datasets: collectionsAndDatasets[1],
-                        counties: []
+                        counties: getCounties(stateName)
                     }
                 }
-                const finalMapping = buildCountyMap(masterMap);
-                setStateData(finalMapping);
-                setCurrentState(finalMapping["Colorado"]);
-                setCurrentCounty(finalMapping["Colorado"].counties[0]);
+                setStateData(masterMap);
+                setCurrentState(masterMap["Colorado"]);
+                setCurrentCounty(masterMap["Colorado"].counties[0]);
             }
 
             else {
