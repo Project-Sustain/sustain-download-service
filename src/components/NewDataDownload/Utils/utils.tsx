@@ -60,8 +60,7 @@ export function buildStateCollections(mongoCollections: any, apertureData: any) 
 
 export function getStateName(GISJOIN: string) {
     const state = gisStateCounty.states.find(state => state.GISJOIN === GISJOIN);
-    if(state) return state.name;
-    else return "";
+    return state ? state.name : "";
 }
 
 export function getCounties(stateName: string) {

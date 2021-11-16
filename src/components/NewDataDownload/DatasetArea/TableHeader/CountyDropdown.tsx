@@ -62,7 +62,6 @@ import React from "react";
 import {TextField} from "@mui/material";
 import {makeStyles} from "@material-ui/core/styles";
 import {Autocomplete} from "@material-ui/lab";
-import {countyType} from "../../Utils/types";
 import theme from "../../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
@@ -76,16 +75,15 @@ export default function CountyDropdown(props: any) {
     const classes = useStyles();
 
     if(props.datasetState.granularity === "county" && props.data.currentState.counties.length !== 0) {
-        let counties = [] as string[];
-        props.data.currentState.counties.forEach((county: countyType) => {
-            counties.push(county.name)
-        })
+
+        const counties = props.data.currentState.counties.map((county: { name: string; }) => county.name);
+        const value = counties.includes(props.data.currentCounty.name) ? props.data.currentCounty.name : props.data.currentState.counties[0].name;
 
         return (
             <Autocomplete
                 className={classes.root}
                 options={counties}
-                value={props.data.currentCounty.name}
+                value={value}
                 onChange={(event, newValue: String) => {
                     if (newValue) {
                         props.dataManagement.handleCountyCounty(newValue);
@@ -102,5 +100,5 @@ export default function CountyDropdown(props: any) {
         )
     }
 
-    else {return null}
+    else return null
 }
