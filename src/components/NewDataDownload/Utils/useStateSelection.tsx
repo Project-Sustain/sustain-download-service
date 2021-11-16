@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
-import {alertTimeout, buildStateCollections, getCounties, getStateName} from "./utils";
+import {alertTimeout, buildCollections, getCounties, getStateName, serverNameToClientName} from "./utils";
 import {countyType, stateType, dataEntryType} from "./types";
 
 export function useStateSelection() {
@@ -21,14 +21,16 @@ export function useStateSelection() {
             if(apertureData && mongoData) {
                 let masterMap = {} as any;
                 for (const key of mongoData) {
-                    const collectionsAndDatasets = buildStateCollections(key.collections_supported, apertureData);
                     const stateName = getStateName(key.gis_join);
+                    const collections = buildCollections(key.collections_supported, apertureData);
+                    const counties = getCounties(stateName);
+                    const datasets = collections.map((collection: { collection: any; }) => serverNameToClientName(collection.collection));
                     masterMap[stateName] = {
                         name: stateName,
                         GISJOIN: key.gis_join,
-                        collections_supported: collectionsAndDatasets[0],
-                        datasets: collectionsAndDatasets[1],
-                        counties: getCounties(stateName)
+                        collections_supported: collections,
+                        datasets: datasets,
+                        counties: counties
                     }
                 }
                 setStateData(masterMap);

@@ -44,18 +44,12 @@ export function capitalizeArray(matches: string[]) {
     return capitalizedMatches;
 }
 
-export function buildStateCollections(mongoCollections: any, apertureData: any) {
-    let collections = [] as any;
-    let datasets = [] as string[];
-    mongoCollections.forEach((mongoCollection: string) => {
-        apertureData.forEach((apertureCollection: any) => {
-            if(mongoCollection === apertureCollection.collection) {
-                collections.push(apertureCollection);
-                datasets.push(serverNameToClientName(mongoCollection));
-            }
-        });
-    });
-    return [collections, datasets];
+export function buildCollections(mongoCollections: any, apertureData: any) {
+    function getApertureData(mongoCollection: string) {
+        return apertureData.find((apertureCollection: any) => apertureCollection.collection === mongoCollection);
+    }
+    const collections = mongoCollections.map((mongoCollection: string) => getApertureData(mongoCollection));
+    return collections.filter((collection: any) => collection !== undefined);
 }
 
 export function getStateName(GISJOIN: string) {
