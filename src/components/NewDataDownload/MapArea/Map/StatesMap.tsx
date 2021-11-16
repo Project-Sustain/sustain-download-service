@@ -62,12 +62,8 @@ import * as d3 from 'd3';
 import { Draw } from "./svgGenerator";
 import {colors} from "../../Utils/colorDeclarations";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
-    root:{
-        margin: theme.spacing(1),
-    },
     svg: {
         maxHeight: "40vw",
     },
