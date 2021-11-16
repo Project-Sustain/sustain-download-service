@@ -70,7 +70,7 @@ const useStyles = makeStyles({
     nsfTooltip: {
         zIndex: 1000,
         position: "fixed",
-        bottom: "10px",
+        top: "10px",
         left: "10px",
     }
 });
