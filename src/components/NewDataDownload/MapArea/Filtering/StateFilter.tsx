@@ -69,13 +69,7 @@ import {Stack} from "@mui/material";
 
 const useStyles = makeStyles({
     root: {
-        margin: theme.spacing(1),
-    },
-    text: {
-        margin: theme.spacing(1),
-    },
-    searchBox: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2),
     },
 });
 
@@ -84,15 +78,15 @@ export default function StateFilter(props: any) {
 
     function renderSelector() {
         if (props.filter.stateFilterType === 0) {
-            return <FilterByStateName class={classes.searchBox} filter={props.filter}/>
+            return <FilterByStateName filter={props.filter}/>
         } else {
-            return <FilterByDatasetName class={classes.searchBox} filter={props.filter} data={props.data}/>
+            return <FilterByDatasetName filter={props.filter} data={props.data}/>
         }
     }
 
     return (
         <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
-            <Typography className={classes.text}>Filter States by</Typography>
+            <Typography>Filter States by</Typography>
             <FilterType filter={props.filter}/>
             {renderSelector()}
         </Stack>
