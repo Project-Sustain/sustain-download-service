@@ -74,9 +74,7 @@ export const checkIfCanDownload = async (apiKey: string, countyID: string, datas
     }
     return new Promise<downloadCheckType>((resolve) => {
         fetch(`https://urban-sustain.org/api/download?apiKey=${apiKey}&county=${countyID}&dataset=${dataset.collection}`).then(async function (response) {
-            console.log(response)
             const body = await response.text();
-            console.log({ body })
             if (response.status === 200) {
                 resolve({ canDownload: true })
             }
