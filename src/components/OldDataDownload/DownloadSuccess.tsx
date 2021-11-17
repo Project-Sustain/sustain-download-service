@@ -58,83 +58,64 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
-import { sustain_querier } from "../library/grpc_querier.js";
-import DownloadResult, { downloadMeta } from "../types/DownloadResult";
-import region from "../types/region";
+import React from "react";
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, IconButton, Tooltip } from '@material-ui/core';
+import DownloadResult from "../../types/DownloadResult";
+import GetAppIcon from '@material-ui/icons/GetApp';
+import JSZip from "jszip";
 
-const querier = sustain_querier();
+const useStyles = makeStyles((theme) => ({
+    progress: {
+        height: "75px !important",
+        width: "75px !important"
+    },
+}));
 
-export default async function Download(currentDataset: any, regionSelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
-    console.log({currentDataset})
-    const { GISJOIN, name } = regionSelected;
-    console.log(regionSelected)
-    let pipeline: any[] = [];
-    let meta: downloadMeta = {
-        collectionName: currentDataset.collection,
-        label: currentDataset.label,
-        regionName: name
-    }
-    if (currentDataset.fieldMetadata) {
-        meta.fieldLabels = currentDataset.fieldMetadata.filter((e: any) => e.label).map(({ name, label }: any) => { return { name, label } })
-    }
-    if (isLinked(currentDataset)) {
-        if (currentDataset.linked) {
-            meta.joinField = currentDataset.linked.field;
-        }
-        else {
-            meta.joinField = 'GISJOIN'
-        }
-    }
-    //first, check if the dataset is a county or tract dataset, this will be the easiest to download
-    if (["county", "tract"].includes(currentDataset?.level)) {
-        //get dataset data
-        pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
-        
-        let d = await mongoQuery(currentDataset.collection, pipeline)
-        if (!includeGeospatialData) {
-            return { data: d, meta };
-        }
-        let geospatialData = await mongoQuery(getCountyOrTractCollectionName(currentDataset?.level), pipeline)
-        return { data: d, geometry: geospatialData, meta }
-    }
-    const regionGeometry = await getRegionGeometry(GISJOIN)
-    let collection: string = currentDataset.collection;
-    if (isLinked(currentDataset)) {
-        // collection = currentDataset.linked.collection;
-    }
-    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }])
-    if (!isLinked(currentDataset)) {
-        return { data: d, meta };
-    }
-
-    let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
-    d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
-    let returnable: DownloadResult = { data: realD, meta }
-    if (includeGeospatialData) {
-        returnable.geometry = d;
-    }
-    return returnable;
+interface downloadSuccessProps {
+    downloadResult: DownloadResult
 }
 
-const getRegionGeometry = async (GISJOIN: string) => {
-    if(GISJOIN.length === 8) {
-        return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
+export default function DownloadSuccess({ downloadResult }: downloadSuccessProps) {
+    const classes = useStyles();
+
+    const exportAndDownloadData = () => {
+        var zip = new JSZip();
+        zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))
+        downloadResult.geometry && zip.file('linkedGeometry.json', JSON.stringify(downloadResult.geometry, null, 4))
+        downloadResult.meta.fieldLabels && zip.file('fieldLabels.json', JSON.stringify(downloadResult.meta.fieldLabels, null, 4))
+        zip.file('README.txt', `
+        This package, which includes data for the collection "${downloadResult.meta.collectionName}" for the region "${downloadResult.meta.regionName}" contains the following files:
+
+
+        README -- This file
+
+        data.json -- JSON file including the data requested
+
+        ${downloadResult.geometry ? `linkedGeometry.json -- GeoJSON feature file which includes geospatial information about data within data.json.
+        Data between the files can be linked using the "${downloadResult.meta.joinField}" field, which exists at the top level of each entry in both files.` : ''}
+
+        ${downloadResult.meta.fieldLabels ? `fieldLabels.json -- JSON array including field name label data.` : ''}
+        `)
+
+        zip.generateAsync({
+            type: "blob"
+        }).then(function (contentBlob) {
+            const uriContent = URL.createObjectURL(contentBlob);
+            const a = document.createElement('a');
+            a.setAttribute('href', uriContent)
+            a.setAttribute('download', `${downloadResult.meta.collectionName}.${downloadResult.meta.regionName}.zip`.replaceAll(' ', '_').replaceAll(',', ''));
+            a.style.display = 'none'
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
     }
-    return await mongoQuery("state_geo", [{ $match: { GISJOIN } }])
-}
 
-
-export const mongoQuery = async (collection: string, pipeline: any[]) => {
-    return new Promise<any[]>((resolve) => {
-        const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
-        let returnData: any[] = [];
-        stream.on('data', (res: any) => {
-            const data = JSON.parse(res.getData());
-            returnData.push(data)
-        });
-        stream.on('end', () => {
-            resolve(returnData);
-        });
-    });
+    return <div>
+        <Typography variant="h5" gutterBottom>Download Successful</Typography>
+        <Tooltip title={<Typography>Download your data to your computer.</Typography>}><IconButton onClick={exportAndDownloadData}>
+            <GetAppIcon />
+        </IconButton></Tooltip>
+    </div>
 }

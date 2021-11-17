@@ -58,83 +58,43 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
-import { sustain_querier } from "../library/grpc_querier.js";
-import DownloadResult, { downloadMeta } from "../types/DownloadResult";
-import region from "../types/region";
+import React, { useState } from "react";
+import {
+    Button,
+} from '@material-ui/core';
+import region from "../../types/region"
+import { getApiKey, checkIfCanDownload } from "../../library/DownloadUtil"
+import DownloadButtonText from "./DownloadButtonText"
 
-const querier = sustain_querier();
 
-export default async function Download(currentDataset: any, regionSelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
-    console.log({currentDataset})
-    const { GISJOIN, name } = regionSelected;
-    console.log(regionSelected)
-    let pipeline: any[] = [];
-    let meta: downloadMeta = {
-        collectionName: currentDataset.collection,
-        label: currentDataset.label,
-        regionName: name
-    }
-    if (currentDataset.fieldMetadata) {
-        meta.fieldLabels = currentDataset.fieldMetadata.filter((e: any) => e.label).map(({ name, label }: any) => { return { name, label } })
-    }
-    if (isLinked(currentDataset)) {
-        if (currentDataset.linked) {
-            meta.joinField = currentDataset.linked.field;
-        }
-        else {
-            meta.joinField = 'GISJOIN'
-        }
-    }
-    //first, check if the dataset is a county or tract dataset, this will be the easiest to download
-    if (["county", "tract"].includes(currentDataset?.level)) {
-        //get dataset data
-        pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
-        
-        let d = await mongoQuery(currentDataset.collection, pipeline)
-        if (!includeGeospatialData) {
-            return { data: d, meta };
-        }
-        let geospatialData = await mongoQuery(getCountyOrTractCollectionName(currentDataset?.level), pipeline)
-        return { data: d, geometry: geospatialData, meta }
-    }
-    const regionGeometry = await getRegionGeometry(GISJOIN)
-    let collection: string = currentDataset.collection;
-    if (isLinked(currentDataset)) {
-        // collection = currentDataset.linked.collection;
-    }
-    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }])
-    if (!isLinked(currentDataset)) {
-        return { data: d, meta };
-    }
-
-    let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
-    d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
-    let returnable: DownloadResult = { data: realD, meta }
-    if (includeGeospatialData) {
-        returnable.geometry = d;
-    }
-    return returnable;
-}
-
-const getRegionGeometry = async (GISJOIN: string) => {
-    if(GISJOIN.length === 8) {
-        return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
-    }
-    return await mongoQuery("state_geo", [{ $match: { GISJOIN } }])
+interface downloadButtonProps {
+    conductDownload: (selectedDataset: any, selectedRegion: region, includeGeospatialData: boolean) => Promise<void>,
+    selectedDataset: string,
+    selectedRegion: region,
+    includeGeospatialData: boolean
 }
 
 
-export const mongoQuery = async (collection: string, pipeline: any[]) => {
-    return new Promise<any[]>((resolve) => {
-        const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
-        let returnData: any[] = [];
-        stream.on('data', (res: any) => {
-            const data = JSON.parse(res.getData());
-            returnData.push(data)
-        });
-        stream.on('end', () => {
-            resolve(returnData);
-        });
-    });
+export default function DownloadButton({ conductDownload, selectedDataset, selectedRegion, includeGeospatialData }: downloadButtonProps) {
+    const apiKey = getApiKey();
+    const [timeLeft, setTimeLeft] = useState(-1);
+
+    console.log({conductDownload})
+    console.log({selectedDataset})
+    console.log({selectedRegion})
+
+    return <Button onClick={async () => {
+        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", selectedRegion.GISJOIN, selectedDataset);
+        console.log({ downloadAbilityStatus })
+        if (downloadAbilityStatus.canDownload) {
+            conductDownload(selectedDataset, selectedRegion, includeGeospatialData);
+        }
+        else if (downloadAbilityStatus.timeLeft) {
+            console.log(`Setting time left @${downloadAbilityStatus.timeLeft}`)
+            setTimeLeft(downloadAbilityStatus.timeLeft)
+        }
+    }
+    }>
+        <DownloadButtonText timeLeft={timeLeft}/>
+    </Button>;
 }
