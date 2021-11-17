@@ -19,10 +19,22 @@ export function useStateSelection() {
             const mongoData = await mongoQuery("state_gis_join_metadata", []);
 
             if(apertureData && mongoData) {
+                let allMongoCollections = new Set();
+                mongoData.forEach((state: any) => {
+                    state.collections_supported.forEach((collection: string) => {
+                        allMongoCollections.add(collection);
+                    });
+                });
+
+                const mongoCollectionNames = Array.from(allMongoCollections);
+                const apertureDataNames = apertureData.map((collection: any) => collection.collection);
+                const additionalCollections = apertureDataNames.filter((collection: any) => !mongoCollectionNames.includes(collection));
+                console.log({additionalCollections})
+
                 let masterMap = {} as any;
                 for (const key of mongoData) {
                     const stateName = getStateName(key.gis_join);
-                    const collections = buildCollections(key.collections_supported, apertureData);
+                    const collections = buildCollections(key.collections_supported, apertureData, additionalCollections);
                     const counties = getCounties(stateName);
                     const datasets = collections.map((collection: any) => serverNameToClientName(collection.collection));
                     masterMap[stateName] = {

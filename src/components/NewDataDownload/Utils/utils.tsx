@@ -45,11 +45,12 @@ export function capitalizeArray(matches: string[]) {
 }
 
 //FIXME if there is a dataset in aperture, it needs to be available. If we don't have state data for it, make it available in every state.
-export function buildCollections(mongoCollections: any, apertureData: any) {
+export function buildCollections(mongoCollections: any, apertureData: any, additionalCollections: string[]) {
     function getApertureData(mongoCollection: string) {
         return apertureData.find((apertureCollection: any) => apertureCollection.collection === mongoCollection);
     }
     const collections = mongoCollections.map((mongoCollection: string) => getApertureData(mongoCollection));
+
     return collections.filter((collection: any) => collection !== undefined);
 }
 
