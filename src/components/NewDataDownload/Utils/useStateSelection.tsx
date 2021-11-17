@@ -47,15 +47,15 @@ export function useStateSelection() {
             }
 
             else {
-                console.log("API call failure, data unavailable")
+                console.log("API call failure, data unavailable");
             }
-        })()
+        })();
     }, []);
 
     const data = {stateData, currentState, currentCounty};
     const dataManagement = {
-        handleStateChange: (stateName: any) => handleStateChange(stateName),
-        handleCountyCounty: (countyName: any) => handleCountyCounty(countyName)
+        handleStateChange: (stateName: string) => handleStateChange(stateName),
+        handleCountyCounty: (countyName: string) => handleCountyCounty(countyName)
     };
     const alert = {alertState, setAlertState};
 
