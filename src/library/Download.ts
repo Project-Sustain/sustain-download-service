@@ -121,7 +121,7 @@ const getRegionGeometry = async (GISJOIN: string) => {
     if(GISJOIN.length === 8) {
         return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
     }
-    return await mongoQuery("state_geo_40mb", [{ $match: { GISJOIN } }])
+    return await mongoQuery("state_geo", [{ $match: { GISJOIN } }])
 }
 
 
