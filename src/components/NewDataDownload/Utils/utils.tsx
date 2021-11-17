@@ -1,5 +1,6 @@
 import {gisStateCounty} from "../../../library/gisInfo";
 import JSZip from "jszip";
+import {collection} from "./types";
 
 export function serverNameToClientName(dataset: any) {
     let newDataset = dataset.replace(/_/g, " ");
@@ -44,14 +45,22 @@ export function capitalizeArray(matches: string[]) {
     return capitalizedMatches;
 }
 
-//FIXME if there is a dataset in aperture, it needs to be available. If we don't have state data for it, make it available in every state.
-export function buildCollections(mongoCollections: any, apertureData: any, additionalCollections: string[]) {
+export function buildAdditionalCollections(mongoData: any, apertureData: any) {
+    let allMongoCollections = new Set();
+    mongoData.forEach((state: any) => {
+        state.collections_supported.forEach((collection: string) => {
+            allMongoCollections.add(collection);
+        });
+    });
+    return apertureData.filter((apertureCollection: collection) => !allMongoCollections.has(apertureCollection.collection));
+}
+
+export function buildCollections(mongoCollections: any, apertureData: any) {
     function getApertureData(mongoCollection: string) {
-        return apertureData.find((apertureCollection: any) => apertureCollection.collection === mongoCollection);
+        return apertureData.find((apertureCollection: collection) => apertureCollection.collection === mongoCollection);
     }
     const collections = mongoCollections.map((mongoCollection: string) => getApertureData(mongoCollection));
-
-    return collections.filter((collection: any) => collection !== undefined);
+    return collections.filter((collection: collection) => collection !== undefined);
 }
 
 export function getStateName(GISJOIN: string) {
