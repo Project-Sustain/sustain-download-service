@@ -138,7 +138,7 @@ export default function DownloadDatasetPopup(props: any) {
     function getTags() {
         let tags = []
         if (props.collection.temporal) {
-            tags.push(makeTag("This dataset is temporal, and will have multiple records per entry.", <HourglassEmptyIcon />))
+            tags.push(makeTag("This dataset is temporal and will have multiple records per entry.", <HourglassEmptyIcon />))
         }
         if (isLinked(props.collection)) {
             tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))

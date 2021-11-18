@@ -89,6 +89,17 @@ export default function DatasetTable(props: any) {
 
     const datasets = filtering ? filteredDatasets : props.data.currentState.datasets;
 
+    function renderDatasetRows() {
+        return datasets.map((dataset: string, index: number) => {
+            const collection = props.data.currentState.collections_supported[index];
+            return (
+                <ListItem key={index}>
+                    <DownloadDatasetPopup collection={collection} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />
+                </ListItem>
+            )
+        })
+    }
+
     if(datasets) {
         return (
             <Grid container direction="column" justifyContent="center" alignItems="stretch">
@@ -106,17 +117,6 @@ export default function DatasetTable(props: any) {
 
     else {
         return null
-    }
-
-    function renderDatasetRows() {
-        return datasets.map((dataset: string, index: number) => {
-            const collection = props.data.currentState.collections_supported[index];
-            return (
-                <ListItem key={index}>
-                    <DownloadDatasetPopup collection={collection} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />
-                </ListItem>
-            )
-        })
     }
 
 }
