@@ -8,17 +8,8 @@ export function serverNameToClientName(dataset: any) {
 }
 
 function capitalizeFirstLetter(str: any) {
-    if (str === null || str.length === 0) {
-        return "";
-    }
-    str = str.split(" ");
-    for (let i = 0, x = str.length; i < x; i++) {
-        if (str[i] === null || str[i].length <= 2) {
-            continue;
-        }
-        str[i] = str[i][0].toUpperCase() + str[i].substr(1);
-    }
-    return str.join(" ");
+    if(str === null || str.length === 0) return "";
+    return str.split(" ").map((word: string) => word.charAt(0).toUpperCase() + word.substr(1)).join(" ");
 }
 
 export function buildAdditionalCollections(mongoData: any, apertureData: any) {
