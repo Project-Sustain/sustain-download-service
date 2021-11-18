@@ -7,7 +7,7 @@ export function serverNameToClientName(dataset: any) {
     return capitalizeFirstLetter(newDataset);
 }
 
-export function capitalizeFirstLetter(str: any) {
+function capitalizeFirstLetter(str: any) {
     if (str === null || str.length === 0) {
         return "";
     }
@@ -19,18 +19,6 @@ export function capitalizeFirstLetter(str: any) {
         str[i] = str[i][0].toUpperCase() + str[i].substr(1);
     }
     return str.join(" ");
-}
-
-export function capitalizeArray(matches: string[]) {
-    let capitalizedMatches = [];
-    for (let i = 0; i < matches.length; i++) {
-        const words = matches[i].split(" ");
-        for(let j = 0; j < words.length; j++) {
-            words[j] = words[j][0].toUpperCase() + words[j].substr(1);
-        }
-        capitalizedMatches.push(words.join(" "));
-    }
-    return capitalizedMatches;
 }
 
 export function buildAdditionalCollections(mongoData: any, apertureData: any) {

@@ -58,7 +58,6 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
-import {capitalizeArray} from "../../Utils/utils";
 import {TextField} from "@mui/material";
 
 export default function FilterByDatasetName(props: any) {
@@ -74,18 +73,14 @@ export default function FilterByDatasetName(props: any) {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
                 // @ts-ignore
-                const matches = data.datasets.filter((dataset: string) => searchForMatches(dataset.toLowerCase(), searchString));
+                const matches = data.datasets.filter((dataset: string) => dataset.toLowerCase().includes(searchString.toLowerCase()));
                 if (matches.length !== 0) {
                     statesWithMatchingDatasets.push(state);
                 }
             }
-            props.filter.setStatesMatchingSearch(capitalizeArray(statesWithMatchingDatasets));
+            props.filter.setStatesMatchingSearch(statesWithMatchingDatasets);
         }
     };
-
-    function searchForMatches(dataset: any, searchString: string) {
-        return dataset.includes(searchString.toLowerCase());
-    }
 
     function getColor() {
         return searchText === "" ? "primary" : "secondary";
