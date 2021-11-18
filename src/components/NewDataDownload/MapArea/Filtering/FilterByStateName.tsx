@@ -64,15 +64,19 @@ import {TextField} from "@mui/material";
 export default function FilterByStateName(props: any) {
     const [searchText, setSearchText] = useState("" as string);
 
-    const handleChange = (event: any) => {
+    function handleChange(event: any) {
         const searchString = event.target.value;
         setSearchText(searchString);
-        const matches = statesArray.filter((state: string)=> matchBeginningOfWord(searchString.toLowerCase(), state.toLowerCase()));
-        props.filter.setStatesMatchingSearch(matches);
-    };
+        const matches = statesArray.filter((state: string) => stateMatch(searchString.toLowerCase(), state.toLowerCase()));
+        props.filter.setStatesMatchingSearch(searchString !== "" ? matches : []);
+    }
 
-    function matchBeginningOfWord(match: string, state: string) {
-        return match === state.substr(0, match.length) && match !== "";
+    function stateMatch(matchString: string, state: string) {
+        if(matchString === state.substr(0, matchString.length)) return true;
+        else if(state.includes(" ")) {
+            return matchString === state.split(" ")[1].substr(0, matchString.length);
+        }
+        else return false;
     }
 
     function getColor() {
@@ -89,3 +93,4 @@ export default function FilterByStateName(props: any) {
         />
     );
 }
+
