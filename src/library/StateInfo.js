@@ -114,7 +114,7 @@ export const uStatePaths=[
 function buildStateArray() {
     let statesArray = [];
     uStatePaths.forEach((state) => {
-        statesArray.push(state.stateName.toLowerCase());
+        statesArray.push(state.stateName);
     });
     return statesArray;
 }

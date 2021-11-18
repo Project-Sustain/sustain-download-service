@@ -68,9 +68,23 @@ export default function FilterByStateName(props: any) {
     const handleChange = (event: any) => {
         const searchString = event.target.value;
         setSearchText(searchString);
-        const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state));
-        props.filter.setStatesMatchingSearch(capitalizeArray(matches));
+        const matches = statesArray.filter(state => stateMatch(searchString.toLowerCase(), state.toLowerCase()));
+        props.filter.setStatesMatchingSearch(matches);
     };
+
+    function stateMatch(matchString: string, state: string) {
+        const stateArray = state.split(" ");
+        return stateArray.find(word => matchBeginningOfWord(word, matchString));
+    }
+
+    function matchBeginningOfWord(word: string, match: string) {
+        for(let i = 0; i < match.length; i++) {
+            if(match.charAt(i) !== word.charAt(i)) {
+                return false;
+            }
+        }
+        return match !== "" && true;
+    }
 
     function getColor() {
         return searchText === "" ? "primary" : "secondary";
@@ -86,23 +100,3 @@ export default function FilterByStateName(props: any) {
         />
     );
 }
-
-function stateMatch(matchString: any, state: any) {
-    if(matchString.charAt(matchString.length-1) === " ") {
-        matchString = matchString.substr(0, matchString.length-1);
-    }
-    if(state.includes(matchString) && (state.charAt(0) === matchString.charAt(0))){
-        return true;
-    }
-    else if(state.includes(matchString) && state.includes(" ")) {
-        let indexOfSpace = state.indexOf(" ");
-        if(state.charAt(indexOfSpace + 1) === matchString.charAt(0)) {
-            return true;
-        }
-    }
-    else{
-        return false;
-    }
-
-}
-
