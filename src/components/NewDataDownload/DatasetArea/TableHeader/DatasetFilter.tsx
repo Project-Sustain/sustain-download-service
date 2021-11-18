@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {capitalizeArray, lowercaseArray} from "../../Utils/utils";
+import {capitalizeArray} from "../../Utils/utils";
 import {TextField} from "@mui/material";
 import theme from "../../../../global/GlobalTheme";
 
@@ -80,7 +80,7 @@ export default function DatasetFiler(props: any) {
     const handleChange = (event: any) => {
         const input = event.target.value;
         props.datasetState.setFiltering(input !== "");
-        const matches = lowercaseArray(props.data.currentState.datasets).filter((state: string) => state.includes(input));
+        const matches = props.data.currentState.datasets.filter((state: string) => state.toLowerCase().includes(input.toLowerCase()));
         props.datasetState.setFilteredDatasets(capitalizeArray(matches));
     };
 

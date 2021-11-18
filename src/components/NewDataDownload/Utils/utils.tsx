@@ -21,18 +21,6 @@ export function capitalizeFirstLetter(str: any) {
     return str.join(" ");
 }
 
-export function lowercaseArray(array: string[]) {
-    let lowercaseMatches = [];
-    for (let i = 0; i < array.length; i++) {
-        const words = array[i].split(" ");
-        for(let j = 0; j < words.length; j++) {
-            words[j] = words[j][0].toLowerCase() + words[j].substr(1);
-        }
-        lowercaseMatches.push(words.join(" "));
-    }
-    return lowercaseMatches;
-}
-
 export function capitalizeArray(matches: string[]) {
     let capitalizedMatches = [];
     for (let i = 0; i < matches.length; i++) {
@@ -85,7 +73,7 @@ export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string
 }
 
 export const exportAndDownloadData = (downloadResult: any) => {
-    var zip = new JSZip();
+    let zip = new JSZip();
     zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))
     downloadResult.geometry && zip.file('linkedGeometry.json', JSON.stringify(downloadResult.geometry, null, 4))
     downloadResult.meta.fieldLabels && zip.file('fieldLabels.json', JSON.stringify(downloadResult.meta.fieldLabels, null, 4))
