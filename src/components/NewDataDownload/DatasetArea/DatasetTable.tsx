@@ -81,9 +81,9 @@ const useStyles = makeStyles({
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state");
-    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets);
-    const [filtering, setFiltering] = useState(false);
+    const [granularity, setGranularity] = useState("state" as string);
+    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets as string[]);
+    const [filtering, setFiltering] = useState(false as boolean);
 
     const datasetState = {granularity, setGranularity, filteredDatasets, setFilteredDatasets, filtering, setFiltering}
 

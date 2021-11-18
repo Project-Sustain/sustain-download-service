@@ -118,9 +118,9 @@ export default function Main() {
     const classes = useStyles();
     const [data, dataManagement, alert] = useStateSelection();
     const [loading, setLoading] = useState(true as boolean);
-    const [hoveredState, setHoveredState] = useState("");
-    const [stateFilterType, setStateFilterType] = useState(0);
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([]);
+    const [hoveredState, setHoveredState] = useState("" );
+    const [stateFilterType, setStateFilterType] = useState(0 as number);
+    const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};

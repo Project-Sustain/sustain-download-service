@@ -63,7 +63,7 @@ import {statesArray} from "../../../../library/StateInfo";
 import {TextField} from "@mui/material";
 
 export default function FilterByStateName(props: any) {
-    const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useState("" as string);
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;

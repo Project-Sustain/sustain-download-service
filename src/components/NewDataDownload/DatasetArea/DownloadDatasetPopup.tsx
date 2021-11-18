@@ -109,10 +109,16 @@ const useStyles = makeStyles({
 
 export default function DownloadDatasetPopup(props: any) {
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
-    const [geospatialData, setGeospatialData] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [open, setOpen] = useState(false as boolean);
+    const [geospatialData, setGeospatialData] = useState(false as boolean);
+
+    function handleOpen() {
+        setOpen(true);
+    }
+
+    function handleClose() {
+        setOpen(false);
+    }
 
     function getGISJOIN() {
         return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;

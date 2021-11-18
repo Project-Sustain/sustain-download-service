@@ -62,7 +62,7 @@ import {capitalizeArray} from "../../Utils/utils";
 import {TextField} from "@mui/material";
 
 export default function FilterByDatasetName(props: any) {
-    const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useState("" as string);
 
     const handleChange = (event: any) => {
         const searchString = event.target.value;
