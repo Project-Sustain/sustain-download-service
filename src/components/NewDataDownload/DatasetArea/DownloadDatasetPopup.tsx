@@ -85,6 +85,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import Download from "../../../library/Download";
 import {Checkbox} from "@mui/material";
 import {alertType, collection, dataType, granularityType} from "../Utils/types";
+import {checkIfCanDownload, getApiKey} from "../Utils/DownloadUtil";
 
 const useStyles = makeStyles({
     modal: {
@@ -183,6 +184,15 @@ export default function DownloadDatasetPopup(props: propType) {
         const downloadResult = await Download(props.state.collection, formatRegionForDownload(), geospatialData);
         exportAndDownloadData(downloadResult);
         handleClose();
+    }
+
+    function getButton() {
+        const apiKey = getApiKey();
+        if(apiKey) {
+            const response = checkIfCanDownload(apiKey, getGISJOIN(), props.state.collection);
+            // if(response.canDownload)
+            return <Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>
+        }
     }
 
     function handleCheck() {
