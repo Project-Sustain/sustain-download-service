@@ -57,170 +57,39 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-import React, {useState} from "react";
-import {
-    Button,
-    Modal,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    FormGroup,
-    Tooltip, Typography
-} from "@material-ui/core";
-import FormControlLabel from '@mui/material/FormControlLabel';
-import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../../global/GlobalTheme";
-import {alertTimeout, exportAndDownloadData} from "../Utils/utils";
-import ListItemButton from '@mui/material/ListItemButton';
-import CloseIcon from '@mui/icons-material/Close';
-import DownloadIcon from '@mui/icons-material/Download';
-import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
-import {isLinked} from "../../../library/DatasetUtil";
-import ExploreOffIcon from "@material-ui/icons/ExploreOff";
-import ExploreIcon from "@material-ui/icons/Explore";
-import LinkIcon from "@material-ui/icons/Link";
+
+import React, { useState } from "react";
+import {Button} from '@material-ui/core';
+import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
+import DownloadButtonText from "./DownloadButtonText"
 import Download from "../../../library/Download";
-import {Checkbox} from "@mui/material";
-import {alertType, collection, dataType, granularityType} from "../Utils/types";
-import {checkIfCanDownload, getApiKey} from "../Utils/DownloadUtil";
-import DownloadButton from "./DownloadButton";
+import {collection} from "../Utils/types";
 
-const useStyles = makeStyles({
-    modal: {
-        padding: theme.spacing(1),
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
+interface propTypes {
+    collection: collection,
+    region: {
+        name: string,
+        GISJOIN: string
     },
-    modalSection: {
-        margin: theme.spacing(1),
-    },
-    tagsContainer: {
-        margin: "10px"
-    },
-    iconSpacing: {
-        margin: "0px 5px"
-    },
-    headerText: {
-        fontSize: "1em"
-    },
-});
-
-interface propType {
-    state: {
-        collection: collection,
-        granularity: granularityType,
-        dataset: string,
-        data: dataType,
-        alert: alertType
-    }
+    includeGeospatialData: boolean
 }
 
-export default function DownloadDatasetPopup(props: propType) {
-    const classes = useStyles();
-    const [open, setOpen] = useState(false as boolean);
-    const [geospatialData, setGeospatialData] = useState(false as boolean);
 
-    function handleOpen() {
-        setOpen(true);
-    }
+export default function DownloadButton({ collection, region, includeGeospatialData }: propTypes) {
+    const apiKey = getApiKey();
+    const [timeLeft, setTimeLeft] = useState(-1);
 
-    function handleClose() {
-        setOpen(false);
-    }
-
-    function getGISJOIN() {
-        return props.state.granularity === "county" ? props.state.data.currentCounty.GISJOIN : props.state.data.currentState.GISJOIN;
-    }
-
-    function formatRegionForDownload() {
-        return {
-            GISJOIN: getGISJOIN(),
-            name: getName(),
+    return <Button onClick={async () => {
+        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
+        if (downloadAbilityStatus.canDownload) {
+            Download(collection, region, includeGeospatialData);
+        }
+        else if (downloadAbilityStatus.timeLeft) {
+            console.log(`Setting time left @${downloadAbilityStatus.timeLeft}`)
+            setTimeLeft(downloadAbilityStatus.timeLeft);
         }
     }
-
-    function getName() {
-        return props.state.granularity === "county" ? `${props.state.data.currentCounty.name}, ${props.state.data.currentState.name}` : `${props.state.data.currentState.name}`;
-    }
-
-    function getTags() {
-        let tags = []
-        if (props.state.collection.temporal) {
-            tags.push(makeTag("This dataset is temporal and will have multiple records per entry.", <HourglassEmptyIcon />))
-        }
-        if (isLinked(props.state.collection)) {
-            tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
-        }
-        else {
-            tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
-        }
-        if (isLinked(props.state.collection) && geospatialData) {
-            tags.push(makeTag("A separate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
-        }
-        return tags;
-    }
-
-    function makeTag(tooltipContent: string, icon: JSX.Element) {
-        return <Tooltip className={classes.iconSpacing} title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
-            {icon}
-        </Tooltip>
-    }
-
-    function getLocation() {
-        return props.state.granularity === "county" ? `${props.state.data.currentCounty.name}, ${props.state.data.currentState.name}` : props.state.data.currentState.name;
-    }
-
-    async function handleDownload() {
-        props.state.alert.setAlertState({
-            open: true,
-            text: `Downloading '${props.state.dataset}' in ${getLocation()}`,
-            severity: "success"
-        });
-        alertTimeout(props.state.alert.setAlertState);
-        const downloadResult = await Download(props.state.collection, formatRegionForDownload(), geospatialData);
-        exportAndDownloadData(downloadResult);
-        handleClose();
-    }
-
-    function handleCheck() {
-        setGeospatialData(!geospatialData);
-    }
-
-    function generateTableRow(cell1: any, cell2: any, header: any = false) {
-        return (
-            <TableRow>
-                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell1}</TableCell>
-                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell2}</TableCell>
-            </TableRow>
-        )
-    }
-
-    return (
-        <div>
-            <ListItemButton onClick={handleOpen}>
-                {props.state.dataset}
-            </ListItemButton>
-            <Modal
-                open={open}
-                onClose={handleClose}
-            >
-                <Paper elevation={3} className={classes.modal}>
-                    <Table>
-                        <TableHead>
-                            {generateTableRow(props.state.dataset, getLocation(), true)}
-                        </TableHead>
-                        <TableBody>
-                            {generateTableRow(<FormGroup><FormControlLabel control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck} />} label="Include Geospatial Data"/></FormGroup>, getTags())}
-                            {generateTableRow(<DownloadButton collection={props.state.collection} region={formatRegionForDownload()} includeGeospatialData={geospatialData} />, <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>)}
-                        </TableBody>
-                    </Table>
-                </Paper>
-            </Modal>
-        </div>
-    );
+    }>
+        <DownloadButtonText timeLeft={timeLeft}/>
+    </Button>;
 }
