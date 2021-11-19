@@ -1,4 +1,4 @@
-import {gisStateCounty} from "../../../library/gisInfo";
+import {gisStateCounty} from "../../../library/gisStateCounty";
 import JSZip from "jszip";
 import {alertStateType, collection} from "./types";
 import {AlertColor} from "@mui/material";
