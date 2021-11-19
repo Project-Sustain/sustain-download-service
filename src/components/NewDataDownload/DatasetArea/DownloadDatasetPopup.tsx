@@ -195,6 +195,15 @@ export default function DownloadDatasetPopup(props: propType) {
         )
     }
 
+    function generateCheckbox() {
+        if(props.state.collection.level || props.state.collection.linked) {
+            return generateTableRow(<FormGroup><FormControlLabel
+                control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck}/>}
+                label="Include Geospatial Data"/></FormGroup>, getTags());
+        }
+        else return null;
+    }
+
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
@@ -210,7 +219,7 @@ export default function DownloadDatasetPopup(props: propType) {
                             {generateTableRow(props.state.dataset, getLocation(), true)}
                         </TableHead>
                         <TableBody>
-                            {generateTableRow(<FormGroup><FormControlLabel control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck} />} label="Include Geospatial Data"/></FormGroup>, getTags())}
+                            {generateCheckbox()}
                             {generateTableRow(<Button onClick={handleDownload} startIcon={<DownloadIcon/>}>Download</Button>, <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>)}
                         </TableBody>
                     </Table>

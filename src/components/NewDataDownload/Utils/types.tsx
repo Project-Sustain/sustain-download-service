@@ -79,7 +79,8 @@ export interface collection {
     fieldMetadata: any[],
     label: string,
     level: string,
-    temporal: any
+    temporal: any,
+    linked: any
 }
 
 export interface countyType {
