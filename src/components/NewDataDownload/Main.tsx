@@ -116,17 +116,17 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
+    //FIXME highlight these - they are all |'d together, not explicitly defined
     const [data, dataManagement, alert] = useStateSelection();
     const [loading, setLoading] = useState(true as boolean);
     const [hoveredState, setHoveredState] = useState("" );
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
 
-    //FIXME look at this.
-    // const alertState = alert.alertState;
-
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
+
+
 
     useEffect(() => {
         // @ts-ignore
@@ -146,7 +146,8 @@ export default function Main() {
     else {
         return (<>
             <NSF />
-            <CustomAlert alert={alert} />
+            {/*FIXME thus, here, alert is not explicitly typed, it can be 1 of 3 types which is problematic when we type the props in <CustomAlert>*/}
+            <CustomAlert alert={alert}/>
             <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                 <Grid item className={classes.map}>
                     <StateFilter data={data} filter={filter}/>

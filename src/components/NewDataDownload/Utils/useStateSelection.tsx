@@ -14,15 +14,14 @@ import {
     dataType,
     dataManagementType,
     alertType,
-    alertState,
+    alertStateType
 } from "./types";
-import {AlertColor} from "@mui/material";
 
 export function useStateSelection() {
     const [stateData, setStateData] = useState({} as dataEntryType);
     const [currentState, setCurrentState] = useState({} as stateType);
     const [currentCounty, setCurrentCounty] = useState({} as countyType);
-    const [alertState, setAlertState] = useState({open: false, text: "", severity: "" as AlertColor} as alertState);
+    const [alertState, setAlertState] = useState({open: false, text: "", severity: "info"} as alertStateType);
 
     useEffect(() => {
         (async () => {
@@ -56,15 +55,12 @@ export function useStateSelection() {
         })();
     }, []);
 
-    const data = {stateData, currentState, currentCounty}as dataType;
+    const data = {stateData, currentState, currentCounty} as dataType;
     const dataManagement = {
         handleStateChange: (stateName: string) => handleStateChange(stateName),
         handleCountyCounty: (countyName: string) => handleCountyCounty(countyName)
     } as dataManagementType;
-
-    //FIXME Problem #1, get this typing to work
-    const alert = {alertState, setAlertState};
-    // const alert = {alertState, setAlertState} as alertType;
+    const alert = {alertState, setAlertState} as alertType;
 
     function handleStateChange(stateName: string) {
         setCurrentState(stateData[`${stateName}`]);
@@ -79,5 +75,6 @@ export function useStateSelection() {
         })
     }
 
+    //FIXME Have a look, these 3 all each excplicitly types here, leaving this hook
     return [data, dataManagement, alert];
 }

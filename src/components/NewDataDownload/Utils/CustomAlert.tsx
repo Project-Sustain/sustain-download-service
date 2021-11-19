@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import {makeStyles} from "@material-ui/core/styles";
-import {alertState, alertType} from "./types";
-import {AlertColor} from "@mui/material";
+import {alertType} from "./types";
 
 const useStyles = makeStyles({
     root: {

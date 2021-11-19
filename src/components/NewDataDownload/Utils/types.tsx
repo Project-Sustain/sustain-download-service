@@ -38,11 +38,11 @@ export interface dataManagementType {
 }
 
 export interface alertType {
-    alertState: alertState,
-    setAlertState: (open: boolean, text: string, severity: AlertColor) => void
+    alertState: alertStateType,
+    setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>
 }
 
-export interface alertState {
+export interface alertStateType {
     open: boolean,
     text: string,
     severity: AlertColor
