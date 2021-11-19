@@ -65,7 +65,7 @@ interface propType {
     title: string
 }
 
-export default function FauxTooltip(props: any) {
+export default function FauxTooltip(props: propType) {
     return (
         <Paper elevation={3} id="hovered-state-id" className="hovered-state-text">
             <Typography>{props.title}</Typography>
