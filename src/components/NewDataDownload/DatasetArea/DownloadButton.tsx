@@ -64,6 +64,7 @@ import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
 import DownloadButtonText from "./DownloadButtonText"
 import Download from "../../../library/Download";
 import {collection} from "../Utils/types";
+import {exportAndDownloadData} from "../Utils/utils";
 
 interface propTypes {
     collection: collection,
@@ -81,11 +82,10 @@ export default function DownloadButton({ collection, region, includeGeospatialDa
     return <Button onClick={async () => {
         const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
         if (downloadAbilityStatus.canDownload) {
-            console.log("canDownload is true")
-            Download(collection, region, includeGeospatialData);
+            const downloadResult = await Download(collection, region, includeGeospatialData);
+            exportAndDownloadData(downloadResult);
         }
         else if (downloadAbilityStatus.timeLeft) {
-            console.log(`Setting time left @${downloadAbilityStatus.timeLeft}`)
             setTimeLeft(downloadAbilityStatus.timeLeft);
         }
     }
