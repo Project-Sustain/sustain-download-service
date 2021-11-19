@@ -81,6 +81,7 @@ export default function DownloadButton({ collection, region, includeGeospatialDa
     return <Button onClick={async () => {
         const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
         if (downloadAbilityStatus.canDownload) {
+            console.log("canDownload is true")
             Download(collection, region, includeGeospatialData);
         }
         else if (downloadAbilityStatus.timeLeft) {

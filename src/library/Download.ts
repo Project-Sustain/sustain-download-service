@@ -68,6 +68,7 @@ const querier = sustain_querier();
 export default async function Download(currentDataset: any, regionSelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
     const { GISJOIN, name } = regionSelected;
     let pipeline: any[] = [];
+    console.log({currentDataset})
     let meta: downloadMeta = {
         collectionName: currentDataset.collection,
         label: currentDataset.label,
