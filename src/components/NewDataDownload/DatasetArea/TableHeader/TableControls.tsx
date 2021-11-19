@@ -83,7 +83,7 @@ interface propType {
     datasetState: datasetStateType
 }
 
-export default function DatasetTable(props: any) {
+export default function DatasetTable(props: propType) {
     const classes = useStyles();
 
     return (

@@ -71,7 +71,7 @@ interface propType {
     datasetState: datasetStateType
 }
 
-export default function StateCountySwitch(props: any) {
+export default function StateCountySwitch(props: propType) {
 
     function handleChange() {
         const newGranularity = props.datasetState.granularity === "state" ? "county" : "state";

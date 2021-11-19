@@ -71,6 +71,7 @@ import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
+import {alertType, dataManagementType, dataType} from "./Utils/types";
 
 const useStyles = makeStyles({
     map: {
@@ -116,7 +117,6 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
-    //FIXME highlight these - they are all |'d together, not explicitly defined
     const [data, dataManagement, alert] = useStateSelection();
     const [loading, setLoading] = useState(true as boolean);
     const [hoveredState, setHoveredState] = useState("" );
@@ -144,16 +144,15 @@ export default function Main() {
     else {
         return (<>
             <NSF />
-            {/*FIXME thus, here, alert is not explicitly typed, it can be 1 of 3 types which is problematic when we type the props in the child component*/}
-            <CustomAlert alert={alert}/>
+            <CustomAlert alert={alert as alertType}/>
             <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                 <Grid item className={classes.map}>
-                    <StateFilter data={data} filter={filter}/>
-                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
+                    <StateFilter data={data as dataType} filter={filter}/>
+                    <StatesMap data={data as dataType} dataManagement={dataManagement as dataManagementType} mapState={mapState}/>
                     <FauxTooltip title={hoveredState}/>
                 </Grid>
                 <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data} dataManagement={dataManagement} alert={alert} />
+                    <DatasetTable data={data as dataType} dataManagement={dataManagement as dataManagementType} alert={alert as alertType} />
                 </Grid>
             </Grid>
             </>

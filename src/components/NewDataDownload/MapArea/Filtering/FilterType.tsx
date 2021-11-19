@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Select,Box, MenuItem, FormControl} from "@mui/material";
+import {filterType} from "../../Utils/types";
 
 export default function FilterType(props: any) {
 

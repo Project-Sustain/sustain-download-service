@@ -12,8 +12,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CustomAlert(props: any) {
-// export default function CustomAlert(props: { alert: alertType }) {
+export default function CustomAlert(props: { alert: alertType }) {
     const classes = useStyles();
 
     if(props.alert.alertState.open) {

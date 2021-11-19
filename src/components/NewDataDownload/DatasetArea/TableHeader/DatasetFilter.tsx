@@ -76,7 +76,7 @@ interface propType {
     datasetState: datasetStateType
 }
 
-export default function DatasetFiler(props: any) {
+export default function DatasetFiler(props: propType) {
     const classes = useStyles();
 
     function createPlaceholderText() {

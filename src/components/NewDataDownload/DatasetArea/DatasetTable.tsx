@@ -86,7 +86,7 @@ interface propType {
     alert: alertType
 }
 
-export default function DatasetTable(props: any) {
+export default function DatasetTable(props: propType) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state" as granularityType);
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets as string[]);

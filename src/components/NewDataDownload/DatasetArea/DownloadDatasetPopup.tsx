@@ -116,7 +116,7 @@ interface propType {
     alert: alertType
 }
 
-export default function DownloadDatasetPopup(props: any) {
+export default function DownloadDatasetPopup(props: any) {//FIXME error here when switching
     const classes = useStyles();
     const [open, setOpen] = useState(false as boolean);
     const [geospatialData, setGeospatialData] = useState(false as boolean);

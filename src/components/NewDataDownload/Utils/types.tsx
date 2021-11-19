@@ -18,7 +18,8 @@ export interface collection {
     color: any,
     fieldMetadata: any[],
     label: string,
-    level: string
+    level: string,
+    temporal?: any
 }
 
 export interface countyType {
@@ -57,6 +58,17 @@ export interface datasetStateType {
     setFilteredDatasets: (value: string[]) => void,
     filtering: boolean,
     setFiltering: (value: boolean) => void
+}
+
+export interface filterType {
+    data: dataType,
+    filter: filter
+}
+
+interface filter {
+    stateFilterType: number,
+    setStateFilterType: (value: number) => void,
+    setStatesMatchingSearch: (value: string[]) => void
 }
 
 export type granularityType = "county" | "state";

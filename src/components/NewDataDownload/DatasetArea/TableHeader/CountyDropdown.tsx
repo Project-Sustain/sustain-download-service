@@ -78,7 +78,7 @@ interface propType {
     datasetState: datasetStateType
 }
 
-export default function CountyDropdown(props: any) {
+export default function CountyDropdown(props: propType) {
     const classes = useStyles();
 
     if(props.datasetState.granularity === "county" && props.data.currentState.counties.length !== 0) {
@@ -91,7 +91,7 @@ export default function CountyDropdown(props: any) {
                 className={classes.root}
                 options={counties}
                 value={value}
-                onChange={(event, newValue: String) => {
+                onChange={(event, newValue: any) => {
                     if (newValue) {
                         props.dataManagement.handleCountyCounty(newValue);
                     }
