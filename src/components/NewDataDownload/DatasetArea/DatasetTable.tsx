@@ -106,7 +106,6 @@ export default function DatasetTable(props: propType) {
 
     function renderDatasetRows() {
         return datasets.map((dataset: string, index: number) => {
-            getCollection(dataset)
             const collection = getCollection(dataset);
             const popupState = {collection, granularity, dataset, data: props.data, alert: props.alert, setAlert: props.setAlert}
             return (
