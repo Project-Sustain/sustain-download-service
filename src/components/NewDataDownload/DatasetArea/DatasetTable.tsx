@@ -57,6 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React, {useState} from "react";
 import {
     Grid,
@@ -68,7 +69,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
-import {alertType, dataManagementType, dataType, granularityType} from "../Utils/types";
+import {alertStateType, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
 
 const useStyles = makeStyles({
     list: {
@@ -83,7 +84,8 @@ const useStyles = makeStyles({
 interface propType {
     data: dataType,
     dataManagement: dataManagementType,
-    alert: alertType
+    alert: alertStateType,
+    setAlert: setAlertType
 }
 
 export default function DatasetTable(props: propType) {
@@ -99,7 +101,7 @@ export default function DatasetTable(props: propType) {
     function renderDatasetRows() {
         return datasets.map((dataset: string, index: number) => {
             const collection = props.data.currentState.collections_supported[index];
-            const popupState = {collection, granularity, dataset, data: props.data, alert: props.alert}
+            const popupState = {collection, granularity, dataset, data: props.data, alert: props.alert, setAlert: props.setAlert}
             return (
                 <ListItem key={index}>
                     <DownloadDatasetPopup state={popupState} />

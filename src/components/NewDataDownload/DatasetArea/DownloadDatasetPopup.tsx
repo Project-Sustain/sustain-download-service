@@ -73,20 +73,16 @@ import {
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import {alertTimeout, exportAndDownloadData} from "../Utils/utils";
 import ListItemButton from '@mui/material/ListItemButton';
 import CloseIcon from '@mui/icons-material/Close';
-import DownloadIcon from '@mui/icons-material/Download';
 import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
 import {isLinked} from "../../../library/DatasetUtil";
 import ExploreOffIcon from "@material-ui/icons/ExploreOff";
 import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
-import Download from "../../../library/Download";
 import {Checkbox} from "@mui/material";
-import {alertType, collection, dataType, granularityType} from "../Utils/types";
-import {checkIfCanDownload, getApiKey} from "../Utils/DownloadUtil";
 import DownloadButton from "./DownloadButton";
+import {alertStateType, collection, dataType, granularityType, setAlertType} from "../Utils/types";
 
 const useStyles = makeStyles({
     modal: {
@@ -116,7 +112,8 @@ interface propType {
         granularity: granularityType,
         dataset: string,
         data: dataType,
-        alert: alertType
+        alert: alertStateType,
+        setAlert: setAlertType
     }
 }
 
@@ -188,6 +185,15 @@ export default function DownloadDatasetPopup(props: propType) {
         )
     }
 
+    function generateCheckbox() {
+        if(props.state.collection.level || props.state.collection.linked) {
+            return generateTableRow(<FormGroup><FormControlLabel
+                control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck}/>}
+                label="Include Geospatial Data"/></FormGroup>, getTags());
+        }
+        else return null;
+    }
+
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
@@ -203,7 +209,7 @@ export default function DownloadDatasetPopup(props: propType) {
                             {generateTableRow(props.state.dataset, getLocation(), true)}
                         </TableHead>
                         <TableBody>
-                            {generateTableRow(<FormGroup><FormControlLabel control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck} />} label="Include Geospatial Data"/></FormGroup>, getTags())}
+                            {generateCheckbox()}
                             {generateTableRow(<DownloadButton collection={props.state.collection} region={formatRegionForDownload()} includeGeospatialData={geospatialData} />, <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>)}
                         </TableBody>
                     </Table>
