@@ -127,13 +127,12 @@ export default function Main() {
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
     useEffect(() => {
-        //FIXME these types need to be sorted out. This solution just seems bad.
+        //FIXME This solution sucks
         const dataHere: dataType = data as dataType;
         const dataEntry: dataEntryType = dataHere.stateData;
         // setLoading(Object.keys(data.stateData as dataEntryType).length === 0);
         setLoading(Object.keys(dataEntry).length === 0);
-        // @ts-ignore
-    }, [data.stateData as dataEntryType]);
+    });
 
     if(loading) {
         return (
