@@ -68,7 +68,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
-import {alertStateType, alertType, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
+import {alertStateType, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
 
 const useStyles = makeStyles({
     list: {

@@ -13,8 +13,6 @@ import {
     dataEntryType,
     dataType,
     dataManagementType,
-    alertType,
-    alertStateType
 } from "./types";
 
 export function useStateSelection() {

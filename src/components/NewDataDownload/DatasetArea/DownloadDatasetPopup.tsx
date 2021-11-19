@@ -73,7 +73,7 @@ import {
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
-import {alertTimeout, exportAndDownloadData} from "../Utils/utils";
+import {exportAndDownloadData} from "../Utils/utils";
 import ListItemButton from '@mui/material/ListItemButton';
 import CloseIcon from '@mui/icons-material/Close';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -84,7 +84,7 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
 import Download from "../../../library/Download";
 import {Checkbox} from "@mui/material";
-import {alertStateType, alertType, collection, dataType, granularityType, setAlertType} from "../Utils/types";
+import {alertStateType, collection, dataType, granularityType, setAlertType} from "../Utils/types";
 
 const useStyles = makeStyles({
     modal: {

@@ -58,11 +58,10 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import * as React from 'react';
-import {useState} from "react";
+import React, {useState} from "react";
 import {alertTimeout} from "./utils";
 import {AlertColor} from "@mui/material";
-import {alertStateType, setAlertType} from "./types";
+import {alertStateType} from "./types";
 
 export function useAlert(){
     const [alertState, setAlertState] = useState({
