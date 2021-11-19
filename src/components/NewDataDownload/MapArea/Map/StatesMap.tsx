@@ -81,7 +81,7 @@ interface propType {
     }
 }
 
-export default function StatesMap(props: any) {
+export default function StatesMap(props: propType) {
     const classes = useStyles();
 
     useEffect(() => {
