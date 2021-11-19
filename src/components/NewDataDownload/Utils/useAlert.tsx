@@ -79,5 +79,5 @@ export function useAlert(){
         alertTimeout(setAlertState);
     }
 
-    return [alertState, alertUser]
+    return {alertState, alertUser};
 }

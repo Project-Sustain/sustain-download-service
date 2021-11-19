@@ -71,7 +71,6 @@ import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
-import {alertStateType, dataEntryType, dataManagementType, dataType, setAlertType} from "./Utils/types";
 import {useAlert} from "./Utils/useAlert";
 
 const useStyles = makeStyles({
@@ -119,24 +118,18 @@ const useStyles = makeStyles({
 export default function Main() {
     const classes = useStyles();
     const {data, dataManagement} = useStateSelection();
+    const {alertState, alertUser} = useAlert();
     const [loading, setLoading] = useState(true as boolean);
-    const [hoveredState, setHoveredState] = useState("" );
+    const [hoveredState, setHoveredState] = useState("" as string);
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
-
-    const [alert, setAlert] = useAlert();
-
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
     useEffect(() => {
-        //FIXME This solution sucks
-        const dataHere: dataType = data as dataType;
-        const dataEntry: dataEntryType = dataHere.stateData;
-        // setLoading(Object.keys(data.stateData as dataEntryType).length === 0);
-        setLoading(Object.keys(dataEntry).length === 0);
-    }, [data]);
+        setLoading(Object.keys(data.stateData).length === 0);
+    }, [data.stateData]);
 
     if(loading) {
         return (
@@ -144,24 +137,24 @@ export default function Main() {
                 <Typography className={classes.loadingItem}>Loading Data...</Typography>
                 <CircularProgress color="primary" />
             </Box>
-        )
+        );
     }
 
     else {
         return (<>
             <NSF />
-                <CustomAlert alert={alert as alertStateType} setAlert={setAlert as setAlertType}/>
+                <CustomAlert alert={alertState} setAlert={alertUser}/>
                 <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                 <Grid item className={classes.map}>
-                    <StateFilter data={data as dataType} filter={filter}/>
-                    <StatesMap data={data as dataType} dataManagement={dataManagement as dataManagementType} mapState={mapState}/>
+                    <StateFilter data={data} filter={filter}/>
+                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
                     <FauxTooltip title={hoveredState}/>
                 </Grid>
                 <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data as dataType} dataManagement={dataManagement as dataManagementType} alert={alert as alertStateType} setAlert={setAlert as setAlertType} />
+                    <DatasetTable data={data} dataManagement={dataManagement} alert={alertState} setAlert={alertUser} />
                 </Grid>
             </Grid>
             </>
-        )
+        );
     }
 }
