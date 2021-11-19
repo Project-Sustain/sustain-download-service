@@ -210,7 +210,10 @@ export default function DownloadDatasetPopup(props: propType) {
                         </TableHead>
                         <TableBody>
                             {generateCheckbox()}
-                            {generateTableRow(<DownloadButton collection={props.state.collection} region={formatRegionForDownload()} includeGeospatialData={geospatialData} />, <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>)}
+                            {generateTableRow(<DownloadButton collection={props.state.collection} region={formatRegionForDownload()}
+                                                              includeGeospatialData={geospatialData}
+                                                              setAlert={props.state.setAlert} />,
+                                              <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>)}
                         </TableBody>
                     </Table>
                 </Paper>

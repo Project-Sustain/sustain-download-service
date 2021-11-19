@@ -63,8 +63,8 @@ import {Button} from '@material-ui/core';
 import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
 import DownloadButtonText from "./DownloadButtonText"
 import Download from "../../../library/Download";
-import {collection} from "../Utils/types";
-import {exportAndDownloadData} from "../Utils/utils";
+import {alertStateType, collection, setAlertType} from "../Utils/types";
+import {exportAndDownloadData, serverNameToClientName} from "../Utils/utils";
 
 interface propTypes {
     collection: collection,
@@ -72,18 +72,24 @@ interface propTypes {
         name: string,
         GISJOIN: string
     },
-    includeGeospatialData: boolean
+    includeGeospatialData: boolean,
+    setAlert: setAlertType
 }
 
-export default function DownloadButton({ collection, region, includeGeospatialData }: propTypes) {
+export default function DownloadButton({ collection, region, includeGeospatialData, setAlert }: propTypes) {
     const apiKey = getApiKey();
     const [timeLeft, setTimeLeft] = useState(-1);
+
+    function getDatasetName() {
+        return collection.label ? collection.label : serverNameToClientName(collection.collection);
+    }
 
     return <Button onClick={async () => {
         const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
         if (downloadAbilityStatus.canDownload) {
             const downloadResult = await Download(collection, region, includeGeospatialData);
             exportAndDownloadData(downloadResult);
+            setAlert(true, `Downloading '${getDatasetName()}' for ${region.name}`, "success");
         }
         else if (downloadAbilityStatus.timeLeft) {
             setTimeLeft(downloadAbilityStatus.timeLeft);
