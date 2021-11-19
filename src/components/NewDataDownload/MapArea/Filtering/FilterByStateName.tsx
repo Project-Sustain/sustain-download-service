@@ -60,7 +60,7 @@ END OF TERMS AND CONDITIONS
 import React, {useState} from "react";
 import {statesArray} from "../../../../library/StateInfo";
 import {TextField} from "@mui/material";
-import {dataType, filterType} from "../../Utils/types";
+import {filterType} from "../../Utils/types";
 
 interface propTypes {
     filter: filterType,

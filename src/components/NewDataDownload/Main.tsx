@@ -132,7 +132,7 @@ export default function Main() {
         const dataEntry: dataEntryType = dataHere.stateData;
         // setLoading(Object.keys(data.stateData as dataEntryType).length === 0);
         setLoading(Object.keys(dataEntry).length === 0);
-    });
+    }, [data]);
 
     if(loading) {
         return (
