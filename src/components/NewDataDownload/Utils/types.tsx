@@ -61,11 +61,6 @@ export interface datasetStateType {
 }
 
 export interface filterType {
-    data: dataType,
-    filter: filter
-}
-
-interface filter {
     stateFilterType: number,
     setStateFilterType: (value: number) => void,
     setStatesMatchingSearch: (value: string[]) => void

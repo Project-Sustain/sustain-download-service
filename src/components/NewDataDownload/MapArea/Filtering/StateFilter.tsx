@@ -66,7 +66,7 @@ import FilterByDatasetName from "./FilterByDatasetName";
 import {Typography} from "@material-ui/core";
 import FilterType from "./FilterType";
 import {Stack} from "@mui/material";
-import {filterType} from "../../Utils/types";
+import {dataType, filterType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     root: {
@@ -74,7 +74,12 @@ const useStyles = makeStyles({
     },
 });
 
-export default function StateFilter(props: filterType) {
+interface propTypes {
+    data: dataType,
+    filter: filterType
+}
+
+export default function StateFilter(props: propTypes) {
     const classes = useStyles();
 
     function renderSelector() {

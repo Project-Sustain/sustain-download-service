@@ -60,8 +60,13 @@ END OF TERMS AND CONDITIONS
 import React, {useState} from "react";
 import {statesArray} from "../../../../library/StateInfo";
 import {TextField} from "@mui/material";
+import {dataType, filterType} from "../../Utils/types";
 
-export default function FilterByStateName(props: any) {
+interface propTypes {
+    filter: filterType,
+}
+
+export default function FilterByStateName(props: propTypes) {
     const [searchText, setSearchText] = useState("" as string);
 
     function handleChange(event: any) {
@@ -86,7 +91,6 @@ export default function FilterByStateName(props: any) {
     return (
         <TextField
             color={getColor()}
-            className={props.class}
             variant="outlined"
             onChange={handleChange}
             placeholder="ex: Colorado"

@@ -59,8 +59,14 @@ END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
 import {TextField} from "@mui/material";
+import {dataType, filterType} from "../../Utils/types";
 
-export default function FilterByDatasetName(props: any) {
+interface propTypes {
+    filter: filterType,
+    data: dataType
+}
+
+export default function FilterByDatasetName(props: propTypes) {
     const [searchText, setSearchText] = useState("" as string);
 
     const handleChange = (event: any) => {
@@ -89,7 +95,6 @@ export default function FilterByDatasetName(props: any) {
     return (
         <TextField
             color={getColor()}
-            className={props.class}
             variant="outlined"
             onChange={handleChange}
             placeholder="ex: Neon 2d Wind"
