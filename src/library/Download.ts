@@ -68,7 +68,6 @@ const querier = sustain_querier();
 export default async function Download(currentDataset: any, regionSelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
     const { GISJOIN, name } = regionSelected;
     let pipeline: any[] = [];
-    console.log({currentDataset})
     let meta: downloadMeta = {
         collectionName: currentDataset.collection,
         label: currentDataset.label,
@@ -85,9 +84,8 @@ export default async function Download(currentDataset: any, regionSelected: regi
             meta.joinField = 'GISJOIN'
         }
     }
-    //first, check if the dataset is a county or tract dataset, this will be the easiest to download
+
     if (["county", "tract"].includes(currentDataset?.level)) {
-        //get dataset data
         pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
         
         let d = await mongoQuery(currentDataset.collection, pipeline)

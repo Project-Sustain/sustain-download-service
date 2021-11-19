@@ -73,10 +73,11 @@ interface propTypes {
         GISJOIN: string
     },
     includeGeospatialData: boolean,
-    setAlert: setAlertType
+    setAlert: setAlertType,
+    setOpen: (value: boolean) => void
 }
 
-export default function DownloadButton({ collection, region, includeGeospatialData, setAlert }: propTypes) {
+export default function DownloadButton({ collection, region, includeGeospatialData, setAlert, setOpen }: propTypes) {
     const apiKey = getApiKey();
     const [timeLeft, setTimeLeft] = useState(-1);
 
@@ -87,9 +88,16 @@ export default function DownloadButton({ collection, region, includeGeospatialDa
     return <Button onClick={async () => {
         const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
         if (downloadAbilityStatus.canDownload) {
-            const downloadResult = await Download(collection, region, includeGeospatialData);
-            exportAndDownloadData(downloadResult);
+            console.log({collection})
             setAlert(true, `Downloading '${getDatasetName()}' for ${region.name}`, "success");
+            setOpen(false);
+            const downloadResult = await Download(collection, region, includeGeospatialData);
+            if(downloadResult) {
+                exportAndDownloadData(downloadResult);
+            }
+            else {
+                setAlert(true, "Download Failed", "error");
+            }
         }
         else if (downloadAbilityStatus.timeLeft) {
             setTimeLeft(downloadAbilityStatus.timeLeft);

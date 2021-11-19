@@ -69,6 +69,16 @@ export function serverNameToClientName(dataset: string) {
     return capitalizeFirstLetter(newDataset);
 }
 
+export function clientNameToServerName(dataset: string) {
+    if(dataset.charAt(0) === dataset.charAt(0).toUpperCase()) {
+        return dataset;
+    }
+    else {
+        let newDataset = dataset.replace(/ /g, "_");
+        return newDataset.toLowerCase();
+    }
+}
+
 function capitalizeFirstLetter(str: string) {
     if(str === null || str.length === 0) return "";
     return str.split(" ").map((word: string) => word.charAt(0).toUpperCase() + word.substr(1)).join(" ");
