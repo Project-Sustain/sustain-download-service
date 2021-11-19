@@ -63,7 +63,7 @@ import {Button} from '@material-ui/core';
 import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
 import DownloadButtonText from "./DownloadButtonText"
 import Download from "../../../library/Download";
-import {alertStateType, collection, setAlertType} from "../Utils/types";
+import {collection, setAlertType} from "../Utils/types";
 import {exportAndDownloadData, serverNameToClientName} from "../Utils/utils";
 
 interface propTypes {
