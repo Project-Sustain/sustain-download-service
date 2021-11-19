@@ -1,6 +1,8 @@
 import {gisStateCounty} from "../../../library/gisInfo";
 import JSZip from "jszip";
-import {collection} from "./types";
+import {alertStateType, collection} from "./types";
+import {AlertColor} from "@mui/material";
+import React from "react";
 
 export function serverNameToClientName(dataset: any) {
     let newDataset = dataset.replace(/_/g, " ");
@@ -41,12 +43,12 @@ export function getCounties(stateName: string) {
     else return [];
 }
 
-export function alertTimeout(setAlertState: (arg0: { open: boolean; text: string; severity: string; }) => void) {
+export function alertTimeout(setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>) {
     setTimeout(function() {
         setAlertState({
             open: false,
             text: "",
-            severity: ""
+            severity: "" as AlertColor
         });
     }, 4500);
 }

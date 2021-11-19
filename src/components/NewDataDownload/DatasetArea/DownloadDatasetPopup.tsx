@@ -109,14 +109,16 @@ const useStyles = makeStyles({
 });
 
 interface propType {
-    collection: collection,
-    granularity: granularityType,
-    dataset: string,
-    data: dataType,
-    alert: alertType
+    state: {
+        collection: collection,
+        granularity: granularityType,
+        dataset: string,
+        data: dataType,
+        alert: alertType
+    }
 }
 
-export default function DownloadDatasetPopup(props: any) {//FIXME error here when switching
+export default function DownloadDatasetPopup(props: propType) {
     const classes = useStyles();
     const [open, setOpen] = useState(false as boolean);
     const [geospatialData, setGeospatialData] = useState(false as boolean);

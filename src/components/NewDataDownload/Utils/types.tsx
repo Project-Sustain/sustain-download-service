@@ -19,15 +19,13 @@ export interface collection {
     fieldMetadata: any[],
     label: string,
     level: string,
-    temporal?: any
+    temporal: any
 }
 
 export interface countyType {
     GISJOIN: string,
     name: string
 }
-
-// -----
 
 export interface dataType {
     stateData: dataEntryType,

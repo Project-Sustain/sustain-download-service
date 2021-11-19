@@ -123,6 +123,8 @@ export default function Main() {
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
 
+    console.log({data})
+
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
