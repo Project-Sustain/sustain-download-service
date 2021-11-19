@@ -75,5 +75,5 @@ export function useStateSelection() {
         })
     }
 
-    return [data, dataManagement];
+    return {data, dataManagement};
 }

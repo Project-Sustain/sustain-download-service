@@ -118,7 +118,7 @@ const useStyles = makeStyles({
 
 export default function Main() {
     const classes = useStyles();
-    const [data, dataManagement] = useStateSelection();
+    const {data, dataManagement} = useStateSelection();
     const [loading, setLoading] = useState(true as boolean);
     const [hoveredState, setHoveredState] = useState("" );
     const [stateFilterType, setStateFilterType] = useState(0 as number);
@@ -158,7 +158,7 @@ export default function Main() {
                     <FauxTooltip title={hoveredState}/>
                 </Grid>
                 <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data as dataType} dataManagement={dataManagement as dataManagementType} alert={alert as alertType} />
+                    <DatasetTable data={data as dataType} dataManagement={dataManagement as dataManagementType} alert={alert as alertStateType} setAlert={setAlert as setAlertType} />
                 </Grid>
             </Grid>
             </>

@@ -84,7 +84,7 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
 import Download from "../../../library/Download";
 import {Checkbox} from "@mui/material";
-import {alertType, collection, dataType, granularityType} from "../Utils/types";
+import {alertStateType, alertType, collection, dataType, granularityType, setAlertType} from "../Utils/types";
 
 const useStyles = makeStyles({
     modal: {
@@ -114,7 +114,8 @@ interface propType {
         granularity: granularityType,
         dataset: string,
         data: dataType,
-        alert: alertType
+        alert: alertStateType,
+        setAlert: setAlertType
     }
 }
 
@@ -174,12 +175,7 @@ export default function DownloadDatasetPopup(props: propType) {
     }
 
     async function handleDownload() {
-        props.state.alert.setAlertState({
-            open: true,
-            text: `Downloading '${props.state.dataset}' in ${getLocation()}`,
-            severity: "success"
-        });
-        alertTimeout(props.state.alert.setAlertState);
+        props.state.setAlert(true, `Downloading '${props.state.dataset}' in ${getLocation()}`, "success");
         const downloadResult = await Download(props.state.collection, formatRegionForDownload(), geospatialData);
         exportAndDownloadData(downloadResult);
         handleClose();
