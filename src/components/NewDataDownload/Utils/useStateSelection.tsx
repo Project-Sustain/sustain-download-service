@@ -7,18 +7,22 @@ import {
     getStateName,
     serverNameToClientName
 } from "./utils";
-import {countyType, stateType, dataEntryType, dataType, dataManagementType, alertType} from "./types";
+import {
+    countyType,
+    stateType,
+    dataEntryType,
+    dataType,
+    dataManagementType,
+    alertType,
+    alertState,
+} from "./types";
 import {AlertColor} from "@mui/material";
 
 export function useStateSelection() {
     const [stateData, setStateData] = useState({} as dataEntryType);
     const [currentState, setCurrentState] = useState({} as stateType);
     const [currentCounty, setCurrentCounty] = useState({} as countyType);
-    const [alertState, setAlertState] = useState({
-        open: false,
-        text: "",
-        severity: "" as AlertColor
-    });
+    const [alertState, setAlertState] = useState({open: false, text: "", severity: "" as AlertColor} as alertState);
 
     useEffect(() => {
         (async () => {
@@ -52,12 +56,15 @@ export function useStateSelection() {
         })();
     }, []);
 
-    const data = {stateData, currentState, currentCounty} as dataType;
+    const data = {stateData, currentState, currentCounty}as dataType;
     const dataManagement = {
         handleStateChange: (stateName: string) => handleStateChange(stateName),
         handleCountyCounty: (countyName: string) => handleCountyCounty(countyName)
     } as dataManagementType;
-    const alert = {alertState, setAlertState} as alertType;
+
+    //FIXME Problem #1, get this typing to work
+    const alert = {alertState, setAlertState};
+    // const alert = {alertState, setAlertState} as alertType;
 
     function handleStateChange(stateName: string) {
         setCurrentState(stateData[`${stateName}`]);

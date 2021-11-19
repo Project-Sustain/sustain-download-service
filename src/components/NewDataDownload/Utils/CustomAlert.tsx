@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import {makeStyles} from "@material-ui/core/styles";
-import {alertType} from "./types";
+import {alertState, alertType} from "./types";
+import {AlertColor} from "@mui/material";
 
 const useStyles = makeStyles({
     root: {
@@ -12,7 +13,9 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CustomAlert(props: { alert: alertType }) {
+//FIXME Problem #2 get these prop types to work
+export default function CustomAlert(props: any) {
+// export default function CustomAlert(props: { alert: alertType }) {
     const classes = useStyles();
 
     if(props.alert.alertState.open) {

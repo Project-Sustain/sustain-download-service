@@ -71,7 +71,6 @@ import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
-import {alertType, dataManagementType, dataType} from "./Utils/types";
 
 const useStyles = makeStyles({
     map: {
@@ -122,6 +121,9 @@ export default function Main() {
     const [hoveredState, setHoveredState] = useState("" );
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
+
+    //FIXME look at this.
+    // const alertState = alert.alertState;
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
