@@ -1,3 +1,5 @@
+import {AlertColor} from "@mui/material";
+
 export interface countyType {
     GISJOIN: string,
     name: string
@@ -21,4 +23,26 @@ export interface stateType {
     collections_supported: collection[],
     datasets: string[],
     counties: countyType[]
+}
+
+export interface dataType {
+    stateData: dataEntryType,
+    currentState: stateType,
+    currentCounty: countyType
+}
+
+export interface dataManagementType {
+    handleStateChange: (stateName: string) => void,
+    handleCountyCounty: (countyName: string) => void
+}
+
+export interface alertType {
+    alertState: alertState,
+    setAlertState: (open: boolean, text: string, severity: AlertColor) => void
+}
+
+export interface alertState {
+    open: boolean,
+    text: string,
+    severity: AlertColor
 }

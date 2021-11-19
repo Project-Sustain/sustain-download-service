@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import {makeStyles} from "@material-ui/core/styles";
+import {alertType} from "./types";
 
 const useStyles = makeStyles({
     root: {
@@ -11,21 +12,12 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CustomAlert(props: any) {
+export default function CustomAlert(props: { alert: alertType }) {
     const classes = useStyles();
 
     if(props.alert.alertState.open) {
         return (
-            <Alert
-                className={classes.root} severity={props.alert.alertState.severity}
-                onClose={() => {
-                    props.alert.setAlertState({
-                        open: false,
-                        text: "",
-                        severity: ""
-                    });
-                }}
-            >
+            <Alert className={classes.root} severity={props.alert.alertState.severity}>
                 {props.alert.alertState.text}
             </Alert>
         )

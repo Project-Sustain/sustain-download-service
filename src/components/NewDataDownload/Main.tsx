@@ -71,6 +71,7 @@ import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
+import {alertType, dataManagementType, dataType} from "./Utils/types";
 
 const useStyles = makeStyles({
     map: {

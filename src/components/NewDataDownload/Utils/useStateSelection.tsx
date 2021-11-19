@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
 import {mongoQuery} from "../../../library/Download";
 import {
-    alertTimeout,
     buildAdditionalCollections,
     buildCollections,
     getCounties,
     getStateName,
     serverNameToClientName
 } from "./utils";
-import {countyType, stateType, dataEntryType} from "./types";
+import {countyType, stateType, dataEntryType, dataType, dataManagementType, alertType} from "./types";
+import {AlertColor} from "@mui/material";
 
 export function useStateSelection() {
     const [stateData, setStateData] = useState({} as dataEntryType);
@@ -17,7 +17,7 @@ export function useStateSelection() {
     const [alertState, setAlertState] = useState({
         open: false,
         text: "",
-        severity: ""
+        severity: "" as AlertColor
     });
 
     useEffect(() => {
@@ -52,26 +52,16 @@ export function useStateSelection() {
         })();
     }, []);
 
-    const data = {stateData, currentState, currentCounty};
+    const data = {stateData, currentState, currentCounty} as dataType;
     const dataManagement = {
         handleStateChange: (stateName: string) => handleStateChange(stateName),
         handleCountyCounty: (countyName: string) => handleCountyCounty(countyName)
-    };
-    const alert = {alertState, setAlertState};
+    } as dataManagementType;
+    const alert = {alertState, setAlertState} as alertType;
 
     function handleStateChange(stateName: string) {
-        if(stateData[`${stateName}`]) {
-            setCurrentState(stateData[`${stateName}`]);
-            setCurrentCounty(stateData[`${stateName}`].counties[0]);
-        }
-        else {
-            setAlertState({
-                open: true,
-                text: "We are still working on server data for " + stateName + " State",
-                severity: "error"
-            });
-            alertTimeout(setAlertState);
-        }
+        setCurrentState(stateData[`${stateName}`]);
+        setCurrentCounty(stateData[`${stateName}`].counties[0]);
     }
 
     function handleCountyCounty(countyName: string) {
