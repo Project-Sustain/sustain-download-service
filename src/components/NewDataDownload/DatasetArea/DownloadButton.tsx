@@ -74,7 +74,6 @@ interface propTypes {
     includeGeospatialData: boolean
 }
 
-
 export default function DownloadButton({ collection, region, includeGeospatialData }: propTypes) {
     const apiKey = getApiKey();
     const [timeLeft, setTimeLeft] = useState(-1);
