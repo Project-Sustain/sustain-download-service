@@ -71,7 +71,8 @@ import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
-import {alertType, dataEntryType, dataManagementType, dataType} from "./Utils/types";
+import {alertStateType, alertType, dataEntryType, dataManagementType, dataType} from "./Utils/types";
+import {useAlert} from "./Utils/useAlert";
 
 const useStyles = makeStyles({
     map: {
@@ -123,7 +124,7 @@ export default function Main() {
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
 
-
+    const [alert, setAlert] = useAlert();
 
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
@@ -149,7 +150,7 @@ export default function Main() {
     else {
         return (<>
             <NSF />
-            <CustomAlert alert={alert as alertType}/>
+            <CustomAlert alert={alert as alertStateType} />
             <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                 <Grid item className={classes.map}>
                     <StateFilter data={data as dataType} filter={filter}/>
