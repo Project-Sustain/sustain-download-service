@@ -175,18 +175,6 @@ export default function DownloadDatasetPopup(props: propType) {
         return props.state.granularity === "county" ? `${props.state.data.currentCounty.name}, ${props.state.data.currentState.name}` : props.state.data.currentState.name;
     }
 
-    async function handleDownload() {
-        props.state.alert.setAlertState({
-            open: true,
-            text: `Downloading '${props.state.dataset}' in ${getLocation()}`,
-            severity: "success"
-        });
-        alertTimeout(props.state.alert.setAlertState);
-        const downloadResult = await Download(props.state.collection, formatRegionForDownload(), geospatialData);
-        exportAndDownloadData(downloadResult);
-        handleClose();
-    }
-
     function handleCheck() {
         setGeospatialData(!geospatialData);
     }
