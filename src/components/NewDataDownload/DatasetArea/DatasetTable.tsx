@@ -68,6 +68,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
+import {alertType, dataManagementType, dataType, granularityType} from "../Utils/types";
 
 const useStyles = makeStyles({
     list: {
@@ -79,9 +80,15 @@ const useStyles = makeStyles({
     },
 });
 
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    alert: alertType
+}
+
 export default function DatasetTable(props: any) {
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state" as string);
+    const [granularity, setGranularity] = useState("state" as granularityType);
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.datasets as string[]);
     const [filtering, setFiltering] = useState(false as boolean);
 
@@ -92,9 +99,10 @@ export default function DatasetTable(props: any) {
     function renderDatasetRows() {
         return datasets.map((dataset: string, index: number) => {
             const collection = props.data.currentState.collections_supported[index];
+            const popupState = {collection, granularity, dataset, data: props.data, alert: props.alert}
             return (
                 <ListItem key={index}>
-                    <DownloadDatasetPopup collection={collection} granularity={granularity} dataset={dataset} data={props.data} alert={props.alert} />
+                    <DownloadDatasetPopup state={popupState} />
                 </ListItem>
             )
         })
@@ -115,8 +123,6 @@ export default function DatasetTable(props: any) {
         )
     }
 
-    else {
-        return null
-    }
+    else return null;
 
 }

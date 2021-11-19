@@ -126,8 +126,6 @@ export default function Main() {
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
-
-
     useEffect(() => {
         // @ts-ignore
         setLoading(Object.keys(data.stateData).length === 0);
@@ -146,7 +144,7 @@ export default function Main() {
     else {
         return (<>
             <NSF />
-            {/*FIXME thus, here, alert is not explicitly typed, it can be 1 of 3 types which is problematic when we type the props in <CustomAlert>*/}
+            {/*FIXME thus, here, alert is not explicitly typed, it can be 1 of 3 types which is problematic when we type the props in the child component*/}
             <CustomAlert alert={alert}/>
             <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                 <Grid item className={classes.map}>

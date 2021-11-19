@@ -63,6 +63,13 @@ import {
     TableRow,
 } from '@material-ui/core';
 import {Switch} from "@mui/material";
+import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
+}
 
 export default function StateCountySwitch(props: any) {
 

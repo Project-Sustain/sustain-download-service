@@ -1,13 +1,16 @@
 import {AlertColor} from "@mui/material";
 import React from "react";
 
-export interface countyType {
-    GISJOIN: string,
-    name: string
-}
-
 export interface dataEntryType {
     [name: string]: stateType
+}
+
+export interface stateType {
+    name: string,
+    GISJOIN: string,
+    collections_supported: collection[],
+    datasets: string[],
+    counties: countyType[]
 }
 
 export interface collection {
@@ -18,13 +21,12 @@ export interface collection {
     level: string
 }
 
-export interface stateType {
-    name: string,
+export interface countyType {
     GISJOIN: string,
-    collections_supported: collection[],
-    datasets: string[],
-    counties: countyType[]
+    name: string
 }
+
+// -----
 
 export interface dataType {
     stateData: dataEntryType,
@@ -47,3 +49,14 @@ export interface alertStateType {
     text: string,
     severity: AlertColor
 }
+
+export interface datasetStateType {
+    granularity: granularityType,
+    setGranularity: (value: granularityType) => void,
+    filteredDatasets: string[],
+    setFilteredDatasets: (value: string[]) => void,
+    filtering: boolean,
+    setFiltering: (value: boolean) => void
+}
+
+export type granularityType = "county" | "state";

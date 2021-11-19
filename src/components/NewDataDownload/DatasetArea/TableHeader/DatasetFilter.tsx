@@ -61,6 +61,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {TextField} from "@mui/material";
 import theme from "../../../../global/GlobalTheme";
+import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     root: {
@@ -68,6 +69,12 @@ const useStyles = makeStyles({
         marginTop: theme.spacing(1),
     },
 });
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
+}
 
 export default function DatasetFiler(props: any) {
     const classes = useStyles();

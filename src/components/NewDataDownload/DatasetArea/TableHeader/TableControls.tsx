@@ -69,12 +69,19 @@ import {makeStyles} from "@material-ui/core/styles";
 import DatasetFilter from "./DatasetFilter";
 import CountyDropdown from "./CountyDropdown";
 import StateCountySwitch from "./StateCountySwitch";
+import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     root: {
         borderRadius: "3px 3px 0px 0px",
     },
 });
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
+}
 
 export default function DatasetTable(props: any) {
     const classes = useStyles();
@@ -83,7 +90,7 @@ export default function DatasetTable(props: any) {
         <Grid item className={classes.root}>
             <Table>
                 <TableHead>
-                    <StateCountySwitch datasetState={props.datasetState} data={props.data} dataManagement={props.dataManagement} />
+                    <StateCountySwitch data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
                     <TableRow>
                         <TableCell colSpan={2}>
                             <CountyDropdown data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />

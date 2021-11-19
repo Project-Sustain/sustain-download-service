@@ -62,12 +62,24 @@ import * as d3 from 'd3';
 import { Draw } from "./svgGenerator";
 import {colors} from "../../Utils/colorDeclarations";
 import {makeStyles} from "@material-ui/core/styles";
+import {dataManagementType, dataType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     svg: {
         maxHeight: "40vw",
     },
 });
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    mapState: {
+        hoveredState: string,
+        setHoveredState: (value: string) => void,
+        statesMatchingSearch: string[],
+        setStatesMatchingSearch: (value: string[]) => void
+    }
+}
 
 export default function StatesMap(props: any) {
     const classes = useStyles();

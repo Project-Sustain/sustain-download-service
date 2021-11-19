@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     },
 });
 
-//FIXME Problem #2 get these prop types to work
 export default function CustomAlert(props: any) {
 // export default function CustomAlert(props: { alert: alertType }) {
     const classes = useStyles();

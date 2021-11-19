@@ -75,6 +75,6 @@ export function useStateSelection() {
         })
     }
 
-    //FIXME Have a look, these 3 all each excplicitly types here, leaving this hook
+    //FIXME Have a look, these 3 all each explicitly types here, leaving this hook
     return [data, dataManagement, alert];
 }

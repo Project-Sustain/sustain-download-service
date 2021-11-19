@@ -84,6 +84,7 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
 import Download from "../../../library/Download";
 import {Checkbox} from "@mui/material";
+import {alertType, collection, dataType, granularityType} from "../Utils/types";
 
 const useStyles = makeStyles({
     modal: {
@@ -107,6 +108,14 @@ const useStyles = makeStyles({
     },
 });
 
+interface propType {
+    collection: collection,
+    granularity: granularityType,
+    dataset: string,
+    data: dataType,
+    alert: alertType
+}
+
 export default function DownloadDatasetPopup(props: any) {
     const classes = useStyles();
     const [open, setOpen] = useState(false as boolean);
@@ -121,7 +130,7 @@ export default function DownloadDatasetPopup(props: any) {
     }
 
     function getGISJOIN() {
-        return props.granularity === "county" ? props.data.currentCounty.GISJOIN : props.data.currentState.GISJOIN;
+        return props.state.granularity === "county" ? props.state.data.currentCounty.GISJOIN : props.state.data.currentState.GISJOIN;
     }
 
     function formatRegionForDownload() {
@@ -132,21 +141,21 @@ export default function DownloadDatasetPopup(props: any) {
     }
 
     function getName() {
-        return props.granularity === "county" ? `${props.data.currentCounty.name}, ${props.data.currentState.name}` : `${props.data.currentState.name}`;
+        return props.state.granularity === "county" ? `${props.state.data.currentCounty.name}, ${props.state.data.currentState.name}` : `${props.state.data.currentState.name}`;
     }
 
     function getTags() {
         let tags = []
-        if (props.collection.temporal) {
+        if (props.state.collection.temporal) {
             tags.push(makeTag("This dataset is temporal and will have multiple records per entry.", <HourglassEmptyIcon />))
         }
-        if (isLinked(props.collection)) {
+        if (isLinked(props.state.collection)) {
             tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
         }
         else {
             tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
         }
-        if (isLinked(props.collection) && geospatialData) {
+        if (isLinked(props.state.collection) && geospatialData) {
             tags.push(makeTag("A separate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
         }
         return tags;
@@ -159,7 +168,7 @@ export default function DownloadDatasetPopup(props: any) {
     }
 
     function getLocation() {
-        return props.granularity === "county" ? `${props.data.currentCounty.name}, ${props.data.currentState.name}` : props.data.currentState.name;
+        return props.state.granularity === "county" ? `${props.state.data.currentCounty.name}, ${props.state.data.currentState.name}` : props.state.data.currentState.name;
     }
 
     function addGeospatialText() {
@@ -167,13 +176,13 @@ export default function DownloadDatasetPopup(props: any) {
     }
 
     async function handleDownload() {
-        props.alert.setAlertState({
+        props.state.alert.setAlertState({
             open: true,
-            text: `Downloading '${props.dataset}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
+            text: `Downloading '${props.state.dataset}' in ${getLocation()} ${addGeospatialText()} Geospatial Data`,
             severity: "success"
         });
-        alertTimeout(props.alert.setAlertState);
-        const downloadResult = await Download(props.collection, formatRegionForDownload(), geospatialData);
+        alertTimeout(props.state.alert.setAlertState);
+        const downloadResult = await Download(props.state.collection, formatRegionForDownload(), geospatialData);
         exportAndDownloadData(downloadResult);
         handleClose();
     }
@@ -182,10 +191,19 @@ export default function DownloadDatasetPopup(props: any) {
         setGeospatialData(!geospatialData);
     }
 
+    function generateTableRow(cell1: any, cell2: any, header: any = false) {
+        return (
+            <TableRow>
+                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell1}</TableCell>
+                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell2}</TableCell>
+            </TableRow>
+        )
+    }
+
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
-                {props.dataset}
+                {props.state.dataset}
             </ListItemButton>
             <Modal
                 open={open}
@@ -194,7 +212,7 @@ export default function DownloadDatasetPopup(props: any) {
                 <Paper elevation={3} className={classes.modal}>
                     <Table>
                         <TableHead>
-                            {generateTableRow(props.dataset, getLocation(), true)}
+                            {generateTableRow(props.state.dataset, getLocation(), true)}
                         </TableHead>
                         <TableBody>
                             {generateTableRow(<FormGroup><FormControlLabel control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck} />} label="Include Geospatial Data"/></FormGroup>, getTags())}
@@ -205,13 +223,4 @@ export default function DownloadDatasetPopup(props: any) {
             </Modal>
         </div>
     );
-
-    function generateTableRow(cell1: any, cell2: any, header: any = false) {
-        return (
-            <TableRow>
-                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell1}</TableCell>
-                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell2}</TableCell>
-            </TableRow>
-        )
-    }
 }
