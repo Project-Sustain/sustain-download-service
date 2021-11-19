@@ -71,7 +71,7 @@ import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
-import {alertType, dataManagementType, dataType} from "./Utils/types";
+import {alertType, dataEntryType, dataManagementType, dataType} from "./Utils/types";
 
 const useStyles = makeStyles({
     map: {
@@ -123,16 +123,17 @@ export default function Main() {
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
 
-    console.log({data})
-
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
 
     useEffect(() => {
+        //FIXME these types need to be sorted out. This solution just seems bad.
+        const dataHere: dataType = data as dataType;
+        const dataEntry: dataEntryType = dataHere.stateData;
+        // setLoading(Object.keys(data.stateData as dataEntryType).length === 0);
+        setLoading(Object.keys(dataEntry).length === 0);
         // @ts-ignore
-        setLoading(Object.keys(data.stateData).length === 0);
-        // @ts-ignore
-    }, [data.stateData]);
+    }, [data.stateData as dataEntryType]);
 
     if(loading) {
         return (

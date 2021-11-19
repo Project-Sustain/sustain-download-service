@@ -85,8 +85,7 @@ export default function StatesMap(props: propType) {
     const classes = useStyles();
 
     useEffect(() => {
-        const allStatesHTML = d3.select("#statesvg").selectAll(".state");
-        // @ts-ignore
+        const allStatesHTML: any = d3.select("#statesvg").selectAll(".state");
         const nodeList = allStatesHTML["_groups"][0];
 
         if(nodeList) {
