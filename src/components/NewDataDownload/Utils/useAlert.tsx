@@ -67,7 +67,7 @@ export function useAlert(){
     const [alertState, setAlertState] = useState({
         open: false,
         text: "",
-        severity: "info"
+        severity: "" as AlertColor
     } as alertStateType);
 
     function alertUser(open: boolean, text: string, severity: AlertColor) {
