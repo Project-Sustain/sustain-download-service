@@ -38,15 +38,17 @@ export interface dataManagementType {
     handleCountyCounty: (countyName: string) => void
 }
 
-export interface alertType {
-    alertState: alertStateType,
-    setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>
-}
-
 export interface alertStateType {
     open: boolean,
     text: string,
     severity: AlertColor
+}
+
+export type setAlertType = (open: boolean, text: string, severity: AlertColor) => void;
+
+export interface alertType {
+    alertState: alertStateType,
+    setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>
 }
 
 export interface datasetStateType {
