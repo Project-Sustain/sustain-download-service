@@ -78,19 +78,8 @@ const useStyles = makeStyles({
         position: "relative",
         width: "75%",
     },
-    text: {
-        margin: theme.spacing(1),
-    },
-    paper: {
-        padding: theme.spacing(1),
-        margin: theme.spacing(1),
-        height: "70vh",
-    },
     datasetSection: {
         width: "25%",
-    },
-    searchBox: {
-        margin: theme.spacing(1),
     },
     loading: {
         position: 'absolute',
@@ -101,17 +90,6 @@ const useStyles = makeStyles({
     loadingItem: {
         margin: theme.spacing(1),
         fontSize: "2em",
-    },
-    nsfPic: {
-        width: "5em",
-    },
-    nsfTooltip: {
-        position: "fixed",
-        bottom: "10px",
-        left: "10px",
-    },
-    filterArea: {
-        marginTop: "10px",
     },
 });
 
