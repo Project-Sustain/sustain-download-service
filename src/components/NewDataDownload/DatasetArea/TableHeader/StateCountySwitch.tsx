@@ -57,6 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React from "react";
 import {
     TableCell,
@@ -83,8 +84,7 @@ export default function StateCountySwitch(props: propType) {
     }
 
     function getNumberOfDatasets() {
-        const releventDatasets = props.datasetState.filtering ? props.datasetState.filteredDatasets : props.data.currentState.collections_supported;
-        return releventDatasets.length;
+        return props.datasetState.filtering ? props.datasetState.filteredDatasets.length : props.data.currentState.collections_supported.length;
     }
 
     return (

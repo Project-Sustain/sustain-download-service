@@ -63,7 +63,7 @@ import {TextField} from "@mui/material";
 import {makeStyles} from "@material-ui/core/styles";
 import {Autocomplete} from "@material-ui/lab";
 import theme from "../../../../global/GlobalTheme";
-import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import {countyType, dataManagementType, datasetStateType, dataType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     root: {
@@ -83,7 +83,7 @@ export default function CountyDropdown(props: propType) {
 
     if(props.datasetState.granularity === "county" && props.data.currentState.counties.length !== 0) {
 
-        const counties = props.data.currentState.counties.map((county: { name: string; }) => county.name);
+        const counties = props.data.currentState.counties.map((county: countyType) => county.name);
         const value = counties.includes(props.data.currentCounty.name) ? props.data.currentCounty.name : props.data.currentState.counties[0].name;
 
         return (
@@ -97,15 +97,11 @@ export default function CountyDropdown(props: propType) {
                     }
                 }}
                 autoHighlight
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        variant="outlined"
-                    />
-                )}
+                renderInput={(params) => (<TextField{...params} variant="outlined"/>)}
             />
         )
     }
 
-    else return null
+    else return null;
+
 }

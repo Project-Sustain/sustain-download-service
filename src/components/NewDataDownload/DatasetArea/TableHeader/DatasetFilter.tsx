@@ -57,6 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {TextField} from "@mui/material";
@@ -84,7 +85,7 @@ export default function DatasetFiler(props: propType) {
         return props.datasetState.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name}`;
     }
 
-    const handleChange = (event: any) => {
+    function handleChange(event: any) {
         const input = event.target.value;
         props.datasetState.setFiltering(input !== "");
         const matches = props.data.currentState.collections_supported.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(input.toLowerCase()));
@@ -99,4 +100,5 @@ export default function DatasetFiler(props: propType) {
             placeholder={createPlaceholderText()}
         />
     );
+
 }

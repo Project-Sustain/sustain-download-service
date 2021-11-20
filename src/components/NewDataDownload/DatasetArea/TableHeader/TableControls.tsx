@@ -57,6 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React from "react";
 import {
     Grid,
@@ -83,7 +84,7 @@ interface propType {
     datasetState: datasetStateType
 }
 
-export default function DatasetTable(props: propType) {
+export default function TableControls(props: propType) {
     const classes = useStyles();
 
     return (
@@ -101,4 +102,5 @@ export default function DatasetTable(props: propType) {
             </Table>
         </Grid>
     )
+
 }
