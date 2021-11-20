@@ -86,7 +86,7 @@ export default function DownloadButton({ collection, region, includeGeospatialDa
         <Button onClick={async () => {
             const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
             if (downloadAbilityStatus.canDownload) {
-                setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}. This may take some time.`, "success");
+                setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}.`, "success");
                 setOpen(false);
                 setDownloading(true);
                 const downloadResult = await Download(collection, region, includeGeospatialData);
