@@ -60,9 +60,7 @@ END OF TERMS AND CONDITIONS
 
 import {gisStateCounty} from "../../../library/gisInfo";
 import JSZip from "jszip";
-import {alertStateType, collection} from "./types";
-import {AlertColor} from "@mui/material";
-import React from "react";
+import {collection} from "./types";
 
 export function getCollectionName(collection: collection) {
     return collection.label ? collection.label : serverNameToClientName(collection.collection);
