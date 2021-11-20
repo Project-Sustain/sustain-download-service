@@ -81,9 +81,7 @@ export default function CustomAlert(props: propType) {
 
     if(props.alert.open) {
         return (
-            <Alert
-                className={classes.root} severity={props.alert.severity}
-            >
+            <Alert className={classes.root} severity={props.alert.severity}>
                 {props.alert.text}
             </Alert>
         )

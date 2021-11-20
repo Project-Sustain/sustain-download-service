@@ -65,6 +65,7 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import CircularProgress from "@mui/material/CircularProgress";
+import {Stack} from "@mui/material";
 
 const useStyles = makeStyles({
     loading: {
@@ -72,7 +73,7 @@ const useStyles = makeStyles({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        padding: theme.spacing(2),
+        padding: theme.spacing(4),
     },
     loadingItem: {
         margin: theme.spacing(1),
@@ -90,12 +91,12 @@ export default function DownloadingModal(props: propType) {
 
     return (
         <div>
-            <Modal
-                open={props.open}
-                onClose={() => props.setOpen(false)}
-            >
+            <Modal open={props.open} onClose={() => props.setOpen(false)}>
                 <Paper elevation={3} className={classes.loading}>
-                    <Typography className={classes.loadingItem}>Downloading Data &nbsp;<CircularProgress color="primary" /></Typography>
+                    <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
+                        <Typography className={classes.loadingItem}>Preparing Data</Typography>
+                        <CircularProgress color="primary" />
+                    </Stack>
                 </Paper>
             </Modal>
         </div>
