@@ -59,49 +59,40 @@ END OF TERMS AND CONDITIONS
 */
 
 import React from "react";
-import {TextField} from "@mui/material";
 import {makeStyles} from "@material-ui/core/styles";
-import {Autocomplete} from "@material-ui/lab";
-import theme from "../../../../global/GlobalTheme";
-import {countyType, dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import nsfLogo from "../../images/nsfLogo.png";
+import {Tooltip, withStyles} from "@material-ui/core";
 
 const useStyles = makeStyles({
-    root: {
-        width: "100%",
-        marginBottom: theme.spacing(1),
+    nsfPic: {
+        width: "5em",
     },
+    nsfTooltip: {
+        zIndex: 1000,
+        position: "fixed",
+        top: "10px",
+        left: "10px",
+    }
 });
 
-interface propType {
-    data: dataType,
-    dataManagement: dataManagementType,
-    datasetState: datasetStateType
-}
-
-export default function CountyDropdown(props: propType) {
+export default function Main() {
     const classes = useStyles();
 
-    if(props.datasetState.granularity === "county" && props.data.currentState.counties.length !== 0) {
+    const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
+        "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
+        "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
+        "Baltimore County.";
 
-        const counties = props.data.currentState.counties.map((county: countyType) => county.name);
-        const value = counties.includes(props.data.currentCounty.name) ? props.data.currentCounty.name : props.data.currentState.counties[0].name;
+    const CustomTooltip = withStyles(() => ({
+        tooltip: {
+            fontSize: 14,
+        },
+    }))(Tooltip);
 
-        return (
-            <Autocomplete
-                className={classes.root}
-                options={counties}
-                value={value}
-                onChange={(event, newValue: any) => {
-                    if (newValue) {
-                        props.dataManagement.handleCountyCounty(newValue);
-                    }
-                }}
-                autoHighlight
-                renderInput={(params) => (<TextField{...params} variant="outlined"/>)}
-            />
-        )
-    }
-
-    else return null;
+    return (
+        <CustomTooltip title={nsfText} className={classes.nsfTooltip}>
+            <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
+        </CustomTooltip>
+    )
 
 }

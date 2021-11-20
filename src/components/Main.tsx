@@ -58,44 +58,81 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
+import React, {useEffect, useState} from "react";
+import {useStateSelection} from "./Utils/useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../../../global/GlobalTheme";
-import FilterByStateName from "./FilterByStateName";
-import FilterByDatasetName from "./FilterByDatasetName";
-import {Typography} from "@material-ui/core";
-import FilterType from "./FilterType";
-import {Stack} from "@mui/material";
-import {dataType, filterType} from "../../Utils/types";
+import theme from "../global/GlobalTheme";
+import {Grid, Typography} from "@material-ui/core";
+import StatesMap from "./MapArea/Map/StatesMap";
+import FauxTooltip from "./Utils/FauxTooltip";
+import DatasetTable from "./DatasetArea/DatasetTable";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import CustomAlert from "./Utils/CustomAlert";
+import NSF from "./Utils/NSF";
+import StateFilter from "./MapArea/Filtering/StateFilter";
+import {useAlert} from "./Utils/useAlert";
 
 const useStyles = makeStyles({
-    root: {
-        margin: theme.spacing(2),
+    map: {
+        position: "relative",
+        width: "75%",
+    },
+    datasetSection: {
+        width: "25%",
+    },
+    loading: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    },
+    loadingItem: {
+        margin: theme.spacing(1),
+        fontSize: "2em",
     },
 });
 
-interface propTypes {
-    data: dataType,
-    filter: filterType
-}
-
-export default function StateFilter(props: propTypes) {
+export default function Main() {
     const classes = useStyles();
+    const {data, dataManagement} = useStateSelection();
+    const {alertState, alertUser} = useAlert();
+    const [loading, setLoading] = useState(true as boolean);
+    const [hoveredState, setHoveredState] = useState("" as string);
+    const [stateFilterType, setStateFilterType] = useState(0 as number);
+    const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
 
-    function renderSelector() {
-        if (props.filter.stateFilterType === 0) {
-            return <FilterByStateName filter={props.filter}/>
-        } else {
-            return <FilterByDatasetName filter={props.filter} data={props.data}/>
-        }
+    const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
+    const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
+
+    useEffect(() => {
+        setLoading(Object.keys(data.stateData).length === 0);
+    }, [data.stateData]);
+
+    if(loading) {
+        return (
+            <Box className={classes.loading}>
+                <Typography className={classes.loadingItem}>Loading Data...</Typography>
+                <CircularProgress color="primary" />
+            </Box>
+        );
     }
 
-    return (
-        <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
-            <Typography>Filter States by</Typography>
-            <FilterType filter={props.filter}/>
-            {renderSelector()}
-        </Stack>
-    )
-
+    else {
+        return (<>
+            <NSF />
+                <CustomAlert alert={alertState}/>
+                <Grid container direction="row" justifyContent="center" alignItems="flex-start">
+                <Grid item className={classes.map}>
+                    <StateFilter data={data} filter={filter}/>
+                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
+                    <FauxTooltip title={hoveredState}/>
+                </Grid>
+                <Grid item className={classes.datasetSection}>
+                    <DatasetTable data={data} dataManagement={dataManagement} setAlert={alertUser} />
+                </Grid>
+            </Grid>
+            </>
+        );
+    }
 }

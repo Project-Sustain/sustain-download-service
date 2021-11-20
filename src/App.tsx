@@ -63,8 +63,8 @@ import './App.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Grid } from '@material-ui/core';
 // import Main from './components/Main';
-import NewMain from './components/NewDataDownload/Main';
-import { colors } from "./components/NewDataDownload/Utils/colorDeclarations";
+import NewMain from './components/Main';
+import { colors } from "./components/Utils/colorDeclarations";
 
 const theme = createTheme({
     palette: {

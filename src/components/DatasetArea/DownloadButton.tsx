@@ -58,41 +58,49 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import nsfLogo from "../../../images/nsfLogo.png";
-import {Tooltip, withStyles} from "@material-ui/core";
+import React, { useState } from "react";
+import {Button} from '@material-ui/core';
+import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
+import DownloadButtonText from "./DownloadButtonText"
+import Download from "../../library/Download";
+import {collection, setAlertType} from "../Utils/types";
+import {exportAndDownloadData, getCollectionName} from "../Utils/utils";
 
-const useStyles = makeStyles({
-    nsfPic: {
-        width: "5em",
+interface propTypes {
+    collection: collection,
+    region: {
+        name: string,
+        GISJOIN: string
     },
-    nsfTooltip: {
-        zIndex: 1000,
-        position: "fixed",
-        top: "10px",
-        left: "10px",
-    }
-});
+    includeGeospatialData: boolean,
+    setAlert: setAlertType,
+    setOpen: (value: boolean) => void
+}
 
-export default function Main() {
-    const classes = useStyles();
-
-    const nsfText = "This research has been supported by funding from the US National Science Foundation’s CSSI program " +
-        "through awards 1931363, 1931324, 1931335, and 1931283. The project is a joint effort involving Colorado State " +
-        "University, Arizona State University, the University of California-Irvine, and the University of Maryland – " +
-        "Baltimore County.";
-
-    const CustomTooltip = withStyles(() => ({
-        tooltip: {
-            fontSize: 14,
-        },
-    }))(Tooltip);
+export default function DownloadButton({ collection, region, includeGeospatialData, setAlert, setOpen }: propTypes) {
+    const apiKey = getApiKey();
+    const [timeLeft, setTimeLeft] = useState(-1);
 
     return (
-        <CustomTooltip title={nsfText} className={classes.nsfTooltip}>
-            <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
-        </CustomTooltip>
+        <Button onClick={async () => {
+            const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
+            if (downloadAbilityStatus.canDownload) {
+                setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}. This may take some time.`, "success");
+                setOpen(false);
+                const downloadResult = await Download(collection, region, includeGeospatialData);
+                if(downloadResult) {
+                    exportAndDownloadData(downloadResult);
+                }
+                else {
+                    setAlert(true, "Download Failed", "error");
+                }
+            }
+            else if (downloadAbilityStatus.timeLeft) {
+                setTimeLeft(downloadAbilityStatus.timeLeft);
+            }
+        }}>
+            <DownloadButtonText timeLeft={timeLeft}/>
+        </Button>
     )
 
 }

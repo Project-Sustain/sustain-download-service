@@ -58,44 +58,47 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
-import {statesArray} from "../../../../library/StateInfo";
+import React from "react";
+import {makeStyles} from "@material-ui/core/styles";
 import {TextField} from "@mui/material";
-import {filterType} from "../../Utils/types";
+import theme from "../../../global/GlobalTheme";
+import {collection, dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import {getCollectionName} from "../../Utils/utils";
 
-interface propTypes {
-    filter: filterType,
+const useStyles = makeStyles({
+    root: {
+        width:"100%",
+        marginTop: theme.spacing(1),
+    },
+});
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
 }
 
-export default function FilterByStateName(props: propTypes) {
-    const [searchText, setSearchText] = useState("" as string);
+export default function DatasetFiler(props: propType) {
+    const classes = useStyles();
+
+    function createPlaceholderText() {
+        return props.datasetState.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name}`;
+    }
 
     function handleChange(event: any) {
-        const searchString = event.target.value as string;
-        setSearchText(searchString);
-        const matches = statesArray.filter((state: string) => stateMatch(searchString.toLowerCase(), state.toLowerCase()));
-        props.filter.setStatesMatchingSearch(searchString !== "" ? matches : []);
-    }
-
-    function stateMatch(matchString: string, state: string) {
-        if(matchString === state.substr(0, matchString.length)) return true;
-        else if(state.includes(" ")) {
-            return matchString === state.split(" ")[1].substr(0, matchString.length);
-        }
-        else return false;
-    }
-
-    function getColor() {
-        return searchText === "" ? "primary" : "secondary";
-    }
+        const input = event.target.value;
+        props.datasetState.setFiltering(input !== "");
+        const matches = props.data.currentState.collections_supported.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(input.toLowerCase()));
+        props.datasetState.setFilteredDatasets(matches);
+    };
 
     return (
         <TextField
-            color={getColor()}
+            className={classes.root}
             variant="outlined"
             onChange={handleChange}
-            placeholder="ex: Colorado"
+            placeholder={createPlaceholderText()}
         />
     );
-}
 
+}

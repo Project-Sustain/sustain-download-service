@@ -58,22 +58,50 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-@value colors: "./colorDeclarations.tsx";
-@value primary, unSelected from colors;
+import React from "react";
+import {TextField} from "@mui/material";
+import {makeStyles} from "@material-ui/core/styles";
+import {Autocomplete} from "@material-ui/lab";
+import theme from "../../../global/GlobalTheme";
+import {countyType, dataManagementType, datasetStateType, dataType} from "../../Utils/types";
 
-.state{
-    fill: unSelected;
-    stroke: #333;
-    stroke-width: 1;
+const useStyles = makeStyles({
+    root: {
+        width: "100%",
+        marginBottom: theme.spacing(1),
+    },
+});
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
 }
 
-.state:hover{
-    fill: #28b144 !important;
-}
+export default function CountyDropdown(props: propType) {
+    const classes = useStyles();
 
-.hovered-state-text{
-    opacity: 0.95;
-    display: none;
-    position: fixed;
-    padding: 10px;
+    if(props.datasetState.granularity === "county" && props.data.currentState.counties.length !== 0) {
+
+        const counties = props.data.currentState.counties.map((county: countyType) => county.name);
+        const value = counties.includes(props.data.currentCounty.name) ? props.data.currentCounty.name : props.data.currentState.counties[0].name;
+
+        return (
+            <Autocomplete
+                className={classes.root}
+                options={counties}
+                value={value}
+                onChange={(event, newValue: any) => {
+                    if (newValue) {
+                        props.dataManagement.handleCountyCounty(newValue);
+                    }
+                }}
+                autoHighlight
+                renderInput={(params) => (<TextField{...params} variant="outlined"/>)}
+            />
+        )
+    }
+
+    else return null;
+
 }

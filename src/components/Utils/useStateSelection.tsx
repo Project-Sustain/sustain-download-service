@@ -58,81 +58,75 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useEffect, useState} from "react";
-import {useStateSelection} from "./Utils/useStateSelection";
-import {makeStyles} from "@material-ui/core/styles";
-import theme from "../../global/GlobalTheme";
-import {Grid, Typography} from "@material-ui/core";
-import StatesMap from "./MapArea/Map/StatesMap";
-import FauxTooltip from "./Utils/FauxTooltip";
-import DatasetTable from "./DatasetArea/DatasetTable";
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import CustomAlert from "./Utils/CustomAlert";
-import NSF from "./Utils/NSF";
-import StateFilter from "./MapArea/Filtering/StateFilter";
-import {useAlert} from "./Utils/useAlert";
+import {useEffect, useState} from "react";
+import {mongoQuery} from "../../library/Download";
+import {
+    buildAdditionalCollections,
+    buildCollections,
+    getCounties,
+    getStateName,
+} from "./utils";
+import {
+    countyType,
+    stateType,
+    dataEntryType,
+    dataType,
+    dataManagementType
+} from "./types";
 
-const useStyles = makeStyles({
-    map: {
-        position: "relative",
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
-    loading: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-    },
-    loadingItem: {
-        margin: theme.spacing(1),
-        fontSize: "2em",
-    },
-});
-
-export default function Main() {
-    const classes = useStyles();
-    const {data, dataManagement} = useStateSelection();
-    const {alertState, alertUser} = useAlert();
-    const [loading, setLoading] = useState(true as boolean);
-    const [hoveredState, setHoveredState] = useState("" as string);
-    const [stateFilterType, setStateFilterType] = useState(0 as number);
-    const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
-
-    const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
-    const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
+export function useStateSelection() {
+    const [stateData, setStateData] = useState({} as dataEntryType);
+    const [currentState, setCurrentState] = useState({} as stateType);
+    const [currentCounty, setCurrentCounty] = useState({} as countyType);
 
     useEffect(() => {
-        setLoading(Object.keys(data.stateData).length === 0);
-    }, [data.stateData]);
+        (async () => {
+            const apertureData = await fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json());
+            const mongoData = await mongoQuery("state_gis_join_metadata", []);
 
-    if(loading) {
-        return (
-            <Box className={classes.loading}>
-                <Typography className={classes.loadingItem}>Loading Data...</Typography>
-                <CircularProgress color="primary" />
-            </Box>
-        );
+            if(apertureData && mongoData) {
+                let masterMap = {} as dataEntryType;
+                const additionalCollections = buildAdditionalCollections(mongoData, apertureData);
+                for (const key of mongoData) {
+                    const stateName = getStateName(key.gis_join);
+                    const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections);
+                    const counties = getCounties(stateName);
+                    masterMap[stateName] = {
+                        name: stateName,
+                        GISJOIN: key.gis_join,
+                        collections_supported: collections,
+                        counties: counties
+                    }
+                }
+                setStateData(masterMap);
+                setCurrentState(masterMap["Colorado"]);
+                setCurrentCounty(masterMap["Colorado"].counties[0]);
+            }
+
+            else {
+                console.log("API call failure, data unavailable");
+            }
+        })();
+    }, []);
+
+    const data = {stateData, currentState, currentCounty} as dataType;
+    const dataManagement = {
+        handleStateChange: (stateName: string) => handleStateChange(stateName),
+        handleCountyCounty: (countyName: string) => handleCountyCounty(countyName)
+    } as dataManagementType;
+
+    function handleStateChange(stateName: string) {
+        setCurrentState(stateData[`${stateName}`]);
+        setCurrentCounty(stateData[`${stateName}`].counties[0]);
     }
 
-    else {
-        return (<>
-            <NSF />
-                <CustomAlert alert={alertState}/>
-                <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-                <Grid item className={classes.map}>
-                    <StateFilter data={data} filter={filter}/>
-                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
-                    <FauxTooltip title={hoveredState}/>
-                </Grid>
-                <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data} dataManagement={dataManagement} setAlert={alertUser} />
-                </Grid>
-            </Grid>
-            </>
-        );
+    function handleCountyCounty(countyName: string) {
+        currentState.counties.forEach((county: countyType) => {
+            if (county.name === countyName) {
+                setCurrentCounty(county);
+            }
+        })
     }
+
+    return {data, dataManagement};
 }

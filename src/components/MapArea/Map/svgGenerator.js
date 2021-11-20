@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import * as d3 from 'd3';
 import "../../Utils/rawStyles.css";
-import {uStatePaths} from "../../../../library/StateInfo";
+import {uStatePaths} from "../../../library/StateInfo";
 
 export function Draw(id, mapState, dataManagement) {
     const hoverClass = document.getElementById("hovered-state-id");

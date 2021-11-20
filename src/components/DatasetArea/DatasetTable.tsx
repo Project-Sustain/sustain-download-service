@@ -58,49 +58,71 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, { useState } from "react";
-import {Button} from '@material-ui/core';
-import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
-import DownloadButtonText from "./DownloadButtonText"
-import Download from "../../../library/Download";
-import {collection, setAlertType} from "../Utils/types";
-import {exportAndDownloadData, getCollectionName} from "../Utils/utils";
+import React, {useState} from "react";
+import {
+    Grid,
+    Paper,
+    List,
+    ListItem,
+} from '@material-ui/core';
+import {makeStyles} from "@material-ui/core/styles";
+import DownloadDatasetPopup from "./DownloadDatasetPopup";
+import TableControls from "./TableHeader/TableControls";
+import theme from "../../global/GlobalTheme";
+import {collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
 
-interface propTypes {
-    collection: collection,
-    region: {
-        name: string,
-        GISJOIN: string
+const useStyles = makeStyles({
+    list: {
+        maxHeight: "60vh",
+        overflow: "auto"
     },
-    includeGeospatialData: boolean,
-    setAlert: setAlertType,
-    setOpen: (value: boolean) => void
+    paper: {
+        margin: theme.spacing(2),
+    },
+});
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    setAlert: setAlertType
 }
 
-export default function DownloadButton({ collection, region, includeGeospatialData, setAlert, setOpen }: propTypes) {
-    const apiKey = getApiKey();
-    const [timeLeft, setTimeLeft] = useState(-1);
+export default function DatasetTable(props: propType) {
+    const classes = useStyles();
+    const [granularity, setGranularity] = useState("state" as granularityType);
+    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported as collection[]);
+    const [filtering, setFiltering] = useState(false as boolean);
 
-    return (
-        <Button onClick={async () => {
-            const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
-            if (downloadAbilityStatus.canDownload) {
-                setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}. This may take some time.`, "success");
-                setOpen(false);
-                const downloadResult = await Download(collection, region, includeGeospatialData);
-                if(downloadResult) {
-                    exportAndDownloadData(downloadResult);
-                }
-                else {
-                    setAlert(true, "Download Failed", "error");
-                }
-            }
-            else if (downloadAbilityStatus.timeLeft) {
-                setTimeLeft(downloadAbilityStatus.timeLeft);
-            }
-        }}>
-            <DownloadButtonText timeLeft={timeLeft}/>
-        </Button>
-    )
+    const datasetState = {granularity, setGranularity, filteredDatasets, setFilteredDatasets, filtering, setFiltering}
+
+    const datasets = filtering ? filteredDatasets : props.data.currentState.collections_supported;
+
+    function renderDatasetRows() {
+        return datasets.map((collection: collection, index: number) => {
+            const popupState = {collection, granularity, data: props.data, setAlert: props.setAlert}
+            return (
+                <ListItem key={index}>
+                    <DownloadDatasetPopup state={popupState} />
+                </ListItem>
+            )
+        })
+    }
+
+    if(datasets) {
+        return (
+            <Grid container direction="column" justifyContent="center" alignItems="stretch">
+                <Paper className={classes.paper}>
+                    <TableControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
+                    <Grid item>
+                        <List className={classes.list}>
+                            {renderDatasetRows()}
+                        </List>
+                    </Grid>
+                </Paper>
+            </Grid>
+        )
+    }
+
+    else return null;
 
 }

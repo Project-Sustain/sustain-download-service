@@ -58,71 +58,44 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
-import {
-    Grid,
-    Paper,
-    List,
-    ListItem,
-} from '@material-ui/core';
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import DownloadDatasetPopup from "./DownloadDatasetPopup";
-import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
-import {collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
+import FilterByStateName from "./FilterByStateName";
+import FilterByDatasetName from "./FilterByDatasetName";
+import {Typography} from "@material-ui/core";
+import FilterType from "./FilterType";
+import {Stack} from "@mui/material";
+import {dataType, filterType} from "../../Utils/types";
 
 const useStyles = makeStyles({
-    list: {
-        maxHeight: "60vh",
-        overflow: "auto"
-    },
-    paper: {
+    root: {
         margin: theme.spacing(2),
     },
 });
 
-interface propType {
+interface propTypes {
     data: dataType,
-    dataManagement: dataManagementType,
-    setAlert: setAlertType
+    filter: filterType
 }
 
-export default function DatasetTable(props: propType) {
+export default function StateFilter(props: propTypes) {
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state" as granularityType);
-    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported as collection[]);
-    const [filtering, setFiltering] = useState(false as boolean);
 
-    const datasetState = {granularity, setGranularity, filteredDatasets, setFilteredDatasets, filtering, setFiltering}
-
-    const datasets = filtering ? filteredDatasets : props.data.currentState.collections_supported;
-
-    function renderDatasetRows() {
-        return datasets.map((collection: collection, index: number) => {
-            const popupState = {collection, granularity, data: props.data, setAlert: props.setAlert}
-            return (
-                <ListItem key={index}>
-                    <DownloadDatasetPopup state={popupState} />
-                </ListItem>
-            )
-        })
+    function renderSelector() {
+        if (props.filter.stateFilterType === 0) {
+            return <FilterByStateName filter={props.filter}/>
+        } else {
+            return <FilterByDatasetName filter={props.filter} data={props.data}/>
+        }
     }
 
-    if(datasets) {
-        return (
-            <Grid container direction="column" justifyContent="center" alignItems="stretch">
-                <Paper className={classes.paper}>
-                    <TableControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
-                    <Grid item>
-                        <List className={classes.list}>
-                            {renderDatasetRows()}
-                        </List>
-                    </Grid>
-                </Paper>
-            </Grid>
-        )
-    }
-
-    else return null;
+    return (
+        <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
+            <Typography>Filter States by</Typography>
+            <FilterType filter={props.filter}/>
+            {renderSelector()}
+        </Stack>
+    )
 
 }
