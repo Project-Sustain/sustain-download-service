@@ -61,7 +61,8 @@ END OF TERMS AND CONDITIONS
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import nsfLogo from "../../images/nsfLogo.png";
-import {Tooltip, withStyles} from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
+import {Tooltip, Typography} from "@mui/material";
 
 const useStyles = makeStyles({
     nsfPic: {
@@ -85,12 +86,12 @@ export default function Main() {
 
     const CustomTooltip = withStyles(() => ({
         tooltip: {
-            fontSize: 14,
+            fontSize: 18,
         },
     }))(Tooltip);
 
     return (
-        <CustomTooltip title={nsfText} className={classes.nsfTooltip}>
+        <CustomTooltip title={<Typography>{nsfText}</Typography>} className={classes.nsfTooltip}>
             <img src={nsfLogo} className={classes.nsfPic} alt="nsf logo" />
         </CustomTooltip>
     )

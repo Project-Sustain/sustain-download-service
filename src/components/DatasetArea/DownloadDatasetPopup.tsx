@@ -69,7 +69,7 @@ import {
     TableHead,
     TableRow,
     FormGroup,
-    Tooltip, Typography
+    Typography
 } from "@material-ui/core";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {makeStyles} from "@material-ui/core/styles";
@@ -81,7 +81,7 @@ import {isLinked} from "../../library/DatasetUtil";
 import ExploreOffIcon from "@material-ui/icons/ExploreOff";
 import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
-import {Checkbox} from "@mui/material";
+import {Checkbox, Tooltip} from "@mui/material";
 import DownloadButton from "./DownloadButton";
 import {collection, dataType, granularityType, setAlertType} from "../Utils/types";
 import {getCollectionName} from "../Utils/utils";
