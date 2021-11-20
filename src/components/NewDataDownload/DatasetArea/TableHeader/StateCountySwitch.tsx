@@ -83,7 +83,7 @@ export default function StateCountySwitch(props: propType) {
     }
 
     function getNumberOfDatasets() {
-        const releventDatasets = props.datasetState.filtering ? props.datasetState.filteredDatasets : props.data.currentState.datasets;
+        const releventDatasets = props.datasetState.filtering ? props.datasetState.filteredDatasets : props.data.currentState.collections_supported;
         return releventDatasets.length;
     }
 
