@@ -70,7 +70,6 @@ import DownloadDatasetPopup from "./DownloadDatasetPopup";
 import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
 import {alertStateType, collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
-import {clientNameToServerName, serverNameToClientName} from "../Utils/utils";
 
 const useStyles = makeStyles({
     list: {
