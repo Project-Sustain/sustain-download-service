@@ -65,14 +65,14 @@ import {
     buildCollections,
     getCounties,
     getStateName,
-} from "./utils";
+} from "../Utils/utils";
 import {
     countyType,
     stateType,
     dataEntryType,
     dataType,
     dataManagementType
-} from "./types";
+} from "../Utils/types";
 
 export function useStateSelection() {
     const [stateData, setStateData] = useState({} as dataEntryType);

@@ -60,7 +60,7 @@ END OF TERMS AND CONDITIONS
 
 import React, {useState} from 'react';
 import {AlertColor} from "@mui/material";
-import {alertStateType} from "./types";
+import {alertStateType} from "../Utils/types";
 
 export function useAlert(){
     const [alertState, setAlertState] = useState({

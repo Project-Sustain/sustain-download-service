@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 
 import React, {useEffect, useState} from "react";
-import {useStateSelection} from "./Utils/useStateSelection";
+import {useStateSelection} from "./Hooks/useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../global/GlobalTheme";
 import {Grid, Typography} from "@material-ui/core";
@@ -71,7 +71,7 @@ import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
-import {useAlert} from "./Utils/useAlert";
+import {useAlert} from "./Hooks/useAlert";
 
 const useStyles = makeStyles({
     map: {
