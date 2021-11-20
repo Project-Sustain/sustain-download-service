@@ -58,8 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import {useState} from 'react';
-import {alertTimeout} from "./utils";
+import React, {useState} from 'react';
 import {AlertColor} from "@mui/material";
 import {alertStateType} from "./types";
 
@@ -77,6 +76,16 @@ export function useAlert(){
             severity: severity
         });
         alertTimeout(setAlertState);
+    }
+
+    function alertTimeout(setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>) {
+        setTimeout(function() {
+            setAlertState({
+                open: false,
+                text: "",
+                severity: "" as AlertColor
+            });
+        }, 4500);
     }
 
     return {alertState, alertUser};

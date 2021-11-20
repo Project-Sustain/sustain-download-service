@@ -112,16 +112,6 @@ export function getCounties(stateName: string) {
     else return [];
 }
 
-export function alertTimeout(setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>) {
-    setTimeout(function() {
-        setAlertState({
-            open: false,
-            text: "",
-            severity: "" as AlertColor
-        });
-    }, 4500);
-}
-
 export const exportAndDownloadData = (downloadResult: any) => {
     let zip = new JSZip();
     zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))
