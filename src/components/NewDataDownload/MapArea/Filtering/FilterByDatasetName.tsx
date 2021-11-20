@@ -80,7 +80,6 @@ export default function FilterByDatasetName(props: propTypes) {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
                 const matches = data.collections_supported.filter((collection) => getCollectionName(collection).toLowerCase().includes(searchString.toLowerCase()));
-                // const matches = data.datasets.filter((dataset: string) => dataset.toLowerCase().includes(searchString.toLowerCase()));
                 if (matches.length !== 0) {
                     statesWithMatchingDatasets.push(state);
                 }
