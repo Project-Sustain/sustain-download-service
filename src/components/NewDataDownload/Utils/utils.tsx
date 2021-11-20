@@ -64,18 +64,13 @@ import {alertStateType, collection} from "./types";
 import {AlertColor} from "@mui/material";
 import React from "react";
 
-export function serverNameToClientName(dataset: string) {
-    let newDataset = dataset.replace(/_/g, " ");
-    return capitalizeFirstLetter(newDataset);
-}
-
-export function clientNameToServerName(dataset: string) {
-    let newDataset = dataset.replace(/ /g, "_");
-    return newDataset.toLowerCase();
-}
-
 export function getCollectionName(collection: collection) {
     return collection.label ? collection.label : serverNameToClientName(collection.collection);
+}
+
+function serverNameToClientName(dataset: string) {
+    let newDataset = dataset.replace(/_/g, " ");
+    return capitalizeFirstLetter(newDataset);
 }
 
 function capitalizeFirstLetter(str: string) {
