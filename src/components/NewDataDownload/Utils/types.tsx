@@ -115,8 +115,8 @@ export interface alertType {
 export interface datasetStateType {
     granularity: granularityType,
     setGranularity: (value: granularityType) => void,
-    filteredDatasets: string[],
-    setFilteredDatasets: (value: string[]) => void,
+    filteredDatasets: collection[],
+    setFilteredDatasets: (value: collection[]) => void,
     filtering: boolean,
     setFiltering: (value: boolean) => void
 }

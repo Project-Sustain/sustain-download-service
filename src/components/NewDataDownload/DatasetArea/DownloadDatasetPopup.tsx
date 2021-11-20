@@ -83,6 +83,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import {Checkbox} from "@mui/material";
 import DownloadButton from "./DownloadButton";
 import {alertStateType, collection, dataType, granularityType, setAlertType} from "../Utils/types";
+import {getCollectionName} from "../Utils/utils";
 
 const useStyles = makeStyles({
     modal: {
@@ -110,7 +111,7 @@ interface propType {
     state: {
         collection: collection,
         granularity: granularityType,
-        dataset: string,
+        // dataset: string,
         data: dataType,
         alert: alertStateType,
         setAlert: setAlertType
@@ -197,7 +198,7 @@ export default function DownloadDatasetPopup(props: propType) {
     return (
         <div>
             <ListItemButton onClick={handleOpen}>
-                {props.state.dataset}
+                {getCollectionName(props.state.collection)}
             </ListItemButton>
             <Modal
                 open={open}
@@ -206,7 +207,7 @@ export default function DownloadDatasetPopup(props: propType) {
                 <Paper elevation={3} className={classes.modal}>
                     <Table>
                         <TableHead>
-                            {generateTableRow(props.state.dataset, getLocation(), true)}
+                            {generateTableRow(getCollectionName(props.state.collection), getLocation(), true)}
                         </TableHead>
                         <TableBody>
                             {generateCheckbox()}

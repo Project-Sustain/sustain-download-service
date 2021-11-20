@@ -70,13 +70,12 @@ export function serverNameToClientName(dataset: string) {
 }
 
 export function clientNameToServerName(dataset: string) {
-    if(dataset.charAt(0) === dataset.charAt(0).toUpperCase()) {
-        return dataset;
-    }
-    else {
-        let newDataset = dataset.replace(/ /g, "_");
-        return newDataset.toLowerCase();
-    }
+    let newDataset = dataset.replace(/ /g, "_");
+    return newDataset.toLowerCase();
+}
+
+export function getCollectionName(collection: collection) {
+    return collection.label ? collection.label : serverNameToClientName(collection.collection);
 }
 
 function capitalizeFirstLetter(str: string) {

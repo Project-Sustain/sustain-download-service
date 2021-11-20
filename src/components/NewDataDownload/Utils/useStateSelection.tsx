@@ -80,8 +80,6 @@ export function useStateSelection() {
     const [currentState, setCurrentState] = useState({} as stateType);
     const [currentCounty, setCurrentCounty] = useState({} as countyType);
 
-    console.log({stateData})
-
     useEffect(() => {
         (async () => {
             const apertureData = await fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json());

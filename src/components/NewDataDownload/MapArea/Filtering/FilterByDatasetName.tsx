@@ -60,6 +60,7 @@ END OF TERMS AND CONDITIONS
 import React, {useState} from "react";
 import {TextField} from "@mui/material";
 import {dataType, filterType} from "../../Utils/types";
+import {getCollectionName} from "../../Utils/utils";
 
 interface propTypes {
     filter: filterType,
@@ -78,7 +79,8 @@ export default function FilterByDatasetName(props: propTypes) {
         else {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
-                const matches = data.datasets.filter((dataset: string) => dataset.toLowerCase().includes(searchString.toLowerCase()));
+                const matches = data.collections_supported.filter((collection) => getCollectionName(collection).toLowerCase().includes(searchString.toLowerCase()));
+                // const matches = data.datasets.filter((dataset: string) => dataset.toLowerCase().includes(searchString.toLowerCase()));
                 if (matches.length !== 0) {
                     statesWithMatchingDatasets.push(state);
                 }

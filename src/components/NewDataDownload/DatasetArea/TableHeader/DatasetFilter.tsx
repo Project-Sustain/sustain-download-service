@@ -61,7 +61,8 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {TextField} from "@mui/material";
 import theme from "../../../../global/GlobalTheme";
-import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import {collection, dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import {getCollectionName} from "../../Utils/utils";
 
 const useStyles = makeStyles({
     root: {
@@ -86,7 +87,7 @@ export default function DatasetFiler(props: propType) {
     const handleChange = (event: any) => {
         const input = event.target.value;
         props.datasetState.setFiltering(input !== "");
-        const matches = props.data.currentState.datasets.filter((state: string) => state.toLowerCase().includes(input.toLowerCase()));
+        const matches = props.data.currentState.collections_supported.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(input.toLowerCase()));
         props.datasetState.setFilteredDatasets(matches);
     };
 
