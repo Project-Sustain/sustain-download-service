@@ -65,14 +65,13 @@ import {
     buildCollections,
     getCounties,
     getStateName,
-    serverNameToClientName
 } from "./utils";
 import {
     countyType,
     stateType,
     dataEntryType,
     dataType,
-    dataManagementType, collection,
+    dataManagementType
 } from "./types";
 
 export function useStateSelection() {
@@ -92,12 +91,10 @@ export function useStateSelection() {
                     const stateName = getStateName(key.gis_join);
                     const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections);
                     const counties = getCounties(stateName);
-                    const datasets = collections.map((collection: collection) => collection.label ? collection.label : serverNameToClientName(collection.collection));
                     masterMap[stateName] = {
                         name: stateName,
                         GISJOIN: key.gis_join,
                         collections_supported: collections,
-                        datasets: datasets,
                         counties: counties
                     }
                 }

@@ -69,7 +69,6 @@ export interface stateType {
     name: string,
     GISJOIN: string,
     collections_supported: collection[],
-    datasets: string[],
     counties: countyType[]
 }
 
