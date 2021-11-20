@@ -112,7 +112,8 @@ interface propType {
         collection: collection,
         granularity: granularityType,
         data: dataType,
-        setAlert: setAlertType
+        setAlert: setAlertType,
+        setDownloading: (value: boolean) => void
     }
 }
 
@@ -209,10 +210,12 @@ export default function DownloadDatasetPopup(props: propType) {
                         </TableHead>
                         <TableBody>
                             {generateCheckbox()}
-                            {generateTableRow(<DownloadButton collection={props.state.collection} region={formatRegionForDownload()}
-                                                              includeGeospatialData={geospatialData}
-                                                              setAlert={props.state.setAlert} setOpen={setOpen} />,
-                                              <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>)}
+                            {generateTableRow
+                            (<DownloadButton collection={props.state.collection} region={formatRegionForDownload()}
+                                             includeGeospatialData={geospatialData} setAlert={props.state.setAlert} setOpen={setOpen}
+                                             setDownloading={props.state.setDownloading}/>,
+                                             <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>
+                            )}
                         </TableBody>
                     </Table>
                 </Paper>

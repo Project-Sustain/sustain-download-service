@@ -74,10 +74,11 @@ interface propTypes {
     },
     includeGeospatialData: boolean,
     setAlert: setAlertType,
-    setOpen: (value: boolean) => void
+    setOpen: (value: boolean) => void,
+    setDownloading: (value: boolean) => void
 }
 
-export default function DownloadButton({ collection, region, includeGeospatialData, setAlert, setOpen }: propTypes) {
+export default function DownloadButton({ collection, region, includeGeospatialData, setAlert, setOpen, setDownloading }: propTypes) {
     const apiKey = getApiKey();
     const [timeLeft, setTimeLeft] = useState(-1);
 
@@ -87,7 +88,11 @@ export default function DownloadButton({ collection, region, includeGeospatialDa
             if (downloadAbilityStatus.canDownload) {
                 setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}. This may take some time.`, "success");
                 setOpen(false);
+                console.log("Download Started")
+                setDownloading(true);
                 const downloadResult = await Download(collection, region, includeGeospatialData);
+                setDownloading(false);
+                console.log("Download Complete")
                 if(downloadResult) {
                     exportAndDownloadData(downloadResult);
                 }

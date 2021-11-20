@@ -57,75 +57,48 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
-
-import React, {useState} from "react";
+import React from "react";
 import {
-    Grid,
-    Paper,
-    List,
-    ListItem,
-} from '@material-ui/core';
+    Modal,
+    Paper, Typography,
+} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import DownloadDatasetPopup from "./DownloadDatasetPopup";
-import TableControls from "./TableHeader/TableControls";
-import theme from "../../global/GlobalTheme";
-import {collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
-import DownloadingModal from "./TableHeader/DownloadingModal";
+import theme from "../../../global/GlobalTheme";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyles = makeStyles({
-    list: {
-        maxHeight: "60vh",
-        overflow: "auto"
+    modal: {
+        padding: theme.spacing(1),
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
     },
-    paper: {
-        margin: theme.spacing(2),
+    loadingItem: {
+        margin: theme.spacing(1),
+        fontSize: "2em",
     },
 });
 
 interface propType {
-    data: dataType,
-    dataManagement: dataManagementType,
-    setAlert: setAlertType
+    open: boolean,
+    setOpen: (value: boolean) => void
 }
 
-export default function DatasetTable(props: propType) {
+export default function DownloadingModal(props: propType) {
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state" as granularityType);
-    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported as collection[]);
-    const [filtering, setFiltering] = useState(false as boolean);
-    const [downloading, setDownloading] = useState(false as boolean);
 
-    const datasetState = {granularity, setGranularity, filteredDatasets, setFilteredDatasets, filtering, setFiltering}
-
-    const datasets = filtering ? filteredDatasets : props.data.currentState.collections_supported;
-
-    function renderDatasetRows() {
-        return datasets.map((collection: collection, index: number) => {
-            const popupState = {collection, granularity, data: props.data, setAlert: props.setAlert, setDownloading}
-            return (
-                <ListItem key={index}>
-                    <DownloadDatasetPopup state={popupState} />
-                </ListItem>
-            )
-        })
-    }
-
-    if(datasets) {
-        return (
-            <Grid container direction="column" justifyContent="center" alignItems="stretch">
-                <Paper className={classes.paper}>
-                    <DownloadingModal open={downloading} setOpen={setDownloading} />
-                    <TableControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
-                    <Grid item>
-                        <List className={classes.list}>
-                            {renderDatasetRows()}
-                        </List>
-                    </Grid>
+    return (
+        <div>
+            <Modal
+                open={props.open}
+                onClose={() => props.setOpen(false)}
+            >
+                <Paper elevation={3} className={classes.modal}>
+                    <Typography className={classes.loadingItem}>Downloading Data...</Typography>
+                    <CircularProgress color="primary" />
                 </Paper>
-            </Grid>
-        )
-    }
-
-    else return null;
-
+            </Modal>
+        </div>
+    );
 }
