@@ -213,7 +213,7 @@ export default function DownloadDatasetPopup(props: propType) {
                             {generateTableRow
                             (<DownloadButton collection={props.state.collection} region={formatRegionForDownload()}
                                              includeGeospatialData={geospatialData} setAlert={props.state.setAlert} setOpen={setOpen}
-                                             setDownloading={props.state.setDownloading}/>,
+                                             setDownloading={props.state.setDownloading} />,
                                              <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>
                             )}
                         </TableBody>

@@ -67,12 +67,12 @@ import theme from "../../../global/GlobalTheme";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyles = makeStyles({
-    modal: {
-        padding: theme.spacing(1),
+    loading: {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+        padding: theme.spacing(2),
     },
     loadingItem: {
         margin: theme.spacing(1),
@@ -94,9 +94,8 @@ export default function DownloadingModal(props: propType) {
                 open={props.open}
                 onClose={() => props.setOpen(false)}
             >
-                <Paper elevation={3} className={classes.modal}>
-                    <Typography className={classes.loadingItem}>Downloading Data...</Typography>
-                    <CircularProgress color="primary" />
+                <Paper elevation={3} className={classes.loading}>
+                    <Typography className={classes.loadingItem}>Downloading Data &nbsp;<CircularProgress color="primary" /></Typography>
                 </Paper>
             </Modal>
         </div>

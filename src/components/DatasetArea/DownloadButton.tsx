@@ -88,11 +88,9 @@ export default function DownloadButton({ collection, region, includeGeospatialDa
             if (downloadAbilityStatus.canDownload) {
                 setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}. This may take some time.`, "success");
                 setOpen(false);
-                console.log("Download Started")
                 setDownloading(true);
                 const downloadResult = await Download(collection, region, includeGeospatialData);
                 setDownloading(false);
-                console.log("Download Complete")
                 if(downloadResult) {
                     exportAndDownloadData(downloadResult);
                 }
