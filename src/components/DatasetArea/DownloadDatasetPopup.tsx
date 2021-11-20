@@ -94,17 +94,11 @@ const useStyles = makeStyles({
         left: '50%',
         transform: 'translate(-50%, -50%)',
     },
-    modalSection: {
-        margin: theme.spacing(1),
-    },
     tagsContainer: {
         margin: "10px"
     },
     iconSpacing: {
         margin: "0px 5px"
-    },
-    headerText: {
-        fontSize: "1em"
     },
 });
 
