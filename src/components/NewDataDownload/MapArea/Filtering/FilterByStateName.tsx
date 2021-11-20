@@ -57,6 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React, {useState} from "react";
 import {statesArray} from "../../../../library/StateInfo";
 import {TextField} from "@mui/material";
@@ -70,7 +71,7 @@ export default function FilterByStateName(props: propTypes) {
     const [searchText, setSearchText] = useState("" as string);
 
     function handleChange(event: any) {
-        const searchString = event.target.value;
+        const searchString = event.target.value as string;
         setSearchText(searchString);
         const matches = statesArray.filter((state: string) => stateMatch(searchString.toLowerCase(), state.toLowerCase()));
         props.filter.setStatesMatchingSearch(searchString !== "" ? matches : []);

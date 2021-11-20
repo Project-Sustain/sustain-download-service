@@ -82,7 +82,7 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import LinkIcon from "@material-ui/icons/Link";
 import {Checkbox} from "@mui/material";
 import DownloadButton from "./DownloadButton";
-import {alertStateType, collection, dataType, granularityType, setAlertType} from "../Utils/types";
+import {collection, dataType, granularityType, setAlertType} from "../Utils/types";
 import {getCollectionName} from "../Utils/utils";
 
 const useStyles = makeStyles({
@@ -111,9 +111,7 @@ interface propType {
     state: {
         collection: collection,
         granularity: granularityType,
-        // dataset: string,
         data: dataType,
-        alert: alertStateType,
         setAlert: setAlertType
     }
 }

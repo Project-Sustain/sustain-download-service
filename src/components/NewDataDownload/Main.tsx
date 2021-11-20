@@ -121,7 +121,7 @@ export default function Main() {
     else {
         return (<>
             <NSF />
-                <CustomAlert alert={alertState} setAlert={alertUser}/>
+                <CustomAlert alert={alertState}/>
                 <Grid container direction="row" justifyContent="center" alignItems="flex-start">
                 <Grid item className={classes.map}>
                     <StateFilter data={data} filter={filter}/>
@@ -129,7 +129,7 @@ export default function Main() {
                     <FauxTooltip title={hoveredState}/>
                 </Grid>
                 <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data} dataManagement={dataManagement} alert={alertState} setAlert={alertUser} />
+                    <DatasetTable data={data} dataManagement={dataManagement} setAlert={alertUser} />
                 </Grid>
             </Grid>
             </>

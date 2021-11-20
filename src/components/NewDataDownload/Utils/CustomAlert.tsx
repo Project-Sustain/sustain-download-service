@@ -61,7 +61,7 @@ END OF TERMS AND CONDITIONS
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import {makeStyles} from "@material-ui/core/styles";
-import {setAlertType, alertStateType} from "./types";
+import {alertStateType} from "./types";
 
 const useStyles = makeStyles({
     root: {
@@ -74,7 +74,6 @@ const useStyles = makeStyles({
 
 interface propType {
     alert: alertStateType,
-    setAlert: setAlertType
 }
 
 export default function CustomAlert(props: propType) {

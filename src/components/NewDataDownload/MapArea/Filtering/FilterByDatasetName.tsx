@@ -59,7 +59,7 @@ END OF TERMS AND CONDITIONS
 */
 import React, {useState} from "react";
 import {TextField} from "@mui/material";
-import {dataType, filterType} from "../../Utils/types";
+import {dataType, filterType, collection} from "../../Utils/types";
 import {getCollectionName} from "../../Utils/utils";
 
 interface propTypes {
@@ -70,8 +70,8 @@ interface propTypes {
 export default function FilterByDatasetName(props: propTypes) {
     const [searchText, setSearchText] = useState("" as string);
 
-    const handleChange = (event: any) => {
-        const searchString = event.target.value;
+    function handleChange(event: any) {
+        const searchString = event.target.value as string;
         setSearchText(searchString);
         if(searchString === "") {
             props.filter.setStatesMatchingSearch([]);
@@ -79,7 +79,7 @@ export default function FilterByDatasetName(props: propTypes) {
         else {
             const statesWithMatchingDatasets = [];
             for(const [state, data] of Object.entries(props.data.stateData)) {
-                const matches = data.collections_supported.filter((collection) => getCollectionName(collection).toLowerCase().includes(searchString.toLowerCase()));
+                const matches = data.collections_supported.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(searchString.toLowerCase()));
                 if (matches.length !== 0) {
                     statesWithMatchingDatasets.push(state);
                 }

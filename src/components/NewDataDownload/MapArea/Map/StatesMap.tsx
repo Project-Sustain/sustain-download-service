@@ -57,6 +57,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+
 import React, { useEffect } from "react";
 import * as d3 from 'd3';
 import { Draw } from "./svgGenerator";

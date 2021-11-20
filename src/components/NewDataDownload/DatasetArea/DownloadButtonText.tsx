@@ -67,6 +67,7 @@ interface downloadButtonTextProps {
 
 export default React.memo(function DownloadButtonText({ timeLeft }: downloadButtonTextProps) {
     const [countDown, setCountDown] = useState(timeLeft);
+
     useEffect(() => {
         setCountDown(timeLeft);
         let secondsPassed = 0;
@@ -78,13 +79,9 @@ export default React.memo(function DownloadButtonText({ timeLeft }: downloadButt
     }, [timeLeft]);
 
     const getDownloadButtonText = () => {
-        if(countDown < 0) {
-            return "Download Data"
-        }
-        else if(countDown > 60){
-            return "Please Sign In"
-        }
-        return `Cooldown... ${countDown}`;
+        if(countDown < 0) return "Download Data";
+        else if(countDown > 60) return "Please Sign In";
+        else return `Cooldown... ${countDown}`;
     }
 
     return <Typography>{getDownloadButtonText()}</Typography>

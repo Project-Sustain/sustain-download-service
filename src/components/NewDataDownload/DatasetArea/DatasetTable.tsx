@@ -69,7 +69,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
 import TableControls from "./TableHeader/TableControls";
 import theme from "../../../global/GlobalTheme";
-import {alertStateType, collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
+import {collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
 
 const useStyles = makeStyles({
     list: {
@@ -84,7 +84,6 @@ const useStyles = makeStyles({
 interface propType {
     data: dataType,
     dataManagement: dataManagementType,
-    alert: alertStateType,
     setAlert: setAlertType
 }
 
@@ -100,7 +99,7 @@ export default function DatasetTable(props: propType) {
 
     function renderDatasetRows() {
         return datasets.map((collection: collection, index: number) => {
-            const popupState = {collection, granularity, data: props.data, alert: props.alert, setAlert: props.setAlert}
+            const popupState = {collection, granularity, data: props.data, setAlert: props.setAlert}
             return (
                 <ListItem key={index}>
                     <DownloadDatasetPopup state={popupState} />

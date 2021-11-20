@@ -64,7 +64,7 @@ import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
 import DownloadButtonText from "./DownloadButtonText"
 import Download from "../../../library/Download";
 import {collection, setAlertType} from "../Utils/types";
-import {exportAndDownloadData, serverNameToClientName} from "../Utils/utils";
+import {exportAndDownloadData, getCollectionName} from "../Utils/utils";
 
 interface propTypes {
     collection: collection,
@@ -81,29 +81,26 @@ export default function DownloadButton({ collection, region, includeGeospatialDa
     const apiKey = getApiKey();
     const [timeLeft, setTimeLeft] = useState(-1);
 
-    function getDatasetName() {
-        return collection.label ? collection.label : serverNameToClientName(collection.collection);
-    }
+    return (
+        <Button onClick={async () => {
+            const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
+            if (downloadAbilityStatus.canDownload) {
+                setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}. This may take some time.`, "success");
+                setOpen(false);
+                const downloadResult = await Download(collection, region, includeGeospatialData);
+                if(downloadResult) {
+                    exportAndDownloadData(downloadResult);
+                }
+                else {
+                    setAlert(true, "Download Failed", "error");
+                }
+            }
+            else if (downloadAbilityStatus.timeLeft) {
+                setTimeLeft(downloadAbilityStatus.timeLeft);
+            }
+        }}>
+            <DownloadButtonText timeLeft={timeLeft}/>
+        </Button>
+    )
 
-    return <Button onClick={async () => {
-        const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
-        if (downloadAbilityStatus.canDownload) {
-            console.log({collection})
-            setAlert(true, `Downloading '${getDatasetName()}' for ${region.name}`, "success");
-            setOpen(false);
-            const downloadResult = await Download(collection, region, includeGeospatialData);
-            if(downloadResult) {
-                exportAndDownloadData(downloadResult);
-            }
-            else {
-                setAlert(true, "Download Failed", "error");
-            }
-        }
-        else if (downloadAbilityStatus.timeLeft) {
-            setTimeLeft(downloadAbilityStatus.timeLeft);
-        }
-    }
-    }>
-        <DownloadButtonText timeLeft={timeLeft}/>
-    </Button>;
 }
