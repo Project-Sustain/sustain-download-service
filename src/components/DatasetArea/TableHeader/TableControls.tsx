@@ -58,8 +58,49 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React from "react";
+import {
+    Grid,
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
+import {makeStyles} from "@material-ui/core/styles";
+import DatasetFilter from "./DatasetFilter";
+import CountyDropdown from "./CountyDropdown";
+import StateCountySwitch from "./StateCountySwitch";
+import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+
+const useStyles = makeStyles({
+    root: {
+        borderRadius: "3px 3px 0px 0px",
+    },
+});
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
+}
+
+export default function TableControls(props: propType) {
+    const classes = useStyles();
+
+    return (
+        <Grid item className={classes.root}>
+            <Table>
+                <TableHead>
+                    <StateCountySwitch data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+                    <TableRow>
+                        <TableCell colSpan={2}>
+                            <CountyDropdown data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+                            <DatasetFilter data={props.data} dataManagement={props.dataManagement}  datasetState={props.datasetState} />
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+            </Table>
+        </Grid>
+    )
+
+}

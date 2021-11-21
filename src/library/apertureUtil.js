@@ -70,7 +70,7 @@ export default {
      * @returns {string} 
      */
     capitalizeString: function (str) {
-        if (str == null || str.length == 0) {
+        if (str == null || str.length === 0) {
             return "";
         }
         str = str.split(" ");

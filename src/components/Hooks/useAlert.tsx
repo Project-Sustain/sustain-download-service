@@ -58,8 +58,35 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React, {useState} from 'react';
+import {AlertColor} from "@mui/material";
+import {alertStateType} from "../Utils/types";
+
+export function useAlert(){
+    const [alertState, setAlertState] = useState({
+        open: false,
+        text: "",
+        severity: "" as AlertColor
+    } as alertStateType);
+
+    function alertUser(open: boolean, text: string, severity: AlertColor) {
+        setAlertState({
+            open: open,
+            text: text,
+            severity: severity
+        });
+        alertTimeout(setAlertState);
+    }
+
+    function alertTimeout(setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>) {
+        setTimeout(function() {
+            setAlertState({
+                open: false,
+                text: "",
+                severity: "" as AlertColor
+            });
+        }, 4500);
+    }
+
+    return {alertState, alertUser};
+}

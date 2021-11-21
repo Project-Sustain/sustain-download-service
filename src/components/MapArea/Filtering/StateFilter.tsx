@@ -58,8 +58,44 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React from "react";
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../../global/GlobalTheme";
+import FilterByStateName from "./FilterByStateName";
+import FilterByDatasetName from "./FilterByDatasetName";
+import {Typography} from "@material-ui/core";
+import FilterType from "./FilterType";
+import {Stack} from "@mui/material";
+import {dataType, filterType} from "../../Utils/types";
+
+const useStyles = makeStyles({
+    root: {
+        margin: theme.spacing(2),
+    },
+});
+
+interface propTypes {
+    data: dataType,
+    filter: filterType
+}
+
+export default function StateFilter(props: propTypes) {
+    const classes = useStyles();
+
+    function renderSelector() {
+        if (props.filter.stateFilterType === 0) {
+            return <FilterByStateName filter={props.filter}/>
+        } else {
+            return <FilterByDatasetName filter={props.filter} data={props.data}/>
+        }
+    }
+
+    return (
+        <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
+            <Typography>Filter States by</Typography>
+            <FilterType filter={props.filter}/>
+            {renderSelector()}
+        </Stack>
+    )
+
+}

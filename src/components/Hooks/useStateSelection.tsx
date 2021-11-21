@@ -58,8 +58,75 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import {useEffect, useState} from "react";
+import {mongoQuery} from "../../library/Download";
+import {
+    buildAdditionalCollections,
+    buildCollections,
+    getCounties,
+    getStateName,
+} from "../Utils/utils";
+import {
+    countyType,
+    stateType,
+    dataEntryType,
+    dataType,
+    dataManagementType
+} from "../Utils/types";
+
+export function useStateSelection() {
+    const [stateData, setStateData] = useState({} as dataEntryType);
+    const [currentState, setCurrentState] = useState({} as stateType);
+    const [currentCounty, setCurrentCounty] = useState({} as countyType);
+
+    useEffect(() => {
+        (async () => {
+            const apertureData = await fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json());
+            const mongoData = await mongoQuery("state_gis_join_metadata", []);
+
+            if(apertureData && mongoData) {
+                let masterMap = {} as dataEntryType;
+                const additionalCollections = buildAdditionalCollections(mongoData, apertureData);
+                for (const key of mongoData) {
+                    const stateName = getStateName(key.gis_join);
+                    const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections);
+                    const counties = getCounties(stateName);
+                    masterMap[stateName] = {
+                        name: stateName,
+                        GISJOIN: key.gis_join,
+                        collections_supported: collections,
+                        counties: counties
+                    }
+                }
+                setStateData(masterMap);
+                setCurrentState(masterMap["Colorado"]);
+                setCurrentCounty(masterMap["Colorado"].counties[0]);
+            }
+
+            else {
+                console.log("API call failure, data unavailable");
+            }
+        })();
+    }, []);
+
+    const data = {stateData, currentState, currentCounty} as dataType;
+    const dataManagement = {
+        handleStateChange: (stateName: string) => handleStateChange(stateName),
+        handleCountyCounty: (countyName: string) => handleCountyCounty(countyName)
+    } as dataManagementType;
+
+    function handleStateChange(stateName: string) {
+        setCurrentState(stateData[`${stateName}`]);
+        setCurrentCounty(stateData[`${stateName}`].counties[0]);
+    }
+
+    function handleCountyCounty(countyName: string) {
+        currentState.counties.forEach((county: countyType) => {
+            if (county.name === countyName) {
+                setCurrentCounty(county);
+            }
+        })
+    }
+
+    return {data, dataManagement};
+}

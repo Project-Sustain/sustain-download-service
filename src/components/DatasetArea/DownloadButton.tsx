@@ -58,8 +58,52 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React, { useState } from "react";
+import {Button} from '@material-ui/core';
+import { getApiKey, checkIfCanDownload } from "../Utils/DownloadUtil";
+import DownloadButtonText from "./DownloadButtonText"
+import Download from "../../library/Download";
+import {collection, setAlertType} from "../Utils/types";
+import {exportAndDownloadData, getCollectionName} from "../Utils/utils";
+
+interface propTypes {
+    collection: collection,
+    region: {
+        name: string,
+        GISJOIN: string
+    },
+    includeGeospatialData: boolean,
+    setAlert: setAlertType,
+    setOpen: (value: boolean) => void,
+    setDownloading: (value: boolean) => void
+}
+
+export default function DownloadButton({ collection, region, includeGeospatialData, setAlert, setOpen, setDownloading }: propTypes) {
+    const apiKey = getApiKey();
+    const [timeLeft, setTimeLeft] = useState(-1);
+
+    return (
+        <Button onClick={async () => {
+            const downloadAbilityStatus = await checkIfCanDownload(apiKey ?? "abcdefg", region.GISJOIN, collection);
+            if (downloadAbilityStatus.canDownload) {
+                setAlert(true, `Downloading '${getCollectionName(collection)}' for ${region.name}.`, "success");
+                setOpen(false);
+                setDownloading(true);
+                const downloadResult = await Download(collection, region, includeGeospatialData);
+                setDownloading(false);
+                if(downloadResult) {
+                    exportAndDownloadData(downloadResult);
+                }
+                else {
+                    setAlert(true, "Download Failed", "error");
+                }
+            }
+            else if (downloadAbilityStatus.timeLeft) {
+                setTimeLeft(downloadAbilityStatus.timeLeft);
+            }
+        }}>
+            <DownloadButtonText timeLeft={timeLeft}/>
+        </Button>
+    )
+
+}

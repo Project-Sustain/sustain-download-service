@@ -58,8 +58,44 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React from "react";
+import {
+    TableCell,
+    TableRow,
+} from '@material-ui/core';
+import {Switch} from "@mui/material";
+import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
+}
+
+export default function StateCountySwitch(props: propType) {
+
+    function handleChange() {
+        const newGranularity = props.datasetState.granularity === "state" ? "county" : "state";
+        props.datasetState.setGranularity(newGranularity);
+    }
+
+    function getChecked() {
+        return props.datasetState.granularity === "county";
+    }
+
+    function getNumberOfDatasets() {
+        return props.datasetState.filtering ? props.datasetState.filteredDatasets.length : props.data.currentState.collections_supported.length;
+    }
+
+    return (
+        <TableRow>
+            <TableCell>
+                State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
+            </TableCell>
+            <TableCell align="left">
+                {getNumberOfDatasets()} Datasets
+            </TableCell>
+        </TableRow>
+    )
+
+}

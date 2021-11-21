@@ -58,8 +58,163 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React, {useState} from "react";
+import {
+    Button,
+    Modal,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    FormGroup,
+    Typography
+} from "@material-ui/core";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import {makeStyles} from "@material-ui/core/styles";
+import theme from "../../global/GlobalTheme";
+import ListItemButton from '@mui/material/ListItemButton';
+import CloseIcon from '@mui/icons-material/Close';
+import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
+import {isLinked} from "../../library/DatasetUtil";
+import ExploreOffIcon from "@material-ui/icons/ExploreOff";
+import ExploreIcon from "@material-ui/icons/Explore";
+import LinkIcon from "@material-ui/icons/Link";
+import {Checkbox, Tooltip} from "@mui/material";
+import DownloadButton from "./DownloadButton";
+import {collection, dataType, granularityType, setAlertType} from "../Utils/types";
+import {getCollectionName} from "../Utils/utils";
+
+const useStyles = makeStyles({
+    modal: {
+        padding: theme.spacing(1),
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    },
+    tagsContainer: {
+        margin: "10px"
+    },
+    iconSpacing: {
+        margin: "0px 5px"
+    },
+});
+
+interface propType {
+    state: {
+        collection: collection,
+        granularity: granularityType,
+        data: dataType,
+        setAlert: setAlertType,
+        setDownloading: (value: boolean) => void
+    }
+}
+
+export default function DownloadDatasetPopup(props: propType) {
+    const classes = useStyles();
+    const [open, setOpen] = useState(false as boolean);
+    const [geospatialData, setGeospatialData] = useState(false as boolean);
+
+    function handleOpen() {
+        setOpen(true);
+    }
+
+    function handleClose() {
+        setOpen(false);
+    }
+
+    function getGISJOIN() {
+        return props.state.granularity === "county" ? props.state.data.currentCounty.GISJOIN : props.state.data.currentState.GISJOIN;
+    }
+
+    function formatRegionForDownload() {
+        return {
+            GISJOIN: getGISJOIN(),
+            name: getName(),
+        }
+    }
+
+    function getName() {
+        return props.state.granularity === "county" ? `${props.state.data.currentCounty.name}, ${props.state.data.currentState.name}` : `${props.state.data.currentState.name}`;
+    }
+
+    function getTags() {
+        let tags = []
+        if (props.state.collection.temporal) {
+            tags.push(makeTag("This dataset is temporal and will have multiple records per entry.", <HourglassEmptyIcon />))
+        }
+        if (isLinked(props.state.collection)) {
+            tags.push(makeTag("This dataset does not come with geospatial data by default, this can be changed under the 'include geospatial data' option.", <ExploreOffIcon />))
+        }
+        else {
+            tags.push(makeTag("This dataset will come with geospatial data, and will be packaged as a GeoJSON Feature array.", <ExploreIcon />))
+        }
+        if (isLinked(props.state.collection) && geospatialData) {
+            tags.push(makeTag("A separate file containing geospatial information as a GeoJSON Feature array will be included.", <LinkIcon />))
+        }
+        return tags;
+    }
+
+    function makeTag(tooltipContent: string, icon: JSX.Element) {
+        return <Tooltip className={classes.iconSpacing} title={<Typography>{tooltipContent}</Typography>} key={tooltipContent}>
+            {icon}
+        </Tooltip>
+    }
+
+    function getLocation() {
+        return props.state.granularity === "county" ? `${props.state.data.currentCounty.name}, ${props.state.data.currentState.name}` : props.state.data.currentState.name;
+    }
+
+    function handleCheck() {
+        setGeospatialData(!geospatialData);
+    }
+
+    function generateTableRow(cell1: any, cell2: any, header: any = false) {
+        return (
+            <TableRow>
+                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell1}</TableCell>
+                <TableCell style={header ? {fontSize: "1em"} : {}}>{cell2}</TableCell>
+            </TableRow>
+        )
+    }
+
+    function generateCheckbox() {
+        if(props.state.collection.level || props.state.collection.linked) {
+            return generateTableRow(<FormGroup><FormControlLabel
+                control={<Checkbox color="primary" checked={geospatialData} onChange={handleCheck}/>}
+                label="Include Geospatial Data"/></FormGroup>, getTags());
+        }
+        else return null;
+    }
+
+    return (
+        <div>
+            <ListItemButton onClick={handleOpen}>
+                {getCollectionName(props.state.collection)}
+            </ListItemButton>
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <Paper elevation={3} className={classes.modal}>
+                    <Table>
+                        <TableHead>
+                            {generateTableRow(getCollectionName(props.state.collection), getLocation(), true)}
+                        </TableHead>
+                        <TableBody>
+                            {generateCheckbox()}
+                            {generateTableRow
+                            (<DownloadButton collection={props.state.collection} region={formatRegionForDownload()}
+                                             includeGeospatialData={geospatialData} setAlert={props.state.setAlert} setOpen={setOpen}
+                                             setDownloading={props.state.setDownloading} />,
+                                             <Button onClick={handleClose} startIcon={<CloseIcon/>}>Close</Button>
+                            )}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            </Modal>
+        </div>
+    );
+}

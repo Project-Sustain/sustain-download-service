@@ -57,9 +57,38 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+import * as d3 from 'd3';
+import "../../Utils/rawStyles.css";
+import {uStatePaths} from "../../../library/StateInfo";
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+export function Draw(id, mapState, dataManagement) {
+    const hoverClass = document.getElementById("hovered-state-id");
+
+    function updateTooltip(left, top) {
+        hoverClass.style.display = "block";
+        hoverClass.style.left = left;
+        hoverClass.style.top = top;
+    }
+
+    function mouseOver(event){
+        const stateName = event.target.getAttribute("stateName");
+        mapState.setHoveredState(stateName);
+        updateTooltip((event.pageX - 50) + "px", (event.pageY - 60) + "px");
+    }
+
+    function mouseOut() {
+        hoverClass.style.display = "none";
+    }
+
+    const click = (event) => {
+        const stateName = event.target.attributes.stateName.nodeValue;
+        mapState.setStatesMatchingSearch([]);
+        dataManagement.handleStateChange(stateName);
+    }
+
+    d3.select(id).selectAll(".state")
+        .data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(state){ return state.statePath;})
+        .attr("stateName",function(state){ return state.stateName;})
+        .on("click", (e) => click(e))
+        .on("mouseover", (e) => mouseOver(e)).on("mouseout", (e) => mouseOut(e));
+}

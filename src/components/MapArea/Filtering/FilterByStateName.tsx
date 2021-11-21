@@ -58,8 +58,44 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React, {useState} from "react";
+import {statesArray} from "../../../library/StateInfo";
+import {TextField} from "@mui/material";
+import {filterType} from "../../Utils/types";
+
+interface propTypes {
+    filter: filterType,
+}
+
+export default function FilterByStateName(props: propTypes) {
+    const [searchText, setSearchText] = useState("" as string);
+
+    function handleChange(event: any) {
+        const searchString = event.target.value as string;
+        setSearchText(searchString);
+        const matches = statesArray.filter((state: string) => stateMatch(searchString.toLowerCase(), state.toLowerCase()));
+        props.filter.setStatesMatchingSearch(searchString !== "" ? matches : []);
+    }
+
+    function stateMatch(matchString: string, state: string) {
+        if(matchString === state.substr(0, matchString.length)) return true;
+        else if(state.includes(" ")) {
+            return matchString === state.split(" ")[1].substr(0, matchString.length);
+        }
+        else return false;
+    }
+
+    function getColor() {
+        return searchText === "" ? "primary" : "secondary";
+    }
+
+    return (
+        <TextField
+            color={getColor()}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder="ex: Colorado"
+        />
+    );
+}
+

@@ -58,8 +58,8 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+const primary = '#1388e3';
+const secondary = '#28b144';
+const unSelected = '#eee'
+
+export const colors = {primary, secondary, unSelected};

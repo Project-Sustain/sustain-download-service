@@ -58,8 +58,30 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+export const getApiKey = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('api_key');
+}
+
+interface downloadCheckType {
+    canDownload: boolean,
+    timeLeft?: number
+}
+
+export const checkIfCanDownload = async (apiKey: string, gisJoin: string, collection: any) => {
+    if(localStorage.getItem("dev")) {
+        return {canDownload: true, timeLeft: 0} as downloadCheckType;
+    }
+    return new Promise<downloadCheckType>((resolve) => {
+        fetch(`https://urban-sustain.org/api/download?apiKey=${apiKey}&county=${gisJoin}&dataset=${collection}`).then(async function (response) {
+            const body = await response.text();
+            if (response.status === 200) {
+                resolve({ canDownload: true })
+            }
+            const cooldown = JSON.parse(body.length ? body : `{"cooldown": 999999999}`)?.cooldown;
+            resolve({ canDownload: false, timeLeft: cooldown })
+        }).catch(err => {
+            resolve({ canDownload: false, timeLeft: 999999999 })
+        })
+    })
+}

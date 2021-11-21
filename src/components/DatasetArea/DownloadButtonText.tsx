@@ -58,8 +58,31 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React, { useState, useEffect } from "react";
+import {Typography,} from '@material-ui/core';
+
+interface downloadButtonTextProps {
+    timeLeft: number
+}
+
+export default React.memo(function DownloadButtonText({ timeLeft }: downloadButtonTextProps) {
+    const [countDown, setCountDown] = useState(timeLeft);
+
+    useEffect(() => {
+        setCountDown(timeLeft);
+        let secondsPassed = 0;
+        const countDownTimer = setInterval(() => {
+            setCountDown(timeLeft - (++secondsPassed));
+        }, 1000)
+
+        return () => { clearInterval(countDownTimer) }
+    }, [timeLeft]);
+
+    const getDownloadButtonText = () => {
+        if(countDown < 0) return "Download Data";
+        else if(countDown > 60) return "Please Sign In";
+        else return `Cooldown... ${countDown}`;
+    }
+
+    return <Typography>{getDownloadButtonText()}</Typography>
+});

@@ -67,7 +67,6 @@ const querier = sustain_querier();
 
 export default async function Download(currentDataset: any, regionSelected: region, includeGeospatialData: boolean): Promise<DownloadResult> {
     const { GISJOIN, name } = regionSelected;
-    console.log(regionSelected)
     let pipeline: any[] = [];
     let meta: downloadMeta = {
         collectionName: currentDataset.collection,
@@ -85,9 +84,8 @@ export default async function Download(currentDataset: any, regionSelected: regi
             meta.joinField = 'GISJOIN'
         }
     }
-    //first, check if the dataset is a county or tract dataset, this will be the easiest to download
+
     if (["county", "tract"].includes(currentDataset?.level)) {
-        //get dataset data
         pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
         
         let d = await mongoQuery(currentDataset.collection, pipeline)
@@ -100,7 +98,7 @@ export default async function Download(currentDataset: any, regionSelected: regi
     const regionGeometry = await getRegionGeometry(GISJOIN)
     let collection: string = currentDataset.collection;
     if (isLinked(currentDataset)) {
-        collection = currentDataset.linked.collection;
+        // collection = currentDataset.linked.collection;
     }
     let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }])
     if (!isLinked(currentDataset)) {
@@ -124,7 +122,7 @@ const getRegionGeometry = async (GISJOIN: string) => {
 }
 
 
-const mongoQuery = async (collection: string, pipeline: any[]) => {
+export const mongoQuery = async (collection: string, pipeline: any[]) => {
     return new Promise<any[]>((resolve) => {
         const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
         let returnData: any[] = [];

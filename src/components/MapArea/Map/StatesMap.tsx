@@ -58,8 +58,59 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React, { useEffect } from "react";
+import * as d3 from 'd3';
+import { Draw } from "./svgGenerator";
+import {colors} from "../../Utils/colorDeclarations";
+import {makeStyles} from "@material-ui/core/styles";
+import {dataManagementType, dataType} from "../../Utils/types";
+
+const useStyles = makeStyles({
+    svg: {
+        maxHeight: "40vw",
+    },
+});
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    mapState: {
+        hoveredState: string,
+        setHoveredState: (value: string) => void,
+        statesMatchingSearch: string[],
+        setStatesMatchingSearch: (value: string[]) => void
+    }
+}
+
+export default function StatesMap(props: propType) {
+    const classes = useStyles();
+
+    useEffect(() => {
+        const allStatesHTML: any = d3.select("#statesvg").selectAll(".state");
+        const nodeList = allStatesHTML["_groups"][0];
+
+        if(nodeList) {
+            nodeList.forEach((node: any) => {
+                if(props.mapState.statesMatchingSearch.length === 0 && props.data.currentState.name === node["__data__"].stateName) {
+                    node.style.fill = colors.primary;
+                }
+                else {
+                    if (props.mapState.statesMatchingSearch.includes(node["__data__"].stateName)) {
+                        node.style.fill = colors.secondary;
+                    }
+                    else {
+                        node.style.fill = colors.unSelected;
+                    }
+                }
+            });
+        }
+    }, [props.mapState.statesMatchingSearch, props.data]);
+
+    useEffect(() => {
+        Draw("#statesvg", props.mapState, props.dataManagement);
+        d3.select(window.frameElement).style("height", "600px");
+    });
+
+    return <svg className={classes.svg} viewBox="0 0 1000 600" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
+
+}

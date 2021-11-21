@@ -58,8 +58,33 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import * as React from 'react';
+import Alert from '@mui/material/Alert';
+import {makeStyles} from "@material-ui/core/styles";
+import {alertStateType} from "./types";
+
+const useStyles = makeStyles({
+    root: {
+        position: "fixed",
+        bottom: "2%",
+        right: "2%",
+        zIndex: 1001,
+    },
+});
+
+interface propType {
+    alert: alertStateType,
+}
+
+export default function CustomAlert(props: propType) {
+    const classes = useStyles();
+
+    if(props.alert.open) {
+        return (
+            <Alert className={classes.root} severity={props.alert.severity}>
+                {props.alert.text}
+            </Alert>
+        )
+    }
+    else return null;
+}

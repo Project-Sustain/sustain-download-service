@@ -58,8 +58,72 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import {AlertColor} from "@mui/material";
+import React from "react";
+
+export interface dataEntryType {
+    [name: string]: stateType
+}
+
+export interface stateType {
+    name: string,
+    GISJOIN: string,
+    collections_supported: collection[],
+    counties: countyType[]
+}
+
+export interface collection {
+    collection: string,
+    color: any,
+    fieldMetadata: any[],
+    label: string,
+    level: string,
+    temporal: any,
+    linked: any
+}
+
+export interface countyType {
+    GISJOIN: string,
+    name: string
+}
+
+export interface dataType {
+    stateData: dataEntryType,
+    currentState: stateType,
+    currentCounty: countyType
+}
+
+export interface dataManagementType {
+    handleStateChange: (stateName: string) => void,
+    handleCountyCounty: (countyName: string) => void
+}
+
+export interface alertStateType {
+    open: boolean,
+    text: string,
+    severity: AlertColor
+}
+
+export type setAlertType = (open: boolean, text: string, severity: AlertColor) => void;
+
+export interface alertType {
+    alertState: alertStateType,
+    setAlertState: React.Dispatch<React.SetStateAction<alertStateType>>
+}
+
+export interface datasetStateType {
+    granularity: granularityType,
+    setGranularity: (value: granularityType) => void,
+    filteredDatasets: collection[],
+    setFilteredDatasets: (value: collection[]) => void,
+    filtering: boolean,
+    setFiltering: (value: boolean) => void
+}
+
+export interface filterType {
+    stateFilterType: number,
+    setStateFilterType: (value: number) => void,
+    setStatesMatchingSearch: (value: string[]) => void
+}
+
+export type granularityType = "county" | "state";

@@ -57,9 +57,48 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 */
+import React, {useState} from "react";
+import {TextField} from "@mui/material";
+import {dataType, filterType, collection} from "../../Utils/types";
+import {getCollectionName} from "../../Utils/utils";
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+interface propTypes {
+    filter: filterType,
+    data: dataType
+}
+
+export default function FilterByDatasetName(props: propTypes) {
+    const [searchText, setSearchText] = useState("" as string);
+
+    function handleChange(event: any) {
+        const searchString = event.target.value as string;
+        setSearchText(searchString);
+        if(searchString === "") {
+            props.filter.setStatesMatchingSearch([]);
+        }
+        else {
+            const statesWithMatchingDatasets = [];
+            for(const [state, data] of Object.entries(props.data.stateData)) {
+                const matches = data.collections_supported.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(searchString.toLowerCase()));
+                if (matches.length !== 0) {
+                    statesWithMatchingDatasets.push(state);
+                }
+            }
+            props.filter.setStatesMatchingSearch(statesWithMatchingDatasets);
+        }
+    };
+
+    function getColor() {
+        return searchText === "" ? "primary" : "secondary";
+    }
+
+    return (
+        <TextField
+            color={getColor()}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder="ex: Neon 2d Wind"
+        />
+    );
+
+}

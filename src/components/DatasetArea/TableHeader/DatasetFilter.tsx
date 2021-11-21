@@ -58,8 +58,47 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import React from "react";
+import {makeStyles} from "@material-ui/core/styles";
+import {TextField} from "@mui/material";
+import theme from "../../../global/GlobalTheme";
+import {collection, dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import {getCollectionName} from "../../Utils/utils";
+
+const useStyles = makeStyles({
+    root: {
+        width:"100%",
+        marginTop: theme.spacing(1),
+    },
+});
+
+interface propType {
+    data: dataType,
+    dataManagement: dataManagementType,
+    datasetState: datasetStateType
+}
+
+export default function DatasetFiler(props: propType) {
+    const classes = useStyles();
+
+    function createPlaceholderText() {
+        return props.datasetState.granularity === "state" ? `Filter Datasets in ${props.data.currentState.name}` : `Filter Datasets in ${props.data.currentCounty.name}`;
+    }
+
+    function handleChange(event: any) {
+        const input = event.target.value;
+        props.datasetState.setFiltering(input !== "");
+        const matches = props.data.currentState.collections_supported.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(input.toLowerCase()));
+        props.datasetState.setFilteredDatasets(matches);
+    };
+
+    return (
+        <TextField
+            className={classes.root}
+            variant="outlined"
+            onChange={handleChange}
+            placeholder={createPlaceholderText()}
+        />
+    );
+
+}
