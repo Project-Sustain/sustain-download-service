@@ -94,7 +94,7 @@ export default function FilterByStateName(props: propTypes) {
             color={getColor()}
             variant="outlined"
             onChange={handleChange}
-            placeholder="ex: Washington"
+            placeholder="ex: Colorado"
         />
     );
 }
