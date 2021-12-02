@@ -67,7 +67,7 @@ import {dataManagementType, dataType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     svg: {
-        maxHeight: "40vw",
+        maxHeight: "36vw",
     },
 });
 
