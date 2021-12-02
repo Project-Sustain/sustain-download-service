@@ -62,7 +62,7 @@ import React, {useEffect, useState} from "react";
 import {useStateSelection} from "./Hooks/useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../global/GlobalTheme";
-import {Grid, Typography} from "@material-ui/core";
+import {Grid, Typography, Paper} from "@material-ui/core";
 import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./Utils/FauxTooltip";
 import DatasetTable from "./DatasetArea/DatasetTable";
@@ -119,19 +119,20 @@ export default function Main() {
     }
 
     else {
-        return (<>
-            <NSF />
+        return (
+            <>
+                <NSF />
                 <CustomAlert alert={alertState}/>
                 <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-                <Grid item className={classes.map}>
-                    <StateFilter data={data} filter={filter}/>
-                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
-                    <FauxTooltip title={hoveredState}/>
+                    <Grid item className={classes.map}>
+                        <StateFilter data={data} filter={filter}/>
+                        <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
+                        <FauxTooltip title={hoveredState}/>
+                    </Grid>
+                    <Grid item className={classes.datasetSection}>
+                        <DatasetTable data={data} dataManagement={dataManagement} setAlert={alertUser} />
+                    </Grid>
                 </Grid>
-                <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data} dataManagement={dataManagement} setAlert={alertUser} />
-                </Grid>
-            </Grid>
             </>
         );
     }
