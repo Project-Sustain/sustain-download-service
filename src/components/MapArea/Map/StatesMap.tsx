@@ -67,7 +67,7 @@ import {dataManagementType, dataType} from "../../Utils/types";
 
 const useStyles = makeStyles({
     svg: {
-        maxHeight: "36vw",
+        maxHeight: "40vw",
     },
 });
 
@@ -111,6 +111,6 @@ export default function StatesMap(props: propType) {
         d3.select(window.frameElement).style("height", "600px");
     });
 
-    return <svg className={classes.svg} viewBox="0 0 1000 600" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
+    return <svg className={classes.svg} viewBox="0 0 1000 750" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
 
 }
