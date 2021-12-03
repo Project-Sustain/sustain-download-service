@@ -74,7 +74,7 @@ import {ListSubheader} from "@mui/material";
 
 const useStyles = makeStyles({
     list: {
-        maxHeight: "80vh",
+        maxHeight: "90vh",
         overflow: "auto"
     },
     paper: {
