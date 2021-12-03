@@ -61,8 +61,6 @@ END OF TERMS AND CONDITIONS
 import React, {useState} from "react";
 import {
     Paper,
-    List,
-    ListItem,
 } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
@@ -70,6 +68,8 @@ import DatasetListControls from "./TableHeader/DatasetListControls";
 import theme from "../../global/GlobalTheme";
 import {collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
 import DownloadingModal from "./TableHeader/DownloadingModal";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import {ListSubheader} from "@mui/material";
 
 const useStyles = makeStyles({
@@ -78,7 +78,7 @@ const useStyles = makeStyles({
         overflow: "auto"
     },
     paper: {
-        margin: theme.spacing(2),
+        marginTop: theme.spacing(2),
     },
 });
 
@@ -116,7 +116,7 @@ export default function DatasetList(props: propType) {
                 <DownloadingModal open={downloading} setOpen={setDownloading} />
                 <Paper className={classes.paper}>
                     <List className={classes.list}>
-                        <ListSubheader>
+                        <ListSubheader disableGutters>
                             <DatasetListControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
                         </ListSubheader>
                         {renderDatasetRows()}

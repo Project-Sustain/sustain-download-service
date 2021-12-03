@@ -75,13 +75,6 @@ import {useAlert} from "./Hooks/useAlert";
 import {Container, Stack} from "@mui/material";
 
 const useStyles = makeStyles({
-    map: {
-        position: "relative",
-        // width: "75%",
-    },
-    datasetSection: {
-        // width: "25%",
-    },
     loading: {
         position: 'absolute',
         top: '50%',
