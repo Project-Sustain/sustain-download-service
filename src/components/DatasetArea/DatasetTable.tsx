@@ -74,7 +74,7 @@ import DownloadingModal from "./TableHeader/DownloadingModal";
 
 const useStyles = makeStyles({
     list: {
-        maxHeight: "60vh",
+        maxHeight: "40vh",
         overflow: "auto"
     },
     paper: {
