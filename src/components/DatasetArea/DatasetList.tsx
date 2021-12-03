@@ -60,21 +60,21 @@ END OF TERMS AND CONDITIONS
 
 import React, {useState} from "react";
 import {
-    Grid,
     Paper,
     List,
     ListItem,
 } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import DownloadDatasetPopup from "./DownloadDatasetPopup";
-import TableControls from "./TableHeader/TableControls";
+import DatasetListControls from "./TableHeader/DatasetListControls";
 import theme from "../../global/GlobalTheme";
 import {collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
 import DownloadingModal from "./TableHeader/DownloadingModal";
+import {ListSubheader} from "@mui/material";
 
 const useStyles = makeStyles({
     list: {
-        maxHeight: "40vh",
+        maxHeight: "80vh",
         overflow: "auto"
     },
     paper: {
@@ -88,7 +88,7 @@ interface propType {
     setAlert: setAlertType
 }
 
-export default function DatasetTable(props: propType) {
+export default function DatasetList(props: propType) {
     const classes = useStyles();
     const [granularity, setGranularity] = useState("state" as granularityType);
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported as collection[]);
@@ -112,17 +112,17 @@ export default function DatasetTable(props: propType) {
 
     if(datasets) {
         return (
-            <Grid container direction="column" justifyContent="center" alignItems="stretch">
+            <>
+                <DownloadingModal open={downloading} setOpen={setDownloading} />
                 <Paper className={classes.paper}>
-                    <DownloadingModal open={downloading} setOpen={setDownloading} />
-                    <TableControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
-                    <Grid item>
-                        <List className={classes.list}>
-                            {renderDatasetRows()}
-                        </List>
-                    </Grid>
+                    <List className={classes.list}>
+                        <ListSubheader>
+                            <DatasetListControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
+                        </ListSubheader>
+                        {renderDatasetRows()}
+                    </List>
                 </Paper>
-            </Grid>
+            </>
         )
     }
 

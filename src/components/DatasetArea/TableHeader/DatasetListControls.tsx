@@ -59,22 +59,16 @@ END OF TERMS AND CONDITIONS
 */
 
 import React from "react";
-import {
-    Grid,
-    Table,
-    TableCell,
-    TableHead,
-    TableRow,
-} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 import DatasetFilter from "./DatasetFilter";
 import CountyDropdown from "./CountyDropdown";
 import StateCountySwitch from "./StateCountySwitch";
 import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
     root: {
-        borderRadius: "3px 3px 0px 0px",
+       margin: theme.spacing(1),
     },
 });
 
@@ -84,23 +78,15 @@ interface propType {
     datasetState: datasetStateType
 }
 
-export default function TableControls(props: propType) {
+export default function DatasetListControls(props: propType) {
     const classes = useStyles();
 
     return (
-        <Grid item className={classes.root}>
-            <Table>
-                <TableHead>
-                    <StateCountySwitch data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
-                    <TableRow>
-                        <TableCell colSpan={2}>
-                            <CountyDropdown data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
-                            <DatasetFilter data={props.data} dataManagement={props.dataManagement}  datasetState={props.datasetState} />
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-            </Table>
-        </Grid>
+        <div className={classes.root}>
+            <StateCountySwitch data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+            <CountyDropdown data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+            <DatasetFilter data={props.data} dataManagement={props.dataManagement}  datasetState={props.datasetState} />
+        </div>
     )
 
 }
