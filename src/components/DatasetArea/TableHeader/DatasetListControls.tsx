@@ -58,74 +58,35 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
-import {
-    Grid,
-    Paper,
-    List,
-    ListItem,
-} from '@material-ui/core';
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import DownloadDatasetPopup from "./DownloadDatasetPopup";
-import TableControls from "./TableHeader/TableControls";
-import theme from "../../global/GlobalTheme";
-import {collection, dataManagementType, dataType, granularityType, setAlertType} from "../Utils/types";
-import DownloadingModal from "./TableHeader/DownloadingModal";
+import DatasetFilter from "./DatasetFilter";
+import CountyDropdown from "./CountyDropdown";
+import StateCountySwitch from "./StateCountySwitch";
+import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import theme from "../../../global/GlobalTheme";
 
 const useStyles = makeStyles({
-    list: {
-        maxHeight: "40vh",
-        overflow: "auto"
-    },
-    paper: {
-        margin: theme.spacing(2),
+    root: {
+        margin: theme.spacing(1),
     },
 });
 
 interface propType {
     data: dataType,
     dataManagement: dataManagementType,
-    setAlert: setAlertType
+    datasetState: datasetStateType
 }
 
-export default function DatasetTable(props: propType) {
+export default function DatasetListControls(props: propType) {
     const classes = useStyles();
-    const [granularity, setGranularity] = useState("state" as granularityType);
-    const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported as collection[]);
-    const [filtering, setFiltering] = useState(false as boolean);
-    const [downloading, setDownloading] = useState(false as boolean);
 
-    const datasetState = {granularity, setGranularity, filteredDatasets, setFilteredDatasets, filtering, setFiltering}
-
-    const datasets = filtering ? filteredDatasets : props.data.currentState.collections_supported;
-
-    function renderDatasetRows() {
-        return datasets.map((collection: collection, index: number) => {
-            const popupState = {collection, granularity, data: props.data, setAlert: props.setAlert, setDownloading}
-            return (
-                <ListItem key={index}>
-                    <DownloadDatasetPopup state={popupState} />
-                </ListItem>
-            )
-        })
-    }
-
-    if(datasets) {
-        return (
-            <Grid container direction="column" justifyContent="center" alignItems="stretch">
-                <Paper className={classes.paper}>
-                    <DownloadingModal open={downloading} setOpen={setDownloading} />
-                    <TableControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
-                    <Grid item>
-                        <List className={classes.list}>
-                            {renderDatasetRows()}
-                        </List>
-                    </Grid>
-                </Paper>
-            </Grid>
-        )
-    }
-
-    else return null;
+    return (
+        <div className={classes.root}>
+            <StateCountySwitch data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+            <CountyDropdown data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+            <DatasetFilter data={props.data} dataManagement={props.dataManagement}  datasetState={props.datasetState} />
+        </div>
+    )
 
 }

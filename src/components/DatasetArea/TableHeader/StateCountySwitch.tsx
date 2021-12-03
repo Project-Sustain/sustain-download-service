@@ -59,12 +59,9 @@ END OF TERMS AND CONDITIONS
 */
 
 import React from "react";
-import {
-    TableCell,
-    TableRow,
-} from '@material-ui/core';
-import {Switch} from "@mui/material";
+import {Stack, Switch} from "@mui/material";
 import {dataManagementType, datasetStateType, dataType} from "../../Utils/types";
+import {makeStyles} from "@material-ui/core/styles";
 
 interface propType {
     data: dataType,
@@ -72,7 +69,14 @@ interface propType {
     datasetState: datasetStateType
 }
 
+const useStyles = makeStyles({
+    numDatasets: {
+        float: "right"
+    },
+});
+
 export default function StateCountySwitch(props: propType) {
+    const classes = useStyles();
 
     function handleChange() {
         const newGranularity = props.datasetState.granularity === "state" ? "county" : "state";
@@ -88,14 +92,15 @@ export default function StateCountySwitch(props: propType) {
     }
 
     return (
-        <TableRow>
-            <TableCell>
-                State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County
-            </TableCell>
-            <TableCell align="left">
-                {getNumberOfDatasets()} Datasets
-            </TableCell>
-        </TableRow>
+        <Stack
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+            spacing={2}
+        >
+            <div>State <Switch color="primary" onChange={handleChange} checked={getChecked()} /> County</div>
+            <div className={classes.numDatasets}>{getNumberOfDatasets()} Datasets</div>
+        </Stack>
     )
 
 }

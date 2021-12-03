@@ -62,25 +62,19 @@ import React, {useEffect, useState} from "react";
 import {useStateSelection} from "./Hooks/useStateSelection";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../global/GlobalTheme";
-import {Grid, Typography} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import StatesMap from "./MapArea/Map/StatesMap";
 import FauxTooltip from "./Utils/FauxTooltip";
-import DatasetTable from "./DatasetArea/DatasetTable";
+import DatasetList from "./DatasetArea/DatasetList";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import CustomAlert from "./Utils/CustomAlert";
 import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
 import {useAlert} from "./Hooks/useAlert";
+import {Container, Stack} from "@mui/material";
 
 const useStyles = makeStyles({
-    map: {
-        position: "relative",
-        width: "75%",
-    },
-    datasetSection: {
-        width: "25%",
-    },
     loading: {
         position: 'absolute',
         top: '50%',
@@ -122,16 +116,21 @@ export default function Main() {
         return (<>
             <NSF />
                 <CustomAlert alert={alertState}/>
-                <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-                <Grid item className={classes.map}>
-                    <StateFilter data={data} filter={filter}/>
-                    <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
-                    <FauxTooltip title={hoveredState}/>
-                </Grid>
-                <Grid item className={classes.datasetSection}>
-                    <DatasetTable data={data} dataManagement={dataManagement} setAlert={alertUser} />
-                </Grid>
-            </Grid>
+                <Stack
+                    direction="row"
+                    justifyContent="space-evenly"
+                    alignItems="flex-start"
+                    spacing={{ xs: 1, sm: 2, md: 4}}
+                >
+                    <Container maxWidth="lg">
+                        <StateFilter data={data} filter={filter}/>
+                        <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
+                        <FauxTooltip title={hoveredState}/>
+                    </Container>
+                    <Container maxWidth="xs">
+                        <DatasetList data={data} dataManagement={dataManagement} setAlert={alertUser} />
+                    </Container>
+                </Stack>
             </>
         );
     }
