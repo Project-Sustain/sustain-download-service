@@ -113,9 +113,8 @@ export default function Main() {
     }
 
     else {
-        return (
-            <>
-                <NSF />
+        return (<>
+            <NSF />
                 <CustomAlert alert={alertState}/>
                 <Stack
                     direction="row"
