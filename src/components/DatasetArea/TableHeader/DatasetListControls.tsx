@@ -75,17 +75,18 @@ const useStyles = makeStyles({
 interface propType {
     data: dataType,
     dataManagement: dataManagementType,
-    datasetState: datasetStateType
+    datasetState: datasetStateType,
+    safeDatasets: any
 }
 
 export default function DatasetListControls(props: propType) {
     const classes = useStyles();
-
+    const lengthDatasets = props.safeDatasets.length;
     return (
         <div className={classes.root}>
-            <StateCountySwitch data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
+            <StateCountySwitch lengthDatasets={lengthDatasets} data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
             <CountyDropdown data={props.data} dataManagement={props.dataManagement} datasetState={props.datasetState} />
-            <DatasetFilter data={props.data} dataManagement={props.dataManagement}  datasetState={props.datasetState} />
+            <DatasetFilter safeDatasets={props.safeDatasets} data={props.data} dataManagement={props.dataManagement}  datasetState={props.datasetState} />
         </div>
     )
 

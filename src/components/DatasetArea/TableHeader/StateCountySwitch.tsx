@@ -66,7 +66,8 @@ import {makeStyles} from "@material-ui/core/styles";
 interface propType {
     data: dataType,
     dataManagement: dataManagementType,
-    datasetState: datasetStateType
+    datasetState: datasetStateType,
+    lengthDatasets: number
 }
 
 const useStyles = makeStyles({
@@ -88,7 +89,7 @@ export default function StateCountySwitch(props: propType) {
     }
 
     function getNumberOfDatasets() {
-        return props.datasetState.filtering ? props.datasetState.filteredDatasets.length : props.data.currentState.collections_supported.length;
+        return props.datasetState.filtering ? props.datasetState.filteredDatasets.length : props.lengthDatasets;
     }
 
     return (
