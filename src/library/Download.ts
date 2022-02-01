@@ -116,7 +116,7 @@ export default async function Download(currentDataset: any, regionSelected: regi
 
 const getRegionGeometry = async (GISJOIN: string) => {
     if(GISJOIN.length === 8) {
-        return await mongoQuery("county_geo_60mb", [{ $match: { GISJOIN } }])
+        return await mongoQuery("county_geo_30mb", [{ $match: { GISJOIN } }])
     }
     return await mongoQuery("state_geo", [{ $match: { GISJOIN } }])
 }
