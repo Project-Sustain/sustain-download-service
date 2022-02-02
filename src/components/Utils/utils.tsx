@@ -107,16 +107,15 @@ export function getCounties(stateName: string) {
 
 export const exportAndDownloadData = (downloadResult: any) => {
     let zip = new JSZip();
-    zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))
+    downloadResult.data.length && zip.file('data.json', JSON.stringify(downloadResult.data, null, 4))
     downloadResult.geometry && zip.file('linkedGeometry.json', JSON.stringify(downloadResult.geometry, null, 4))
     downloadResult.meta.fieldLabels && zip.file('fieldLabels.json', JSON.stringify(downloadResult.meta.fieldLabels, null, 4))
     zip.file('README.txt', `
         This package, which includes data for the collection "${downloadResult.meta.collectionName}" for the region "${downloadResult.meta.regionName}" contains the following files:
 
+        NOTE: The actual data file will have been downloaded as a seperate download with the suffix "_raw_data.json" 
 
         README -- This file
-
-        data.json -- JSON file including the data requested
 
         ${downloadResult.geometry ? `linkedGeometry.json -- GeoJSON feature file which includes geospatial information about data within data.json.
         Data between the files can be linked using the "${downloadResult.meta.joinField}" field, which exists at the top level of each entry in both files.` : ''}
@@ -130,7 +129,7 @@ export const exportAndDownloadData = (downloadResult: any) => {
         const uriContent = URL.createObjectURL(contentBlob);
         const a = document.createElement('a');
         a.setAttribute('href', uriContent)
-        a.setAttribute('download', `${downloadResult.meta.collectionName}.${downloadResult.meta.regionName}.zip`.replaceAll(' ', '_').replaceAll(',', ''));
+        a.setAttribute('download', `${downloadResult.meta.collectionName}.${downloadResult.meta.regionName}.meta.zip`.replaceAll(' ', '_').replaceAll(',', ''));
         a.style.display = 'none'
         document.body.appendChild(a);
         a.click();

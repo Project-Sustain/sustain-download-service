@@ -62,6 +62,7 @@ import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
 import { sustain_querier } from "../library/grpc_querier.js";
 import DownloadResult, { downloadMeta } from "../types/DownloadResult";
 import region from "../types/region";
+import streamsaver from "streamsaver"
 
 const querier = sustain_querier();
 
@@ -97,17 +98,20 @@ export default async function Download(currentDataset: any, regionSelected: regi
     }
     const regionGeometry = await getRegionGeometry(GISJOIN)
     let collection: string = currentDataset.collection;
+    
     if (isLinked(currentDataset)) {
         collection = currentDataset.linked.collection;
     }
-    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }])
+
+    const datafileName = `${currentDataset.name}.${regionSelected.name}.raw_data.json`; 
+    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }], !isLinked(currentDataset) ? datafileName : null)
     if (!isLinked(currentDataset)) {
-        return { data: d, meta };
+        return { data: [], meta };
     }
 
-    let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
+    let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }], datafileName)
     d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
-    let returnable: DownloadResult = { data: realD, meta }
+    let returnable: DownloadResult = { data: [], meta }
     if (includeGeospatialData) {
         returnable.geometry = d;
     }
@@ -122,15 +126,43 @@ const getRegionGeometry = async (GISJOIN: string) => {
 }
 
 
-export const mongoQuery = async (collection: string, pipeline: any[]) => {
+export const mongoQuery = async (collection: string, pipeline: any[], downloadFileName:string|null = null) => {
     return new Promise<any[]>((resolve) => {
         const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
+        let filestream: WritableStream<any>; 
+        let writer: WritableStreamDefaultWriter<any>;
+
+        const writeToFilestream = (text: string) => {
+            const encoder = new TextEncoder()
+            const bytes = encoder.encode(text)
+            writer.write(bytes);
+            console.log("tree")
+        }
+
+        if (downloadFileName){
+            filestream = streamsaver.createWriteStream(downloadFileName)
+            writer = filestream.getWriter()
+            writeToFilestream('[')
+        }
+
         let returnData: any[] = [];
+        let isFirst = true;
         stream.on('data', (res: any) => {
             const data = JSON.parse(res.getData());
-            returnData.push(data)
+            if (!downloadFileName){
+                returnData.push(data)
+            }
+            else {
+                writeToFilestream((isFirst ? '' : ',') + '\n' + JSON.stringify(data, null, 4 ))
+            }
+            isFirst = false;
         });
+
         stream.on('end', () => {
+            if (downloadFileName){
+                writeToFilestream('\n]')
+                writer.close()
+            }
             resolve(returnData);
         });
     });
