@@ -102,8 +102,8 @@ export default async function Download(currentDataset: any, regionSelected: regi
     if (isLinked(currentDataset)) {
         collection = currentDataset.linked.collection;
     }
-
-    const datafileName = `${currentDataset.name}.${regionSelected.name}.raw_data.json`; 
+    console.log({currentDataset})
+    const datafileName = `${currentDataset.collection}.${regionSelected.name}.raw_data.json`; 
     let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }], !isLinked(currentDataset) ? datafileName : null)
     if (!isLinked(currentDataset)) {
         return { data: [], meta };
@@ -132,11 +132,16 @@ export const mongoQuery = async (collection: string, pipeline: any[], downloadFi
         let filestream: WritableStream<any>; 
         let writer: WritableStreamDefaultWriter<any>;
 
-        const writeToFilestream = (text: string) => {
-            const encoder = new TextEncoder()
-            const bytes = encoder.encode(text)
-            writer.write(bytes);
-            console.log("tree")
+        const max_buffer_length = 2**25; // ~32MB
+        let buffered_file_text = ""; 
+        const writeToFilestream = (text: string, forceFlush: boolean = false) => {
+            buffered_file_text += text;
+            if (forceFlush || buffered_file_text.length > max_buffer_length) {
+                const encoder = new TextEncoder()
+                const bytes = encoder.encode(buffered_file_text);
+                buffered_file_text = "";
+                writer.write(bytes);
+            }
         }
 
         if (downloadFileName){
@@ -160,7 +165,7 @@ export const mongoQuery = async (collection: string, pipeline: any[], downloadFi
 
         stream.on('end', () => {
             if (downloadFileName){
-                writeToFilestream('\n]')
+                writeToFilestream('\n]', true)
                 writer.close()
             }
             resolve(returnData);
