@@ -109,8 +109,8 @@ export default async function Download(currentDataset: any, regionSelected: regi
         return { data: [], meta };
     }
 
-    let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }], datafileName)
-    d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
+    await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }], datafileName)
+    // d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
     let returnable: DownloadResult = { data: [], meta }
     if (includeGeospatialData) {
         returnable.geometry = d;
