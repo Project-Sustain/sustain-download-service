@@ -102,18 +102,18 @@ export default async function Download(currentDataset: any, regionSelected: regi
     if (isLinked(currentDataset)) {
         collection = currentDataset.linked.collection;
     }
-    console.log({currentDataset})
+
     const datafileName = `${currentDataset.collection}.${regionSelected.name}.raw_data.json`; 
-    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }], !isLinked(currentDataset) ? datafileName : null)
+    let dataA = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }], !isLinked(currentDataset) ? datafileName : null)
     if (!isLinked(currentDataset)) {
         return { data: [], meta };
     }
 
-    await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }], datafileName)
-    // d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
+    const linkedFieldData = new Set(await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": dataA.map(p => p[currentDataset.linked.field]) } } }], datafileName, currentDataset.linked.field));
+    dataA = dataA.filter(geometryEntry => { return linkedFieldData.has(geometryEntry[currentDataset.linked.field])})
     let returnable: DownloadResult = { data: [], meta }
     if (includeGeospatialData) {
-        returnable.geometry = d;
+        returnable.geometry = dataA;
     }
     return returnable;
 }
@@ -126,7 +126,7 @@ const getRegionGeometry = async (GISJOIN: string) => {
 }
 
 
-export const mongoQuery = async (collection: string, pipeline: any[], downloadFileName:string|null = null) => {
+export const mongoQuery = async (collection: string, pipeline: any[], downloadFileName:string|null = null, onlyPopulateField: string|null = null) => {
     return new Promise<any[]>((resolve) => {
         const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
         let filestream: WritableStream<any>; 
@@ -159,6 +159,9 @@ export const mongoQuery = async (collection: string, pipeline: any[], downloadFi
             }
             else {
                 writeToFilestream((isFirst ? '' : ',') + '\n' + JSON.stringify(data, null, 4 ))
+                if (onlyPopulateField) {
+                    returnData.push(data[onlyPopulateField])
+                }
             }
             isFirst = false;
         });
