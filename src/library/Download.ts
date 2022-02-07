@@ -86,15 +86,16 @@ export default async function Download(currentDataset: any, regionSelected: regi
         }
     }
 
+    const datafileName = `${currentDataset.collection}.${regionSelected.name}.raw_data.json`; 
     if (["county", "tract"].includes(currentDataset?.level)) {
         pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
         
-        let d = await mongoQuery(currentDataset.collection, pipeline)
+        await mongoQuery(currentDataset.collection, pipeline, datafileName)
         if (!includeGeospatialData) {
-            return { data: d, meta };
+            return { data: [], meta };
         }
         let geospatialData = await mongoQuery(getCountyOrTractCollectionName(currentDataset?.level), pipeline)
-        return { data: d, geometry: geospatialData, meta }
+        return { data: [], geometry: geospatialData, meta }
     }
     const regionGeometry = await getRegionGeometry(GISJOIN)
     let collection: string = currentDataset.collection;
@@ -103,12 +104,10 @@ export default async function Download(currentDataset: any, regionSelected: regi
         collection = currentDataset.linked.collection;
     }
 
-    const datafileName = `${currentDataset.collection}.${regionSelected.name}.raw_data.json`; 
     let dataA = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }], !isLinked(currentDataset) ? datafileName : null)
     if (!isLinked(currentDataset)) {
         return { data: [], meta };
     }
-
     const linkedFieldData = new Set(await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": dataA.map(p => p[currentDataset.linked.field]) } } }], datafileName, currentDataset.linked.field));
     dataA = dataA.filter(geometryEntry => { return linkedFieldData.has(geometryEntry[currentDataset.linked.field])})
     let returnable: DownloadResult = { data: [], meta }
