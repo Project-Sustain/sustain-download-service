@@ -69,6 +69,7 @@ import theme from "../../../global/GlobalTheme";
 const useStyles = makeStyles({
     root: {
         margin: theme.spacing(1),
+        marginTop: "0px",
     },
 });
 
