@@ -62,6 +62,8 @@ import { isLinked, getCountyOrTractCollectionName } from "./DatasetUtil";
 import { sustain_querier } from "../library/grpc_querier.js";
 import DownloadResult, { downloadMeta } from "../types/DownloadResult";
 import region from "../types/region";
+import streamsaver from "streamsaver"
+import { getApiKey } from "../library/DownloadUtil";
 
 const querier = sustain_querier();
 
@@ -85,31 +87,33 @@ export default async function Download(currentDataset: any, regionSelected: regi
         }
     }
 
+    const datafileName = `${currentDataset.collection}.${regionSelected.name}.raw_data.json`; 
     if (["county", "tract"].includes(currentDataset?.level)) {
         pipeline.push({ $match: { GISJOIN: { $regex: `${GISJOIN}.*` } } });
         
-        let d = await mongoQuery(currentDataset.collection, pipeline)
+        await mongoQuery(currentDataset.collection, pipeline, datafileName)
         if (!includeGeospatialData) {
-            return { data: d, meta };
+            return { data: [], meta };
         }
         let geospatialData = await mongoQuery(getCountyOrTractCollectionName(currentDataset?.level), pipeline)
-        return { data: d, geometry: geospatialData, meta }
+        return { data: [], geometry: geospatialData, meta }
     }
     const regionGeometry = await getRegionGeometry(GISJOIN)
     let collection: string = currentDataset.collection;
+    
     if (isLinked(currentDataset)) {
         collection = currentDataset.linked.collection;
     }
-    let d = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }])
-    if (!isLinked(currentDataset)) {
-        return { data: d, meta };
-    }
 
-    let realD = await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": d.map(p => p[currentDataset.linked.field]) } } }])
-    d = d.filter(p => { return realD.find(g => g[currentDataset.linked.field] === p[currentDataset.linked.field]) != null})
-    let returnable: DownloadResult = { data: realD, meta }
+    let dataA = await mongoQuery(collection, [{ "$match": { geometry: { "$geoIntersects": { "$geometry": regionGeometry[0].geometry } } } }], !isLinked(currentDataset) ? datafileName : null)
+    if (!isLinked(currentDataset)) {
+        return { data: [], meta };
+    }
+    const linkedFieldData = new Set(await mongoQuery(currentDataset.collection, [{ "$match": { [currentDataset.linked.field]: { "$in": dataA.map(p => p[currentDataset.linked.field]) } } }], datafileName, currentDataset.linked.field));
+    dataA = dataA.filter(geometryEntry => { return linkedFieldData.has(geometryEntry[currentDataset.linked.field])})
+    let returnable: DownloadResult = { data: [], meta }
     if (includeGeospatialData) {
-        returnable.geometry = d;
+        returnable.geometry = dataA;
     }
     return returnable;
 }
@@ -122,15 +126,58 @@ const getRegionGeometry = async (GISJOIN: string) => {
 }
 
 
-export const mongoQuery = async (collection: string, pipeline: any[]) => {
+export const mongoQuery = async (collection: string, pipeline: any[], downloadFileName:string|null = null, onlyPopulateField: string|null = null) => {
+    let totalSize = 0;
     return new Promise<any[]>((resolve) => {
         const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
+        let filestream: WritableStream<any>; 
+        let writer: WritableStreamDefaultWriter<any>;
+
+        const max_buffer_length = 2**25; // ~32MB
+        let buffered_file_text = "";
+
+        const writeToFilestream = (text: string, forceFlush: boolean = false) => {
+            buffered_file_text += text;
+            if (forceFlush || buffered_file_text.length > max_buffer_length) {
+                const encoder = new TextEncoder()
+                const bytes = encoder.encode(buffered_file_text);
+                buffered_file_text = "";
+                writer.write(bytes);
+                totalSize += bytes.length;
+            }
+        }
+
+        if (downloadFileName){
+            filestream = streamsaver.createWriteStream(downloadFileName)
+            writer = filestream.getWriter()
+            writeToFilestream('[')
+        }
+
         let returnData: any[] = [];
+        let isFirst = true;
         stream.on('data', (res: any) => {
             const data = JSON.parse(res.getData());
-            returnData.push(data)
+            if (!downloadFileName){
+                returnData.push(data)
+            }
+            else {
+                writeToFilestream((isFirst ? '' : ',') + '\n' + JSON.stringify(data, null, 4 ))
+                if (onlyPopulateField) {
+                    returnData.push(data[onlyPopulateField])
+                }
+            }
+            isFirst = false;
         });
+
         stream.on('end', () => {
+            if (downloadFileName){
+                writeToFilestream('\n]', true)
+                writer.close();
+                let apiKey = getApiKey();
+                fetch(`http://localhost/api/downloadsize?apiKey=ZgSiGGUVawny1EO6&downloadSize=${totalSize}`).then(async function (response) {
+                }).catch(err => {
+                })
+            }
             resolve(returnData);
         });
     });
