@@ -73,7 +73,7 @@ export const checkIfCanDownload = async (apiKey: string, gisJoin: string, collec
         return {canDownload: true, timeLeft: 0} as downloadCheckType;
     }
     return new Promise<downloadCheckType>((resolve) => {
-        fetch(`https://urban-sustain.org/api/download?apiKey=ZgSiGGUVawny1EO6&county=${gisJoin}&dataset=${collection}`).then(async function (response) {
+        fetch(`https://urban-sustain.org/api/download?apiKey=${apiKey}&county=${gisJoin}&dataset=${collection}`).then(async function (response) {
             const body = await response.text();
             if (response.status === 200) {
                 resolve({ canDownload: true })
