@@ -63,6 +63,7 @@ import { sustain_querier } from "../library/grpc_querier.js";
 import DownloadResult, { downloadMeta } from "../types/DownloadResult";
 import region from "../types/region";
 import streamsaver from "streamsaver"
+import { getApiKey } from "../library/DownloadUtil";
 
 const querier = sustain_querier();
 
@@ -126,13 +127,15 @@ const getRegionGeometry = async (GISJOIN: string) => {
 
 
 export const mongoQuery = async (collection: string, pipeline: any[], downloadFileName:string|null = null, onlyPopulateField: string|null = null) => {
+    let totalSize = 0;
     return new Promise<any[]>((resolve) => {
         const stream: any = querier.getStreamForQuery(collection, JSON.stringify(pipeline));
         let filestream: WritableStream<any>; 
         let writer: WritableStreamDefaultWriter<any>;
 
         const max_buffer_length = 2**25; // ~32MB
-        let buffered_file_text = ""; 
+        let buffered_file_text = "";
+
         const writeToFilestream = (text: string, forceFlush: boolean = false) => {
             buffered_file_text += text;
             if (forceFlush || buffered_file_text.length > max_buffer_length) {
@@ -140,6 +143,7 @@ export const mongoQuery = async (collection: string, pipeline: any[], downloadFi
                 const bytes = encoder.encode(buffered_file_text);
                 buffered_file_text = "";
                 writer.write(bytes);
+                totalSize += bytes.length;
             }
         }
 
@@ -168,7 +172,11 @@ export const mongoQuery = async (collection: string, pipeline: any[], downloadFi
         stream.on('end', () => {
             if (downloadFileName){
                 writeToFilestream('\n]', true)
-                writer.close()
+                writer.close();
+                let apiKey = getApiKey();
+                fetch(`http://localhost/api/downloadsize?apiKey=ZgSiGGUVawny1EO6&downloadSize=${totalSize}`).then(async function (response) {
+                }).catch(err => {
+                })
             }
             resolve(returnData);
         });
