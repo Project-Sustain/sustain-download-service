@@ -174,7 +174,7 @@ export const mongoQuery = async (collection: string, pipeline: any[], downloadFi
                 writeToFilestream('\n]', true)
                 writer.close();
                 let apiKey = getApiKey();
-                fetch(`http://localhost/api/downloadsize?apiKey=ZgSiGGUVawny1EO6&downloadSize=${totalSize}`).then(async function (response) {
+                fetch(`https://urban-sustain.org/api/downloadsize?apiKey=${apiKey}&downloadSize=${totalSize}`).then(async function (response) {
                 }).catch(err => {
                 })
             }
