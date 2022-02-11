@@ -74,6 +74,8 @@ import {
     dataManagementType
 } from "../Utils/types";
 
+import overrideCollections from '../../json/extramenumetadata.json';
+
 export function useStateSelection() {
     const [stateData, setStateData] = useState({} as dataEntryType);
     const [currentState, setCurrentState] = useState({} as stateType);
@@ -83,13 +85,16 @@ export function useStateSelection() {
         (async () => {
             const apertureData = await fetch('https://raw.githubusercontent.com/Project-Sustain/aperture-client/master/src/json/menumetadata.json').then(r => r.json());
             const mongoData = await mongoQuery("state_gis_join_metadata", []);
+            const collectionsWithMetadata = new Set((await mongoQuery("Metadata", [])).map(document => document.collection));
 
             if(apertureData && mongoData) {
                 let masterMap = {} as dataEntryType;
                 const additionalCollections = buildAdditionalCollections(mongoData, apertureData);
                 for (const key of mongoData) {
                     const stateName = getStateName(key.gis_join);
-                    const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections);
+                    const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections).filter((collection: any) => { 
+                        return collectionsWithMetadata.has(collection.collection)
+                    }).concat(overrideCollections);
                     const counties = getCounties(stateName);
                     masterMap[stateName] = {
                         name: stateName,
