@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Paper,
 } from '@material-ui/core';
@@ -71,6 +71,7 @@ import DownloadingModal from "./TableHeader/DownloadingModal";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import {ListSubheader} from "@mui/material";
+import {dangerArray} from "../Utils/DangerData";
 
 const useStyles = makeStyles({
     list: {
@@ -94,10 +95,23 @@ export default function DatasetList(props: propType) {
     const [filteredDatasets, setFilteredDatasets] = useState(props.data.currentState.collections_supported as collection[]);
     const [filtering, setFiltering] = useState(false as boolean);
     const [downloading, setDownloading] = useState(false as boolean);
-
+    const [safeDatasets, setSafeDatasets] = useState([] as any [])
     const datasetState = {granularity, setGranularity, filteredDatasets, setFilteredDatasets, filtering, setFiltering}
 
-    const datasets = filtering ? filteredDatasets : props.data.currentState.collections_supported;
+    useEffect(() => {
+        if(granularity === 'state'){
+            setSafeDatasets(props.data.currentState.collections_supported.filter(filterUnsafeStates));
+        }
+        else{
+            setSafeDatasets(props.data.currentState.collections_supported);
+        }
+    }, [granularity, props.data.currentState.collections_supported])
+
+    const datasets = filtering ? filteredDatasets : safeDatasets;
+
+    function filterUnsafeStates(collectionName: any){
+        return !dangerArray.includes(collectionName.collection)
+    }
 
     function renderDatasetRows() {
         return datasets.map((collection: collection, index: number) => {
@@ -117,7 +131,7 @@ export default function DatasetList(props: propType) {
                 <Paper className={classes.paper}>
                     <List className={classes.list}  disablePadding>
                         <ListSubheader disableGutters>
-                            <DatasetListControls data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
+                            <DatasetListControls safeDatasets={safeDatasets} data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
                         </ListSubheader>
                         {renderDatasetRows()}
                     </List>

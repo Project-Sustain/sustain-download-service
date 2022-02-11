@@ -75,7 +75,8 @@ const useStyles = makeStyles({
 interface propType {
     data: dataType,
     dataManagement: dataManagementType,
-    datasetState: datasetStateType
+    datasetState: datasetStateType,
+    safeDatasets: any
 }
 
 export default function DatasetFiler(props: propType) {
@@ -88,7 +89,7 @@ export default function DatasetFiler(props: propType) {
     function handleChange(event: any) {
         const input = event.target.value;
         props.datasetState.setFiltering(input !== "");
-        const matches = props.data.currentState.collections_supported.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(input.toLowerCase()));
+        const matches = props.safeDatasets.filter((collection: collection) => getCollectionName(collection).toLowerCase().includes(input.toLowerCase()));
         props.datasetState.setFilteredDatasets(matches);
     };
 
