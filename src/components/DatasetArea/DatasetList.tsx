@@ -129,7 +129,7 @@ export default function DatasetList(props: propType) {
             <>
                 <DownloadingModal open={downloading} setOpen={setDownloading} />
                 <Paper className={classes.paper}>
-                    <List className={classes.list}>
+                    <List className={classes.list}  disablePadding>
                         <ListSubheader disableGutters>
                             <DatasetListControls safeDatasets={safeDatasets} data={props.data} dataManagement={props.dataManagement} datasetState={datasetState} />
                         </ListSubheader>
