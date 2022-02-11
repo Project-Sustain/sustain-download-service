@@ -105,7 +105,7 @@ export default function DatasetList(props: propType) {
         else{
             setSafeDatasets(props.data.currentState.collections_supported);
         }
-    }, [granularity])
+    }, [granularity, props.data.currentState.collections_supported])
 
     const datasets = filtering ? filteredDatasets : safeDatasets;
 
