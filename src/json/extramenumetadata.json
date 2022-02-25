@@ -25,7 +25,7 @@
             "label": "Future Climate (Sample)"
         }
     ],
-    "collectionsFor": {
+    "forStates": {
         "MACA_sample_2050": [
             "Texas",
             "California",

@@ -92,9 +92,10 @@ export function useStateSelection() {
                 const additionalCollections = buildAdditionalCollections(mongoData, apertureData);
                 for (const key of mongoData) {
                     const stateName = getStateName(key.gis_join);
+                    const extraCollections = getExtraDataForState(extraMenuMetadata, stateName);
                     const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections).filter((collection: any) => { 
                         return collectionsWithMetadata.has(collection.collection)
-                    }).concat(extraMenuMetadata.extraEntries);
+                    }).concat(extraCollections);
                     const counties = getCounties(stateName);
                     masterMap[stateName] = {
                         name: stateName,
@@ -133,6 +134,13 @@ export function useStateSelection() {
                 setCurrentCounty(county);
             }
         })
+    }
+
+    function getExtraDataForState(extraMenuMetadata: any, stateName: string) {
+        return extraMenuMetadata.filter((c: any) =>
+            extraMenuMetadata.collectionsFor[c.collection] === undefined
+            || extraMenuMetadata.collectionsFor[c.collection].includes(stateName)
+        );
     }
 
     return {data, dataManagement};
