@@ -137,9 +137,9 @@ export function useStateSelection() {
     }
 
     function getExtraDataForState(extraMenuMetadata: any, stateName: string) {
-        return extraMenuMetadata.filter((c: any) =>
-            extraMenuMetadata.collectionsFor[c.collection] === undefined
-            || extraMenuMetadata.collectionsFor[c.collection].includes(stateName)
+        return extraMenuMetadata.extraCollections.filter((c: any) =>
+            extraMenuMetadata.forStates[c.collection] === undefined
+            || extraMenuMetadata.forStates[c.collection].includes(stateName)
         );
     }
 

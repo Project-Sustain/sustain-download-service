@@ -22,7 +22,8 @@
         },
         {
             "collection": "MACA_sample_2050",
-            "label": "Future Climate (Sample)"
+            "label": "Future Climate (Sample)",
+            "level": "tract"
         }
     ],
     "forStates": {
