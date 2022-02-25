@@ -79,7 +79,8 @@ export interface collection {
     label: string,
     level: string,
     temporal: any,
-    linked: any
+    linked: any,
+    blob?: boolean,
 }
 
 export interface countyType {

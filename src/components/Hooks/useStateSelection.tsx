@@ -74,7 +74,7 @@ import {
     dataManagementType
 } from "../Utils/types";
 
-import overrideCollections from '../../json/extramenumetadata.json';
+import extraMenuMetadata from '../../json/extramenumetadata.json';
 
 export function useStateSelection() {
     const [stateData, setStateData] = useState({} as dataEntryType);
@@ -94,7 +94,7 @@ export function useStateSelection() {
                     const stateName = getStateName(key.gis_join);
                     const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections).filter((collection: any) => { 
                         return collectionsWithMetadata.has(collection.collection)
-                    }).concat(overrideCollections);
+                    }).concat(extraMenuMetadata.extraEntries);
                     const counties = getCounties(stateName);
                     masterMap[stateName] = {
                         name: stateName,
@@ -106,6 +106,8 @@ export function useStateSelection() {
                 setStateData(masterMap);
                 setCurrentState(masterMap["Colorado"]);
                 setCurrentCounty(masterMap["Colorado"].counties[0]);
+
+                console.log(masterMap);
             }
 
             else {
