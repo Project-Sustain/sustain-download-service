@@ -107,8 +107,6 @@ export function useStateSelection() {
                 setStateData(masterMap);
                 setCurrentState(masterMap["Colorado"]);
                 setCurrentCounty(masterMap["Colorado"].counties[0]);
-
-                console.log(masterMap);
             }
 
             else {
