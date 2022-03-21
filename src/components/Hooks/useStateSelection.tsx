@@ -74,7 +74,7 @@ import {
     dataManagementType
 } from "../Utils/types";
 
-import overrideCollections from '../../json/extramenumetadata.json';
+import extraMenuMetadata from '../../json/extramenumetadata.json';
 
 export function useStateSelection() {
     const [stateData, setStateData] = useState({} as dataEntryType);
@@ -92,9 +92,10 @@ export function useStateSelection() {
                 const additionalCollections = buildAdditionalCollections(mongoData, apertureData);
                 for (const key of mongoData) {
                     const stateName = getStateName(key.gis_join);
+                    const extraCollections = getExtraDataForState(extraMenuMetadata, stateName);
                     const collections = buildCollections(key.collections_supported, apertureData).concat(additionalCollections).filter((collection: any) => { 
                         return collectionsWithMetadata.has(collection.collection)
-                    }).concat(overrideCollections);
+                    }).concat(extraCollections);
                     const counties = getCounties(stateName);
                     masterMap[stateName] = {
                         name: stateName,
@@ -131,6 +132,13 @@ export function useStateSelection() {
                 setCurrentCounty(county);
             }
         })
+    }
+
+    function getExtraDataForState(extraMenuMetadata: any, stateName: string) {
+        return extraMenuMetadata.extraCollections.filter((c: any) =>
+            extraMenuMetadata.forStates[c.collection] === undefined
+            || extraMenuMetadata.forStates[c.collection].includes(stateName)
+        );
     }
 
     return {data, dataManagement};

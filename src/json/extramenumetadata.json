@@ -1,22 +1,41 @@
-[
-    {
-        "collection": "osm_lines_geo",
-        "label": "OpenStreetMap Data, Lines Only"
-    },
-    {
-        "collection": "osm_multilines_geo",
-        "label": "OpenStreetMap Data, Multilines Only"
-    },
-    {
-        "collection": "osm_points_geo",
-        "label": "OpenStreetMap Data, Points Only"
-    },
-    {
-        "collection": "osm_multipolygons_geo",
-        "label": "OpenStreetMap Data, Multipolygons Only"
-    },
-    {
-        "collection": "osm_other_geo",
-        "label": "OpenStreetMap Data, Other Data"
+{
+    "extraCollections" : [
+        {
+            "collection": "osm_lines_geo",
+            "label": "OpenStreetMap Data, Lines Only"
+        },
+        {
+            "collection": "osm_multilines_geo",
+            "label": "OpenStreetMap Data, Multilines Only"
+        },
+        {
+            "collection": "osm_points_geo",
+            "label": "OpenStreetMap Data, Points Only"
+        },
+        {
+            "collection": "osm_multipolygons_geo",
+            "label": "OpenStreetMap Data, Multipolygons Only"
+        },
+        {
+            "collection": "osm_other_geo",
+            "label": "OpenStreetMap Data, Other Data"
+        },
+        {
+            "collection": "MACA_sample_2050",
+            "label": "Future Climate (Sample)",
+            "level": "tract"
+        }
+    ],
+    "forStates": {
+        "MACA_sample_2050": [
+            "Texas",
+            "California",
+            "Florida",
+            "Pennsylvania",
+            "Colorado",
+            "Washington",
+            "Georgia",
+            "Michigan"
+        ]
     }
-]
+}
