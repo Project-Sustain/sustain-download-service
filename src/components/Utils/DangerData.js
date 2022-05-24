@@ -7,5 +7,6 @@ export const dangerArray = [
     "osm_multilines_geo",
     "osm_points_geo",
     "osm_multipolygons_geo",
-    "osm_other_geo"
+    "osm_other_geo",
+    "wildfires"
 ]
