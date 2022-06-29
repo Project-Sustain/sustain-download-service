@@ -78,12 +78,12 @@ const useStyles = makeStyles({
 
 interface propTypes {
     data: dataType,
-    filter: filterType
+    filter: filterType,
+    setBugAlert: any
 }
 
 export default function StateFilter(props: propTypes) {
     const classes = useStyles();
-    const [bugAlert, setBugAlert] = useState(false);
 
     function renderSelector() {
         if (props.filter.stateFilterType === 0) {
@@ -96,12 +96,12 @@ export default function StateFilter(props: propTypes) {
     return (
         <>
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
+                <BugReport setAlert={props.setBugAlert} />
                 <Typography>Filter States by</Typography>
                 <FilterType filter={props.filter}/>
                 {renderSelector()}
-                <BugReport setAlerty={setBugAlert} />
             </Stack>
-            <BugAlert alert={bugAlert} setAlert={setBugAlert} />
+            {/*<BugAlert alert={bugAlert} setAlert={setBugAlert} />*/}
         </>
     )
 

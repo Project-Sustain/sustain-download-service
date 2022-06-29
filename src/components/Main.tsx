@@ -73,6 +73,7 @@ import NSF from "./Utils/NSF";
 import StateFilter from "./MapArea/Filtering/StateFilter";
 import {useAlert} from "./Hooks/useAlert";
 import {Container, Stack} from "@mui/material";
+import BugAlert from "./BugReporting/BugAlert";
 
 const useStyles = makeStyles({
     loading: {
@@ -95,6 +96,7 @@ export default function Main() {
     const [hoveredState, setHoveredState] = useState("" as string);
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
+    const [bugAlert, setBugAlert] = useState(false);
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
@@ -123,9 +125,10 @@ export default function Main() {
                     spacing={{ xs: 1, sm: 2, md: 4}}
                 >
                     <Container maxWidth="lg">
-                        <StateFilter data={data} filter={filter}/>
+                        <StateFilter data={data} filter={filter} setBugAlert={setBugAlert} />
                         <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
                         <FauxTooltip title={hoveredState}/>
+                        <BugAlert alert={bugAlert} setAlert={setBugAlert} />
                     </Container>
                     <Container maxWidth="xs">
                         <DatasetList data={data} dataManagement={dataManagement} setAlert={alertUser} />
