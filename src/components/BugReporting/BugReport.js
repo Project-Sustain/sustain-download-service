@@ -7,7 +7,7 @@ import { Octokit } from "@octokit/core";
 import BugReportIcon from '@mui/icons-material/BugReport';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
-import { auth } from './bugSubmitAuth';
+import { getAuth } from './bugSubmitAuth';
 
 const useStyles = makeStyles( {
     inputField: {
@@ -59,7 +59,7 @@ export default function BugReport(props) {
     async function sendGitHub() {
 
         const octokit = new Octokit({
-            auth: auth
+            auth: getAuth()
         })
 
         await octokit.request('POST /repos/Project-Sustain/sustain-download-service/issues', {
