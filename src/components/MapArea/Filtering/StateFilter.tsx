@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 END OF TERMS AND CONDITIONS
 */
 
-import React from "react";
+import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../global/GlobalTheme";
 import FilterByStateName from "./FilterByStateName";
@@ -67,6 +67,8 @@ import {Typography} from "@material-ui/core";
 import FilterType from "./FilterType";
 import {Stack} from "@mui/material";
 import {dataType, filterType} from "../../Utils/types";
+import BugReport from "../../BugReporting/BugReport";
+import BugAlert from "../../BugReporting/BugAlert";
 
 const useStyles = makeStyles({
     root: {
@@ -76,7 +78,8 @@ const useStyles = makeStyles({
 
 interface propTypes {
     data: dataType,
-    filter: filterType
+    filter: filterType,
+    setBugAlert: any
 }
 
 export default function StateFilter(props: propTypes) {
@@ -91,11 +94,15 @@ export default function StateFilter(props: propTypes) {
     }
 
     return (
-        <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
-            <Typography>Filter States by</Typography>
-            <FilterType filter={props.filter}/>
-            {renderSelector()}
-        </Stack>
+        <>
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
+                <BugReport setAlert={props.setBugAlert} />
+                <Typography>Filter States by</Typography>
+                <FilterType filter={props.filter}/>
+                {renderSelector()}
+            </Stack>
+            {/*<BugAlert alert={bugAlert} setAlert={setBugAlert} />*/}
+        </>
     )
 
 }
