@@ -122,7 +122,6 @@ export default function DownloadDatasetPopup(props: propType) {
 
     function handleOpen() {
         props.state.setDataset(datasetName)
-        console.log({datasetName})
         setOpen(true);
     }
 
