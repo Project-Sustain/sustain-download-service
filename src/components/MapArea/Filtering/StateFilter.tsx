@@ -79,7 +79,8 @@ const useStyles = makeStyles({
 interface propTypes {
     data: dataType,
     filter: filterType,
-    setBugAlert: any
+    setBugAlert: any,
+    dataset: string
 }
 
 export default function StateFilter(props: propTypes) {
@@ -96,7 +97,7 @@ export default function StateFilter(props: propTypes) {
     return (
         <>
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" className={classes.root}>
-                <BugReport setAlert={props.setBugAlert} />
+                <BugReport dataset={props.dataset} data={props.data} setAlert={props.setBugAlert} />
                 <Typography>Filter States by</Typography>
                 <FilterType filter={props.filter}/>
                 {renderSelector()}

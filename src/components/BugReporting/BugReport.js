@@ -55,6 +55,13 @@ export default function BugReport(props) {
         const input = event.target.value;
         setDescription(input);
     }
+    function formatRequest(){
+        let formatString = ""
+        if(props.dataset){
+            formatString = "\nLast Dataset Selected or Downloaded: " + props.dataset;
+        }
+        return description + formatString;
+    }
 
     async function sendGitHub() {
 
@@ -66,7 +73,7 @@ export default function BugReport(props) {
             owner: 'Project-Sustain',
             repo: 'sustain-download-service',
             title: `Bug Report: ${description.split(" ").slice(0, 3).join(" ")}...`,
-            body: description,
+            body: formatRequest(),
             labels: [
                 'bug', 'userSubmitted'
             ]
@@ -76,7 +83,7 @@ export default function BugReport(props) {
 
     return (
         <div>
-            <Tooltip title='Bug Report'>
+            <Tooltip title='Report Bugs'>
                 <IconButton variant="outlined" onClick={handleOpen}>
                     <BugReportIcon/>
                 </IconButton>
