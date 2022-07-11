@@ -108,7 +108,7 @@ export default function StatesMap(props: propType) {
 
     useEffect(() => {
         Draw("#statesvg", props.mapState, props.dataManagement);
-        d3.select(window.frameElement).style("height", "600px");
+        // d3.select(window.frameElement).style("height", "600px");
     });
 
     return <svg className={classes.svg} viewBox="0 0 1000 650" id="statesvg" preserveAspectRatio="xMinYMin slice"/>
