@@ -56,7 +56,6 @@ export default function BugReport(props) {
         setDescription(input);
     }
     function formatRequest(){
-        console.log(props.dataset)
         let formatString = ""
         if(props.dataset){
             formatString = "\nLast Dataset Selected or Downloaded: " + props.dataset;
