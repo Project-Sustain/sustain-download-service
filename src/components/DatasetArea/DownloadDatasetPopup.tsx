@@ -108,7 +108,8 @@ interface propType {
         granularity: granularityType,
         data: dataType,
         setAlert: setAlertType,
-        setDownloading: (value: boolean) => void
+        setDownloading: (value: boolean) => void,
+        setDataset: any
     }
 }
 
@@ -117,7 +118,11 @@ export default function DownloadDatasetPopup(props: propType) {
     const [open, setOpen] = useState(false as boolean);
     const [geospatialData, setGeospatialData] = useState(false as boolean);
 
+    const datasetName = props.state.collection.collection
+
     function handleOpen() {
+        props.state.setDataset(datasetName)
+        console.log({datasetName})
         setOpen(true);
     }
 

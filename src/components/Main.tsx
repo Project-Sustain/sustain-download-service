@@ -97,6 +97,7 @@ export default function Main() {
     const [stateFilterType, setStateFilterType] = useState(0 as number);
     const [statesMatchingSearch, setStatesMatchingSearch] = useState([] as string[]);
     const [bugAlert, setBugAlert] = useState(false);
+    const [dataset, setDataset] = useState("" as string);
 
     const filter = {stateFilterType, setStateFilterType, setStatesMatchingSearch};
     const mapState = {hoveredState, setHoveredState, statesMatchingSearch, setStatesMatchingSearch};
@@ -115,6 +116,7 @@ export default function Main() {
     }
 
     else {
+        // @ts-ignore
         return (<>
             <NSF />
                 <CustomAlert alert={alertState}/>
@@ -125,13 +127,13 @@ export default function Main() {
                     spacing={{ xs: 1, sm: 2, md: 4}}
                 >
                     <Container maxWidth="lg">
-                        <StateFilter data={data} filter={filter} setBugAlert={setBugAlert} />
+                        <StateFilter dataset={dataset} data={data} filter={filter} setBugAlert={setBugAlert} />
                         <StatesMap data={data} dataManagement={dataManagement} mapState={mapState}/>
                         <FauxTooltip title={hoveredState}/>
                         <BugAlert alert={bugAlert} setAlert={setBugAlert} />
                     </Container>
                     <Container maxWidth="xs">
-                        <DatasetList data={data} dataManagement={dataManagement} setAlert={alertUser} />
+                        <DatasetList setDataset={setDataset} data={data} dataManagement={dataManagement} setAlert={alertUser} />
                     </Container>
                 </Stack>
             </>

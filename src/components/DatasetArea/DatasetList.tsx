@@ -86,7 +86,8 @@ const useStyles = makeStyles({
 interface propType {
     data: dataType,
     dataManagement: dataManagementType,
-    setAlert: setAlertType
+    setAlert: setAlertType,
+    setDataset: any
 }
 
 export default function DatasetList(props: propType) {
@@ -115,7 +116,7 @@ export default function DatasetList(props: propType) {
 
     function renderDatasetRows() {
         return datasets.map((collection: collection, index: number) => {
-            const popupState = {collection, granularity, data: props.data, setAlert: props.setAlert, setDownloading}
+            const popupState = {collection, granularity, data: props.data, setAlert: props.setAlert, setDownloading, setDataset: props.setDataset}
             return (
                 <ListItem key={index}>
                     <DownloadDatasetPopup state={popupState} />
