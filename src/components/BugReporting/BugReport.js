@@ -55,6 +55,14 @@ export default function BugReport(props) {
         const input = event.target.value;
         setDescription(input);
     }
+    function formatRequest(){
+        console.log(props.dataset)
+        let formatString = ""
+        if(props.dataset){
+            formatString = "\nLast Dataset Selected or Downloaded: " + props.dataset;
+        }
+        return description + formatString;
+    }
 
     async function sendGitHub() {
 
@@ -66,7 +74,7 @@ export default function BugReport(props) {
             owner: 'Project-Sustain',
             repo: 'sustain-download-service',
             title: `Bug Report: ${description.split(" ").slice(0, 3).join(" ")}...`,
-            body: description,
+            body: formatRequest(),
             labels: [
                 'bug', 'userSubmitted'
             ]
