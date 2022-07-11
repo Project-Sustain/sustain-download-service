@@ -84,7 +84,7 @@ export default function BugReport(props) {
 
     return (
         <div>
-            <Tooltip title='Bug Report'>
+            <Tooltip title='Report Bugs'>
                 <IconButton variant="outlined" onClick={handleOpen}>
                     <BugReportIcon/>
                 </IconButton>
